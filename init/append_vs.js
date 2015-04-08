@@ -70,117 +70,65 @@ MongoClient.connect(mongoUri, function(err1, db) {
         "Upton/Druid Heights",
         "Midtown"
     ];
+    var vs_col = db.collection('vs13');
+    var sites_col = db.collection('sites');
+    var csas_col = db.collection('csas');
 
     function augment(){
         var queue = [];
-        var vs_col = db.collection('vs');
-        var sites_col = db.collection('sites');
-        var csas_col = db.collection('csa-polygons');
         vs_col.find().toArray(function(err,results){
-            var info = [];
             for(var i=0; i < results.length; i++) {
                 var csa = results[i]._id;
-                sites.findOne({'_id': id}, {}, function (err, result) {
-                    if (err) {
-                        console.log(err);
-                    }
-                }
-            );
-            }});
-            get_polys(info);
-        }
-        function get_polys(site_info){
-            polys = {};
-            for(var i=0; i < csas.length; i++){
-                polys[csas[i]] = [];
+                var vsdata = results[i].properties;
+                var d = {csa:csa,vsdata:vsdata};
+                queue.push(d);
             }
-            csa_poly.find().toArray(function(err,results){
-                for(var i=0; i < results.length; i++){
-                    polys[results[i].properties.name].push(results[i].geometry);
-                }
-                search_polys(site_info,polys);
-            });
-        }
-        function search_polys(site_info,polys){
-            var res = [];
-            for(var i = 0; i < site_info.length; i++){
-                console.log(i + "/" + site_info.length);
-                var site = site_info[i];
-                var found = false;
-                for(var j = 0; j < csas.length; j++){
-                    var csa = csas[j];
-                    var p = polys[csa];
-                    //console.log(p);
-                    for(var k = 0; k < p.length; k++){
-                        var tmp = gju.pointInPolygon(site.point,p[k]);
-                        if(tmp == true){
-                            res.push({'id':site.id,'csa':csa});
-                            found = true;
-                            break;
-                        }
-                    }
-                    if(found == true){
-                        break;
-                    }
-                }
-                if(found == false){
-                    res.push({'id':site.id,'csa':'N/A'})
-                }
+            update_data(queue);
+        });
+    }
+    function update_data(data){
+        data.push({'done':true});
+        async.eachSeries(data,function(d,callback){
+            if(d.done){
+                console.log('done');
+                end();
+                setImmediate(function(){
+                    callback();
+                });
             }
-            update_sites(res);
-        }
-
-        function update_sites(data){
-            data.push({'done':true});
-            async.eachSeries(data,function(d,callback){
-                if(d.done){
-                    console.log('done');
-                    end();
-                    setImmediate(function(){
-                        callback();
-                    });
-                }
-                else{
-                    var id = d.id;
-                    var csa = d.csa;
-                    //console.log(id + "//" + csa);
-                    sites.findOne({'_id':id},{},function(err,result){
-                        if(err){
-                            console.log(err);
-                            setImmediate(function(){
-                                callback();
-                            });
-                        }
-                        else{
-                            console.log(result);
-                            if(result != null){
-                                sites.update({_id:id},{$set: {'properties.CSA':csa}}, function(){
-                                    setImmediate(function(){
-                                        callback();
-                                    });
-                                });
-                            }
-                            else if(result==null){
-                                console.log('no entry?');
-                                setImmediate(function() {
-                                    callback();
-                                });
-                            }
-                            else{
-                                console.log("something went way wrong");
-                                setImmediate(function() {
-                                    callback();
-                                });
-                            }
-                        }
-                    })
-                }
-            });
-        }
-
-        function end(){
-            process.exit(0);
-        }
-    //ghmmmm
+            else{
+                var csa = d.csa;
+                var vsdata = d.vsdata;
+                csas_col.findOne({'_id':csa},{},function(err,res){
+                    if(err){console.log(err);}
+                    else if(res!=null){
+                        csas_col.update({'_id':csa},{$set:{'properties.vsdata':vsdata}},function(e,r){
+                           console.log('appended vsdata to ' + csa);
+                            sites_col.find({'properties.CSA':csa},{},function(ee,rr){
+                                if(ee){console.log(ee);}
+                                else if(rr!=null){
+                                    sites_col.update({'properties.CSA':csa},{'properties.vsdata':vsdata},function(){
+                                        console.log('appended vsdata to ' + csa + ' sites');
+                                        setImmediate(function(){
+                                            callback();
+                                        });
+                                    })
+                                }
+                            } )
+                        });
+                    }
+                    else{
+                        console.log('nothing here!');
+                        setImmediate(function(){
+                            callback();
+                        });
+                    }
+                })
+            }
+        })
+    }
+    function end(){
+        process.exit(0);
+    }
     augment();
 });
