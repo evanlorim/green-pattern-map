@@ -232,6 +232,9 @@ function filter_points(type,items){
     if(type=='cmos_orgs'){
         prop = 'organizations';
     }
+    if(type=='sw_status'){
+        prop = 'status';
+    }
     for(var i=0; i < items.length; i++){
         for(var j=0; j < $current_points.length; j++){
             console.log($current_points[j].properties[prop]);
@@ -288,6 +291,31 @@ function add_cmos_orgs(){
             onChange: function(option, checked, select) {
                 if(checked){
                     filter_points('cmos_orgs',$(option).val());
+                }
+            }
+        });
+    });
+}
+
+function add_sw_status(){
+    $.get('api/unique_sw_status').success(function(data,s){
+        var sel = d3.select('#stormwater')
+            .append('select')
+            .attr('id','stormwater_status')
+            .attr('multiple','multiple');
+        sel.selectAll('option')
+            .data(data.data)
+            .enter()
+            .append('option')
+            .attr('value',function(d){return d;})
+            .text(function(d){return d;});
+        $('#stormwater_status').multiselect({
+            maxHeight: 200,
+            nonSelectedText: 'Status',
+            includeSelectAllOption: true,
+            onChange: function(option, checked, select) {
+                if(checked){
+                    filter_points('sw_status',$(option).val());
                 }
             }
         });

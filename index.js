@@ -44,6 +44,9 @@ app.get('/api/:type', function(req, res) {
         case "unique_cmos_orgs":
             api.unique_cmos_orgs(req,res,cb);
             break;
+        case "unique_sw_status":
+            api.unique_sw_status(req,res,cb);
+            break;
         default:
             cb({
                 data: [],

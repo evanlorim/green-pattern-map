@@ -47,4 +47,8 @@ Api.prototype.unique_cmos_orgs = function(req,res,cb){
     this.utils.unique(res, 'sites', 'properties.organizations', {'properties.gpb_type':'cmos'}, 'json', cb, true);
 }
 
+Api.prototype.unique_sw_status = function(req,res,cb){
+    this.utils.unique(res, 'sites', 'properties.status', {'properties.gpb_type':'stormwater'}, 'json', cb, true);
+}
+
 module.exports = Api;
