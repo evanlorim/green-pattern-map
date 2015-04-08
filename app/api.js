@@ -39,4 +39,12 @@ Api.prototype.sites_in_circle = function(req,res,cb){
     this.utils.in_circle(req.query.center,req.query.km,cb);
 };
 
+Api.prototype.unique_cmos_site_uses = function(req,res,cb){
+    this.utils.unique(res, 'sites', 'properties.site_use', {'properties.gpb_type':'cmos'},'json', cb, true);
+};
+
+Api.prototype.unique_cmos_orgs = function(req,res,cb){
+    this.utils.unique(res, 'sites', 'properties.organizations', {'properties.gpb_type':'cmos'}, 'json', cb, true);
+}
+
 module.exports = Api;

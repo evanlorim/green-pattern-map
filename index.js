@@ -38,6 +38,12 @@ app.get('/api/:type', function(req, res) {
             console.log('sites in circ');
             api.sites_in_circle(req,res,cb);
             break;
+        case "unique_cmos_site_uses":
+            api.unique_cmos_site_uses(req,res,cb);
+            break;
+        case "unique_cmos_orgs":
+            api.unique_cmos_orgs(req,res,cb);
+            break;
         default:
             cb({
                 data: [],

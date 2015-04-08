@@ -1,8 +1,61 @@
-#map{
-    width:600px;
-    height:400px;
+html,body{
+    height:100%;
+    width:100%;
+    padding: 0;
+    margin: 0;
 }
 
-.awesome-marker i {
-    font-size:25px;
+#map{
+    height:100%;
 }
+
+.gpb_icon {
+    width:36px;
+    height:36px;
+    margin-left:2px;
+    margin-top:2px;
+    display:inline;
+    background-position:center;
+    background-repeat:no-repeat;
+    cursor: pointer;
+    float: left;
+    background-size: 36px;
+    background-position-x:0px;
+    background-position-y:0px;
+    border-radius:5px;
+}
+
+#cmos_icon {
+    background-image: url('../img/cmos.png');
+}
+
+#stormwater_icon {
+    background-image: url('../img/stormwater.png');
+}
+
+#cleangreen_icon {
+    background-image: url('../img/cleangreen.png');
+}
+
+#mixedgreen_icon {
+    background-image: url('../img/mixedgreen.png');
+}
+
+#hoodpark_icon {
+    background-image: url('../img/hoodpark.png');
+}
+
+#greenparking_icon {
+    background-image: url('../img/greenparking.png');
+}
+
+#urbanag_icon {
+    background-image: url('../img/urbanag.png');
+}
+
+#urbanforest_icon {
+    background-image: url('../img/urbanforest.png');
+}
+
+
+

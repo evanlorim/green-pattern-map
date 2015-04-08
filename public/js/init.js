@@ -3,12 +3,14 @@
 //var $csas_layer = get_csas_layer();
 //var $neighborhoods_layer = get_neighborhoods_layer();
 var $geocoder = new google.maps.Geocoder();
+var $current_points = [];
+var $map;
 
 function addMap(){
     var points = [];
     var layers = {};
     var search_controls = {};
-    var map, cmos_marker, sw_marker;
+    var map, cmos_marker, sw_marker,markers;
 
     init();
 
@@ -28,17 +30,19 @@ function addMap(){
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
             maxZoom: 18
         }).addTo(map);
-        cmos_marker = L.AwesomeMarkers.icon({
+
+        markers = new L.FeatureGroup();
+/*        cmos_marker = L.AwesomeMarkers.icon({
             'prefix':'ion',
             'icon': 'ion-ios-flower-outline',
             'markerColor' : 'pink'
-        });
+        });*/
 
-        sw_marker = L.AwesomeMarkers.icon({
+/*        sw_marker = L.AwesomeMarkers.icon({
             'prefix':'ion',
             'icon': 'ion-ios-rainy-outline',
             'markerColor' : 'blue'
-        });
+        });*/
 
         search_controls.address = new L.Control.Search({
             callData: googleGeocoding,
@@ -61,22 +65,35 @@ function addMap(){
             });
         });
 
+        var sidebar = $('#sidebar').sidebar();
+        var legend = L.control({position: 'bottomright'});
+        legend.onAdd = function(map){
+            var div = L.DomUtil.create('div','info legend');
+            div.innerHTML += "<This is a legend>"
+            return div;
+        };
+        legend.addTo(map);
         addPoints(points);
     }
 
     function addPoints(sites){
+        map.removeLayer(markers);
+        markers.clearLayers();
+        $current_points = [];
         for(var i = 0; i < sites.length; i++){
             if(sites[i].geometry){
-                var marker;
+                $current_points.push(sites[i]);
+                var color;
                 if(sites[i].properties.gpb_type == 'cmos'){
-                    marker = cmos_marker;
+                    color = "#FFFFFF";
                 }
                 else if(sites[i].properties.gpb_type == 'stormwater'){
-                    marker = sw_marker;
+                    color = "#000000";
                 }
-                L.marker([sites[i].geometry.coordinates[1],sites[i].geometry.coordinates[0]], {icon:marker}).addTo(map);
+                markers.addLayer(L.circleMarker([sites[i].geometry.coordinates[1],sites[i].geometry.coordinates[0]], {fillColor:color, radius:5, opacity:.8}));
             }
         }
+        map.addLayer(markers);
     }
 
     function get_points(cb){
@@ -120,6 +137,9 @@ function addMap(){
             fillOpacity: 0.20
         }
     }).addTo(map);*/
+    var ret = {};
+    ret.add_points = addPoints;
+    return ret;
 }
 
 function get_csas(){
@@ -201,4 +221,75 @@ function filterJSONCall(rawjson)
     }
 
     return json;
+}
+
+function filter_points(type,items){
+    var prop;
+    var new_points = [];
+    if(type=='cmos_site_uses'){
+        prop = 'site_use';
+    }
+    if(type=='cmos_orgs'){
+        prop = 'organizations';
+    }
+    for(var i=0; i < items.length; i++){
+        for(var j=0; j < $current_points.length; j++){
+            console.log($current_points[j].properties[prop]);
+            if($current_points[j].properties[prop] == items[i]){
+
+                new_points.push(current_points[j]);
+            }
+        }
+    }
+    $map.add_points(new_points);
+}
+
+function add_cmos_site_uses(){
+    $.get('api/unique_cmos_site_uses').success(function(data,s){
+        var sel = d3.select('#cmos')
+            .append('select')
+            .attr('id','cmos_site_uses')
+            .attr('multiple','multiple');
+        sel.selectAll('option')
+            .data(data.data)
+            .enter()
+            .append('option')
+            .attr('value',function(d){return d;})
+            .text(function(d){return d;});
+        $('#cmos_site_uses').multiselect({
+            maxHeight: 200,
+            nonSelectedText: 'Site Uses',
+            includeSelectAllOption: true,
+            onChange: function(option, checked, select) {
+                if(checked){
+                    filter_points('cmos_site_uses',$(option).val());
+                }
+            }
+        });
+    });
+}
+
+function add_cmos_orgs(){
+    $.get('api/unique_cmos_orgs').success(function(data,s){
+        var sel = d3.select('#cmos')
+            .append('select')
+            .attr('id','cmos_orgs')
+            .attr('multiple','multiple');
+        sel.selectAll('option')
+            .data(data.data)
+            .enter()
+            .append('option')
+            .attr('value',function(d){return d;})
+            .text(function(d){return d;});
+        $('#cmos_orgs').multiselect({
+            maxHeight: 200,
+            nonSelectedText: 'Organizations',
+            includeSelectAllOption: true,
+            onChange: function(option, checked, select) {
+                if(checked){
+                    filter_points('cmos_orgs',$(option).val());
+                }
+            }
+        });
+    });
 }

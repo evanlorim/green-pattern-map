@@ -1,4 +1,50 @@
 extends layout
 
 block content
-   div#map
+   #sidebar.sidebar.collapsed
+      // Nav tabs
+      ul.sidebar-tabs(role='tablist')
+         li
+            a(href='#cmos', role='tab')
+               i.gpb_icon#cmos_icon
+         li
+            a(href='#stormwater', role='tab')
+               i.gpb_icon#stormwater_icon
+         li
+            a(href='#cleangreen', role='tab')
+               i.gpb_icon#cleangreen_icon
+         li
+            a(href='#mixedgreen', role='tab')
+               i.gpb_icon#mixedgreen_icon
+         li
+            a(href='#hoodpark', role='tab')
+               i.gpb_icon#hoodpark_icon
+         li
+            a(href='#greenparking', role='tab')
+               i.gpb_icon#greenparking_icon
+         li
+            a(href='#urbanag', role='tab')
+               i.gpb_icon#urbanag_icon
+         li
+            a(href='#urbanforest', role='tab')
+               i.gpb_icon#urbanforest_icon
+
+      // Tab panes
+      .sidebar-content.active
+         #cmos.sidebar-pane
+            h3 Community Managed Open Space
+         #stormwater.sidebar-pane
+            h1 Stormwater Management Sites
+         #cleangreen.sidebar-pane
+            h1 Messages
+         #mixedgreen.sidebar-pane
+            h1 Settings
+         #hoodpark.sidebar-pane
+            h1 Settings
+         #greenparking.sidebar-pane
+            h1 Settings
+         #urbanag.sidebar-pane
+            h1 Settings
+         #urbanforest.sidebar-pane
+            h1 Settings
+   div#map.sidebar-map
