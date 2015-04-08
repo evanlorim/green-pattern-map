@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "postinstall": ""
+    "postinstall": "bower install && node init/vital_signs.js && node init/csas.js && node init/csas-poly.js && node init/neighborhoods.js && node init/watersheds.js && node init/sites.js && node init/sites_append_csas.js && node init/sites_append_neighborhoods.js"
   },
   "dependencies": {
     "array-unique": "^0.2.1",
