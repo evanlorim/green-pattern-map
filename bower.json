@@ -4,6 +4,7 @@
     "leaflet": "~0.7.3",
     "d3": "~3.5.5",
     "bootstrap": "~3.3.4",
-    "bootstrap-switch": "~3.3.2"
+    "bootstrap-switch": "~3.3.2",
+    "jquery": "~2.1.3"
   }
 }
