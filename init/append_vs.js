@@ -107,7 +107,7 @@ MongoClient.connect(mongoUri, function(err1, db) {
                             sites_col.find({'properties.CSA':csa},{},function(ee,rr){
                                 if(ee){console.log(ee);}
                                 else if(rr!=null){
-                                    sites_col.update({'properties.CSA':csa},{'properties.vsdata':vsdata},function(){
+                                    sites_col.update({'properties.CSA':csa},{$set:{'properties.vsdata':vsdata}},{'multi':true},function(e,r){
                                         console.log('appended vsdata to ' + csa + ' sites');
                                         setImmediate(function(){
                                             callback();

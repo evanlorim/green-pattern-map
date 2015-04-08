@@ -19,8 +19,24 @@ app.get('/api/:type', function(req, res) {
         res.json(resp);
     };
     switch (req.params.type) {
-        case "sites":
-            api.sites(req, res, cb);
+        case "unique_sites":
+            api.unique_sites(req, res, cb);
+            break;
+        case "unique_neighborhoods":
+            api.unique_neighborhoods(req,res,cb);
+            break;
+        case "unique_csas":
+            api.unique_csas(req,res,cb);
+            break;
+        case "geom_neighborhoods":
+            api.geom_neighborhoods(req,res,cb);
+            break;
+        case "geom_csas":
+            api.geom_csas(req,res,cb);
+            break;
+        case "sites_in_circle":
+            console.log('sites in circ');
+            api.sites_in_circle(req,res,cb);
             break;
         default:
             cb({

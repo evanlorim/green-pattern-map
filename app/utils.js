@@ -1,6 +1,7 @@
 var mongo = require('mongodb');
 var unique = require('array-unique');
 var trim = require('trim');
+var geolib = require('geolib');
 
 var Utils = function(config) {
     for (var prop in config) this[prop] = config[prop];
@@ -67,6 +68,34 @@ Utils.prototype.toJson = function(data, query, collection) {
     }
 };
 
+Utils.prototype.in_circle = function(center,km,resCb){
+    var me = this;
+    var m = km*1000;
+    var res=[];
+    this.connect(function(db){
+        var col = db.collection('sites');
+        col.find().toArray(function(err,results){
+            if(err){console.log(err);}
+            else{
+                for(var i = 0; i < results.length; i++){
+                    if(results[i].geometry === undefined){
+                        continue;
+                    }
+                    else{
+                        var latlng = {'latitude':results[i].geometry.coordinates[1],'longitude':results[i].geometry.coordinates[0]};
+                        var incirc = geolib.isPointInCircle(latlng,center,m);
+                        if(incirc){
+                            res.push(results[i]);
+                        }
+                    }
+                }
+                var resp = me.toJson(res,{center:center,km:km},'sites');
+                resCb(resp);
+            }
+        });
+    });
+};
+
 Utils.prototype.query = function(res, collection, query, resultType, resCb) {
     var me = this;
     this.connect(function(db) {
@@ -85,7 +114,8 @@ Utils.prototype.query = function(res, collection, query, resultType, resCb) {
             } else {
                 if (resultType == 'geojson') {
                     var resp = me.toGeoJson(results, query, collection);
-                } else {
+                }
+                else {
                     var resp = me.toJson(results, query, collection);
                 }
                 resCb(resp);
@@ -117,7 +147,6 @@ Utils.prototype.unique = function(res, collection, query, subquery, resultType, 
                         var proc = [];
                         for(var i=0; i < results.length; i++){
                             var tmp = results[i].split(",");
-                            console.log(tmp);
                             for(var j=0; j < tmp.length; j++){
                                 proc.push(trim(tmp[j]));
                             }
@@ -165,5 +194,6 @@ Utils.prototype.aggregate = function(res, collection, query, resultType, resCb) 
         });
     });
 };
+
 
 module.exports = Utils;
