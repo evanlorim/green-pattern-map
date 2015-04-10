@@ -13,3 +13,6 @@ $('.collapse').click(function() {
     $(".reveal").slideDown(100);
 });
 
+$.get('api/filter',{}
+,function(data,status){console.log(data);});
+

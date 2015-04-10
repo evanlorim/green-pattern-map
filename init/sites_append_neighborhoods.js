@@ -303,9 +303,6 @@ MongoClient.connect(mongoUri, function(err1, db) {
                 if(results[i].properties.site_id === undefined || results[i].properties.site_id === '' || results[i].geometry === undefined){
                     continue;
                 }
-                if(results.neighborhood != undefined || results.neighborhood != ''){
-                    continue;
-                }
                 var p = {'id':results[i]._id,'point':results[i].geometry};
                 info.push(p);
             }

@@ -159,7 +159,6 @@ function addMap(){
                         "BMP Type: " + props.bmp_type + "</br>" +
                         "Status: " + (props.status || 'NO DATA') + "</br>" +
                         "Source: " + (props.source || 'NO DATA');
-                    console.log(html);
                     marker.bindPopup(html);
                     sw_markers.addLayer(marker);
                 }
