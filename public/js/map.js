@@ -64,6 +64,7 @@ function addMap(){
         }
     );
     var watersheds, neighborhoods, csas;
+    var search_circle, search_marker, search_exit;
     var cmos_icon =  L.AwesomeMarkers.icon({
         icon: 'users',
         prefix: 'fa',
@@ -82,7 +83,6 @@ function addMap(){
         disableClusteringAtZoom:16,
         iconCreateFunction: function (t) {
             var e = t.getChildCount(), i = " marker-cluster-";
-            console.log(e);
             if(10 > e){i=" marker-cluster-small cmos-marker-cluster-small"}
             else if(100 > e){i=" marker-cluster-medium cmos-marker-cluster-medium"}
             else if(e > 100){i=" marker-cluster-large cmos-marker-cluster-large"}
@@ -124,8 +124,21 @@ function addMap(){
         circleLocation:false
     });
     address_search.on('search_locationfound', function(e) {
-        L.circle([e.latlng.lat, e.latlng.lng], 1000, {fillOpacity:0.0,color:"#000000",opacity:.6}).addTo(map);
-        L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+        search_circle = L.circle([e.latlng.lat, e.latlng.lng], 1000, {fillOpacity:0.0,color:"#000000",opacity:.6});
+        search_marker = L.marker([e.latlng.lat, e.latlng.lng]);
+        search_exit = L.easyButton('fa-times',
+        function(){
+            map.removeLayer(search_circle);
+            map.removeLayer(search_marker);
+            map.removeControl(search_exit);
+            update_sites();
+            //map.removeLayer(search_exit);
+        },
+        'Clear search results...',''
+        );
+        map.addLayer(search_circle);
+        map.addLayer(search_marker);
+        map.addControl(search_exit);
         update_sites({lat: e.latlng.lat,lng: e.latlng.lng,km:1});
     });
     map.addControl(address_search);
@@ -160,7 +173,6 @@ function addMap(){
         function(err,res){
             if(err){console.log(err);}
             else{
-                    console.log("No error");
                     addLayersControl();
                 }
         });
@@ -176,7 +188,6 @@ function addMap(){
                        fillOpacity:0.20
                    }
                 });
-                console.log("GOT WS");
                 cb();
             });
         }
@@ -207,7 +218,6 @@ function addMap(){
                         fillOpacity:0.20
                     }
                 });
-                console.log("made it this far...");
                 cb();
             });
         }
