@@ -41,6 +41,9 @@ block content
             a(href='#settings', role='tab')
                i.fa.fa-cog.settings
          li
+            a(href='#info', role='tab')
+               i.fa.fa-info
+         li
             a(href="#help", role='tab')
                i.fa.fa-question
 
@@ -90,7 +93,14 @@ block content
             div.alt-sidebar-head
                i.fa.fa-tint.alt-icon.fa-2x
                div.sidebar-title Watersheds
-         #help.sidebar-pane
+         #settings.sidebar-pane
+            div.opt-sidebar-head
+               i.fa.fa-cog.alt-icon.fa-2x
+               div.sidebar-title Settings
+         #info.sidebar-pane
+            div.opt-sidebar-head
+               i.fa.fa-info.alt-icon.fa-2x
+               div.sidebar-title Information
             div.reveal
                i.fa.fa-chevron-down.fa-align-left(style="display:inline;float:left;margin-right:5px;")
                h4 Stormwater Management Site Status...
@@ -115,4 +125,13 @@ block content
                b Inactive
                |– This status means that the active BMP is no longer in existence or that a study or evaluation has shown that an identified BMP is not feasible for construction.
             div.collapse(style='display:none;') Collapse
+         #help.sidebar-pane
+            div.opt-sidebar-head
+               i.fa.fa-question.alt-icon.fa-2x
+               div.sidebar-title Help
+               p Pick any of the sidebar icons to access a filter.
+               br
+               p Filters are used to filter the set of points layed out on the screen.
+               br
+               p Use the search bar to search for an address. The default search action is to omit any points outside a radius of 1 km from the searched address.
    div#map.sidebar-map
