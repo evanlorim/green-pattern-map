@@ -152,6 +152,7 @@ function update_sites(circle_filter){
     var sw_status_q = get_selected_query_string(sw_status,'properties.status','stormwater');
     var cmos_site_use_q = get_selected_query_string(cmos_site_use,'properties.site_use','cmos');
     var sw_bmp_type_q = get_selected_query_string(sw_bmp_type,'properties.bmp_type','stormwater');
+    var csa_q = get_selected_query_string(csas, 'properties.CSA', false);
     var nh_q = get_selected_query_string(nh,'properties.neighborhood',false);
     queries.push({'done':true});
     update();
@@ -210,7 +211,7 @@ function update_sites(circle_filter){
             function(cb){get_filtered(sw_status_q,cb)},
             function(cb){get_filtered(cmos_site_use_q,cb)},
             function(cb){get_filtered(sw_bmp_type_q,cb)},
-            function(cb){get_filtered(nh_q,cb)}
+            function(cb){get_filtered(nh_q,cb)},
             ],
             function(err,res){end();}
         );

@@ -158,6 +158,7 @@ function addMap(){
                         "Location: " + (parseFloat(props.POINT_X).toFixed(6) + ", " + parseFloat(props.POINT_Y).toFixed(6) || 'NO DATA') + "</br>" +
                         "BMP Type: " + props.bmp_type + "</br>" +
                         "Status: " + (props.status || 'NO DATA') + "</br>" +
+                        "Impervious Acres:" + (props.Imp_acres || 'NO DATA') + "</br>"
                         "Source: " + (props.source || 'NO DATA');
                     marker.bindPopup(html);
                     sw_markers.addLayer(marker);
