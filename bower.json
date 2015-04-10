@@ -11,6 +11,7 @@
     "bootstrap-multiselect": "~0.9.12",
     "leaflet-search": "~1.5.6",
     "leaflet.markercluster": "~0.4.0",
-    "Leaflet.awesome-markers": "~2.0.2"
+    "Leaflet.awesome-markers": "~2.0.2",
+    "font-awesome": "~4.3.0"
   }
 }

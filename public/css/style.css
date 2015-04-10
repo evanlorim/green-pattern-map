@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('/public/lib/bootstrap/fonts/glyphicons-halflings-regular.eot');
+    src: url('/public/lib/bootstrap/fonts/glyphicons-halflings-regular.eot#iefix') format('embedded-opentype'), url('/public/lib/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/public/lib/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/public/lib/bootstrap/fonts/glyphicons-halflings-regular.svg') format('svg');
+}
+
 html,body{
     height:100%;
     width:100%;
@@ -9,20 +15,34 @@ html,body{
     height:100%;
 }
 
+.sidebar-head{
+    width:120%;
+    height:40px;
+    margin-left:-20px;
+    margin-top:-10px;
+}
+
+.sidebar-title{
+    height:40px;
+    background-color:#7AA138;
+    color:white;
+    padding-top:5px;
+    padding-left:50px;
+    padding-right:20px;
+    font-size:150%;
+}
+
 .gpb_icon {
-    width:36px;
-    height:36px;
-    margin-left:2px;
-    margin-top:2px;
+    width:40px;
+    height:40px;
     display:inline;
     background-position:center;
     background-repeat:no-repeat;
     cursor: pointer;
     float: left;
-    background-size: 36px;
+    background-size: 40px;
     background-position-x:0px;
     background-position-y:0px;
-    border-radius:5px;
 }
 
 #cmos_icon {

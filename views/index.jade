@@ -6,45 +6,61 @@ block content
       ul.sidebar-tabs(role='tablist')
          li
             a(href='#cmos', role='tab')
-               i.gpb_icon#cmos_icon
+               i.fa.fa-users
          li
             a(href='#stormwater', role='tab')
-               i.gpb_icon#stormwater_icon
+               i.fa.fa-tint
          li
             a(href='#cleangreen', role='tab')
-               i.gpb_icon#cleangreen_icon
+               i.fa.fa-refresh
          li
             a(href='#mixedgreen', role='tab')
-               i.gpb_icon#mixedgreen_icon
+               i.fa.fa-leaf
          li
             a(href='#hoodpark', role='tab')
-               i.gpb_icon#hoodpark_icon
+               i.fa.fa-binoculars
          li
             a(href='#greenparking', role='tab')
-               i.gpb_icon#greenparking_icon
+               i.fa.fa-car
          li
             a(href='#urbanag', role='tab')
-               i.gpb_icon#urbanag_icon
+               i.fa.fa-lemon-o
          li
             a(href='#urbanforest', role='tab')
-               i.gpb_icon#urbanforest_icon
+               i.fa.fa-tree
 
       // Tab panes
       .sidebar-content.active
          #cmos.sidebar-pane
-            h3 Community Managed Open Space
+            div.sidebar-head
+               i.gpb_icon#cmos_icon
+               div.sidebar-title Community Managed Open Spaces
          #stormwater.sidebar-pane
-            h1 Stormwater Management Sites
+            div.sidebar-head
+               i.gpb_icon#stormwater_icon
+               div.sidebar-title Stormwater Management Sites
          #cleangreen.sidebar-pane
-            h1 Messages
+            div.sidebar-head
+               i.gpb_icon#cleangreen_icon
+               div.sidebar-title Clean and Green
          #mixedgreen.sidebar-pane
-            h1 Settings
+            div.sidebar-head
+               i.gpb_icon#mixedgreen_icon
+               div.sidebar-title Mixed Greens
          #hoodpark.sidebar-pane
-            h1 Settings
+            div.sidebar-head
+               i.gpb_icon#hoodpark_icon
+               div.sidebar-title Neighborhood Parks
          #greenparking.sidebar-pane
-            h1 Settings
+            div.sidebar-head
+               i.gpb_icon#greenparking_icon
+               div.sidebar-title Green Parking
          #urbanag.sidebar-pane
-            h1 Settings
+            div.sidebar-head
+               i.gpb_icon#urbanag_icon
+               div.sidebar-title Urban Agriculture
          #urbanforest.sidebar-pane
-            h1 Settings
+            div.sidebar-head
+               i.gpb_icon#urbanforest_icon
+               div.sidebar-title Urban Forests
    div#map.sidebar-map

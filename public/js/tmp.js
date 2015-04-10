@@ -1,38 +1,5 @@
-function googleGeocoding(text, callResponse)
-{
-    $geocoder.geocode({address: text}, callResponse);
-}
 
-function filterJSONCall(rawjson)
-{
-    var json = {},
-        key, loc, disp = [];
 
-    for(var i in rawjson)
-    {
-        key = rawjson[i].formatted_address;
-
-        loc = L.latLng( rawjson[i].geometry.location.lat(), rawjson[i].geometry.location.lng() );
-
-        json[ key ]= loc;	//key,value format
-    }
-
-    return json;
-}
-
-function get_neighborhoods_layer(cb){
-    $.get('api/geom_neighborhoods').success(function(data,status){
-        layers['neighborhoods'] = data;
-        cb();
-    });
-}
-
-function get_csas_layer(cb){
-    $.get('api/geom_csas').success(function(data,status){
-        layers['csas'] = data;
-        cb();
-    });
-}
 
 function addPoints(sites){
     map.removeLayer(markers);
@@ -73,27 +40,12 @@ legend.onAdd = function(map){
 legend.addTo(map);
 addPoints(points);
 
-map.addControl(search_controls.address);
-
-search_controls.address.on('search_locationfound', function(e) {
-    L.circle([e.latlng.lat, e.latlng.lng], 1000, {fillOpacity:0.0,color:"#000000",opacity:.6}).addTo(map);
-    L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-    $.get('api/sites_in_circle', {'center':{'latitude':e.latlng.lat, 'longitude':e.latlng.lng},km:1}).success(function(res,stat){
-        var data = res.data;
-        addPoints(data);
-    });
-});
 
 
-search_controls.address = new L.Control.Search({
-    callData: googleGeocoding,
-    filterJSON: filterJSONCall,
-    autoType: false,
-    autoCollapse: true,
-    minLength: 2,
-    zoom: 14,
-    circleLocation:false
-});
+
+
+
+
 
 markers = new L.FeatureGroup();
 

@@ -106,7 +106,7 @@ function init_selects(){
 }
 
 
-function update_sites(){
+function update_sites(circle_filter){
     var new_sites = [];
     var new_site_ids = [];
     var queries = [];
@@ -146,13 +146,30 @@ function update_sites(){
             });
         }
     }
+    function end(){
+        if(circle_filter){
+            $.get('api/sites_in_circle', {'center':{'latitude':circle_filter.lat, 'longitude':circle_filter.lng},km:circle_filter.km}).success(function(res,stat){
+                var final_sites = [];
+                var data = res.data;
+                for(var i = 0; i < data.length; i++){
+                    if(new_site_ids.indexOf(data[i]._id) > -1){
+                        final_sites.push(data[i]);
+                    }
+                }
+                $map.updatePoints(final_sites);
+            });
+        }
+        else{
+            $map.updatePoints(new_sites);
+        }
+    }
     function update() {
         async.parallel([
             function(cb){get_filtered(sw_status_q,cb)},
             function(cb){get_filtered(cmos_site_use_q,cb)},
             function(cb){get_filtered(sw_bmp_type_q,cb)}
             ],
-            function(err,res){$map.updatePoints(new_sites);}
+            function(err,res){end();}
         );
     }
     return;

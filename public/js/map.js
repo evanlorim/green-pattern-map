@@ -65,13 +65,13 @@ function addMap(){
     );
     var watersheds, neighborhoods, csas;
     var cmos_icon =  L.AwesomeMarkers.icon({
-        icon: 'grain',
-        prefix: 'glyphicon',
+        icon: 'users',
+        prefix: 'fa',
         markerColor: 'orange'
     });
     var sw_icon = L.AwesomeMarkers.icon({
-        icon: 'cloud',
-        prefix: 'glyphicon',
+        icon: 'tint',
+        prefix: 'fa',
         markerColor: 'cadetblue'
     });
     var cmos_markers = new L.MarkerClusterGroup({
@@ -114,6 +114,21 @@ function addMap(){
     map.addLayer(cmos_markers);
     map.addLayer(sw_markers);
     var sidebar = $('#sidebar').sidebar();
+    var address_search = new L.Control.Search({
+        callData: googleGeocoding,
+        filterJSON: filterJSONCall,
+        autoType: false,
+        autoCollapse: true,
+        minLength: 2,
+        zoom: 14,
+        circleLocation:false
+    });
+    address_search.on('search_locationfound', function(e) {
+        L.circle([e.latlng.lat, e.latlng.lng], 1000, {fillOpacity:0.0,color:"#000000",opacity:.6}).addTo(map);
+        L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+        update_sites({lat: e.latlng.lat,lng: e.latlng.lng,km:1});
+    });
+    map.addControl(address_search);
 
 
     function updatePoints(sites){
@@ -203,6 +218,24 @@ function addMap(){
                 "Community Statistical Areas": csas
             }).addTo(map);
         }
+    }
+    function googleGeocoding(text, callResponse) {
+        $geocoder.geocode({address: text}, callResponse);
+    }
+    function filterJSONCall(rawjson) {
+        var json = {},
+            key, loc, disp = [];
+
+        for(var i in rawjson)
+        {
+            key = rawjson[i].formatted_address;
+
+            loc = L.latLng( rawjson[i].geometry.location.lat(), rawjson[i].geometry.location.lng() );
+
+            json[ key ]= loc;	//key,value format
+        }
+
+        return json;
     }
     getLayers();
     var ret = {};
