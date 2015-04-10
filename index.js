@@ -53,6 +53,15 @@ app.get('/api/:type', function(req, res) {
         case "unique_sw_bmp_type":
             api.unique_sw_bmp_type(req,res,cb);
             break;
+        case "watersheds":
+            api.watersheds(req, res, cb);
+            break;
+        case "neighborhoods":
+            api.neighborhoods(req, res, cb);
+            break;
+        case "csas":
+            api.csas(req,res,cb);
+            break;
         default:
             cb({
                 data: [],

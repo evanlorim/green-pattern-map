@@ -152,7 +152,7 @@ function update_sites(){
             function(cb){get_filtered(cmos_site_use_q,cb)},
             function(cb){get_filtered(sw_bmp_type_q,cb)}
             ],
-            function(err,res){console.log(new_sites);$map.updatePoints(new_sites);}
+            function(err,res){$map.updatePoints(new_sites);}
         );
     }
     return;
