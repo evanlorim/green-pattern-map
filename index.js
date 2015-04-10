@@ -50,6 +50,9 @@ app.get('/api/:type', function(req, res) {
         case "unique_sw_status":
             api.unique_sw_status(req,res,cb);
             break;
+        case "unique_sw_bmp_type":
+            api.unique_sw_bmp_type(req,res,cb);
+            break;
         default:
             cb({
                 data: [],

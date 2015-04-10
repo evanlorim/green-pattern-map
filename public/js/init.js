@@ -100,7 +100,9 @@ function init_selects(){
     add_multiselect('#cmos','cmos_site_use','Site Uses','api/unique_cmos_site_uses').done(function(data){
         $selects.cmos_site_use = data;
     });
-    add_multiselect('#stormwater','sw_bmp_type','Best Management Practices','api/')
+    add_multiselect('#stormwater','sw_bmp_type','Best Management Practices','api/unique_sw_bmp_type').done(function(data){
+        $selects.sw_bmp_type = data;
+    });
 }
 
 
@@ -110,8 +112,10 @@ function update_sites(){
     var queries = [];
     var sw_status = $selects.sw_status.get_selected();
     var cmos_site_use = $selects.cmos_site_use.get_selected();
+    var sw_bmp_type = $selects.sw_bmp_type.get_selected();
     sw_status_q = get_selected_query_string(sw_status,'properties.status','stormwater');
     cmos_site_use_q = get_selected_query_string(cmos_site_use,'properties.site_use','cmos');
+    sw_bmp_type_q = get_selected_query_string(sw_bmp_type,'properties.bmp_type','stormwater');
     queries.push({'done':true});
     update();
     function get_selected_query_string(selected,prop,gpb_type){
@@ -145,7 +149,8 @@ function update_sites(){
     function update() {
         async.parallel([
             function(cb){get_filtered(sw_status_q,cb)},
-            function(cb){get_filtered(cmos_site_use_q,cb)}
+            function(cb){get_filtered(cmos_site_use_q,cb)},
+            function(cb){get_filtered(sw_bmp_type_q,cb)}
             ],
             function(err,res){console.log(new_sites);$map.updatePoints(new_sites);}
         );

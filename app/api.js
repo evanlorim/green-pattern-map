@@ -14,8 +14,8 @@ Api.prototype.filter = function(req,res,cb){
     this.utils.query(res, 'sites', req.query, 'json', cb);
 };
 
-Api.protoype.unique_sw_bmp_types = function(req,res,cb){
-    this.utils.unique(res, 'sites', 'properties.status', {'properties.gpb_type':'stormwater'}, 'json', cb, true);
+Api.prototype.unique_sw_bmp_type = function(req,res,cb){
+    this.utils.unique(res, 'sites', 'properties.bmp_type', {'properties.gpb_type':'stormwater'}, 'json', cb, true);
 };
 
 Api.prototype.unique_sites = function(req,res,cb){

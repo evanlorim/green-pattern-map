@@ -63,28 +63,54 @@ function addMap(){
             'layers':[$layers.osm_bw]
         }
     );
-    var markers = new L.MarkerClusterGroup({
+    var cmos_icon =  L.AwesomeMarkers.icon({
+        icon: 'grain',
+        prefix: 'glyphicon',
+        markerColor: 'purple'
+    });
+    var sw_icon = L.AwesomeMarkers.icon({
+        icon: 'cloud',
+        prefix: 'glyphicon',
+        markerColor: 'blue'
+    });
+    var cmos_markers = new L.MarkerClusterGroup({
         showCoverageOnHover:false,
         zoomToBoundsOnClick:false,
         animateAddingMarkers:true,
         maxClusterRadius:40,
         disableClusteringAtZoom:16
     });
-    map.addLayer(markers);
+    var sw_markers = new L.markerClusterGroup({
+        showCoverageOnHover:false,
+        zoomToBoundsOnClick:false,
+        animateAddingMarkers:true,
+        maxClusterRadius:40,
+        disableClusteringAtZoom:16
+    });
+    map.addLayer(cmos_markers);
+    map.addLayer(sw_markers);
     var sidebar = $('#sidebar').sidebar();
 
 
     function updatePoints(sites){
-        map.removeLayer(markers);
-        console.log('updating...');
-        markers.clearLayers();
+        map.removeLayer(cmos_markers);
+        map.removeLayer(sw_markers);
+        cmos_markers.clearLayers();
+        sw_markers.clearLayers();
         for(var i = 0; i < sites.length; i++){
             if(sites[i].properties.POINT_X){
-                var marker = L.marker([sites[i].properties.POINT_Y,sites[i].properties.POINT_X]);
-                markers.addLayer(marker);
+                if(sites[i].properties.gpb_type == 'stormwater'){
+                    var marker = L.marker([sites[i].properties.POINT_Y,sites[i].properties.POINT_X],{icon: sw_icon});
+                    sw_markers.addLayer(marker);
+                }
+                else if(sites[i].properties.gpb_type == 'cmos'){
+                    var marker = L.marker([sites[i].properties.POINT_Y,sites[i].properties.POINT_X],{icon: cmos_icon});
+                    cmos_markers.addLayer(marker);
+                }
             }
         }
-        map.addLayer(markers);
+        map.addLayer(cmos_markers);
+        map.addLayer(sw_markers);
     }
 
 
