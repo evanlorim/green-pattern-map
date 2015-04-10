@@ -103,6 +103,9 @@ function init_selects(){
     add_multiselect('#stormwater','sw_bmp_type','Best Management Practices','api/unique_sw_bmp_type').done(function(data){
         $selects.sw_bmp_type = data;
     });
+    add_multiselect('#neighborhoods','neighborhood_sel','Neighborhoods','api/unique_neighborhoods').done(function(data){
+        $selects.neighborhoods = data;
+    });
 }
 
 

@@ -58,8 +58,16 @@ Api.prototype.neighborhoods = function(req,res,cb){
     this.utils.query(res, 'neighborhoods', {}, 'geojson', cb);
 };
 
+Api.prototype.unique_neighborhoods = function(req,res,cb){
+    this.utils.unique(res, 'neighborhoods', 'properties.Name',{}, 'json', cb, true);
+};
+
 Api.prototype.csas = function(req,res,cb){
     this.utils.query(res, 'csas', {}, 'geojson', cb);
+};
+
+Api.prototype.unique_csas = function(req,res,cv){
+    this.utils.unique(res, 'csas', 'properties.name', {}, json, cb, true);
 };
 
 Api.prototype.watersheds = function(req, res, cb) {
