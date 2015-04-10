@@ -63,7 +63,6 @@ function addMap(){
             'layers':[$layers.esri]
         }
     );
-    var popup = L.popup();
     var watersheds, neighborhoods, csas;
     var search_circle, search_marker, search_exit;
     var cmos_icon =  L.AwesomeMarkers.icon({
@@ -158,13 +157,10 @@ function addMap(){
                     var html = "<h3>" + (props.site_name || "UNNAMED SITE") + "</h3></br>" +
                         "Location: " + (parseFloat(props.POINT_X).toFixed(6) + ", " + parseFloat(props.POINT_Y).toFixed(6) || 'NO DATA') + "</br>" +
                         "BMP Type: " + props.bmp_type + "</br>" +
-                        "Status: " + (props.status || 'NO DATA') +
+                        "Status: " + (props.status || 'NO DATA') + "</br>" +
                         "Source: " + (props.source || 'NO DATA');
-                    marker.on('click', function(e){
-                        popup.setLatLng(e.latlng)
-                            .setContent(html)
-                            .openOn(map);
-                    });
+                    console.log(html);
+                    marker.bindPopup(html);
                     sw_markers.addLayer(marker);
                 }
                 else if(sites[i].properties.gpb_type == 'cmos'){
