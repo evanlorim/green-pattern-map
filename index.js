@@ -19,6 +19,9 @@ app.get('/api/:type', function(req, res) {
         res.json(resp);
     };
     switch (req.params.type) {
+        case "filter":
+            api.filter(req,res,cb);
+            break;
         case "unique_sites":
             api.unique_sites(req, res, cb);
             break;

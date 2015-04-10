@@ -78,7 +78,7 @@ MongoClient.connect(mongoUri, function(err1, db) {
         sites.find().toArray(function(err,results){
             var info = [];
             for(var i=0; i < results.length; i++){
-                if(results[i].properties.site_id === undefined || results[i].properties.site_id === '' || results[i].geometry === undefined || results[i].properties.CSA.length != 0){
+                if(results[i].properties.site_id === undefined || results[i].properties.site_id === '' || results[i].geometry === undefined || results[i].properties.CSA.length != 0 || properties.CSA == "N/A"){
                     continue;
                 }
                 var p = {'id':results[i]._id,'point':results[i].geometry};

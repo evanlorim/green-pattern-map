@@ -2,6 +2,7 @@ var mongo = require('mongodb');
 var unique = require('array-unique');
 var trim = require('trim');
 var geolib = require('geolib');
+var async = require('async');
 
 var Utils = function(config) {
     for (var prop in config) this[prop] = config[prop];
@@ -9,7 +10,9 @@ var Utils = function(config) {
 
 Utils.prototype.connect = function(cb) {
 
-    mongo.Db.connect(this.mongoUri, {
+    var MongoClient = require('mongodb').MongoClient;
+
+    MongoClient.connect(this.mongoUri, {
         auto_reconnect: true
     }, function(err, db) {
         if (err) throw err;
@@ -146,10 +149,7 @@ Utils.prototype.unique = function(res, collection, query, subquery, resultType, 
                     if(split == true){
                         var proc = [];
                         for(var i=0; i < results.length; i++){
-                            var tmp = results[i].split(",");
-                            for(var j=0; j < tmp.length; j++){
-                                proc.push(trim(tmp[j]));
-                            }
+                            proc.push(trim(results[i]));
                         }
                         proc = unique(proc);
                         results = proc;
@@ -193,6 +193,52 @@ Utils.prototype.aggregate = function(res, collection, query, resultType, resCb) 
             }
         });
     });
+};
+
+Utils.prototype.filter = function(res, collection, query, resultType, resCb){
+    //var queries = query.queries;
+    console.log(query);
+    var me = this;
+    this.connect(function(db){
+        var col = db.collection(collection);
+
+        var queue = [];
+        var filtered = [];
+        var filtered_ids = [];
+        for(var i = 0; i < queries.length; i++){
+            queue.push(queries[i]);
+        }
+        queue.push({'done':true});
+        update(queue);
+        function update(data){
+            async.eachSeries(data,function(d,callback){
+                if(d.done){
+                    var resp = me.toJson(filtered, queries, collection);
+                    console.log('done');
+                    resCb(resp);
+                    process.exit(0);
+                    setImmediate(function(){
+                        callback();
+                    });
+                }
+                else{
+                    col.find(query).toArray(function(err,results){
+                        if(err) console.log(err);
+                        else{
+                            for(var i=0; i < results.length; i++){
+                                if(filtered_ids.indexOf(results[i]._id) == -1){
+                                    filtered.push(results[i]);
+                                    filtered_ids.push(results[i]._id);
+                                }
+                            }
+                        }
+                        setImmediate(function(){callback();});
+                    });
+                }
+            });
+        }
+    });
+
 };
 
 

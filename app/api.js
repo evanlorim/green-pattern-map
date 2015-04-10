@@ -9,10 +9,13 @@ var Api = function(config){
 };
 
 
-
 Api.prototype.filter = function(req,res,cb){
-    var me = this;
+    console.log(req.query);
     this.utils.query(res, 'sites', req.query, 'json', cb);
+};
+
+Api.protoype.unique_sw_bmp_types = function(req,res,cb){
+    this.utils.unique(res, 'sites', 'properties.status', {'properties.gpb_type':'stormwater'}, 'json', cb, true);
 };
 
 Api.prototype.unique_sites = function(req,res,cb){
@@ -45,10 +48,10 @@ Api.prototype.unique_cmos_site_uses = function(req,res,cb){
 
 Api.prototype.unique_cmos_orgs = function(req,res,cb){
     this.utils.unique(res, 'sites', 'properties.organizations', {'properties.gpb_type':'cmos'}, 'json', cb, true);
-}
+};
 
 Api.prototype.unique_sw_status = function(req,res,cb){
     this.utils.unique(res, 'sites', 'properties.status', {'properties.gpb_type':'stormwater'}, 'json', cb, true);
-}
+};
 
 module.exports = Api;

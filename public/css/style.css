@@ -58,4 +58,24 @@ html,body{
 }
 
 
+#canvas-container{
+    position: relative;
+}
+.canvas-leaflet-zoom-hide{
+    position:relative;
+}
+
+.mark_cluster{
+    border-radius:50%;
+    height:20px;
+    width:20px;
+    top-margin:-5px;
+    left-margin:-5px;
+    border-width:0;
+    border-style:none;
+    padding:0;
+    background-color:red;
+}
+
+
 

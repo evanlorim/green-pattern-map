@@ -37,6 +37,7 @@
 var fs = require('fs');
 var csv = require('csv-parse');
 var async = require('async');
+var trim = require('trim');
 
 var queue = [];
 
@@ -94,6 +95,26 @@ MongoClient.connect(mongoUri, function(err1, db) {
                                         "coordinates": [parseFloat(data.POINT_X), parseFloat(data.POINT_Y)]
                                     }
                                 }
+                                if(data.site_use){
+                                    if(data.site_use.length > 1){
+                                        if(data.site_use.indexOf(',') > -1){
+                                            data.site_use = String(data.site_use).split(",");
+                                            for(var j=0; j < data.site_use.length; j++) {
+                                                data.site_use[j] = trim(data.site_use[j]);
+                                            }
+                                        }
+                                    }
+                                }
+                                if(data.bmp_type){
+                                    if(data.bmp_type.length > 1){
+                                        if(data.bmp_type.indexOf(',') > -1){
+                                            data.bmp_type = String(data.bmp_type).split(",");
+                                            for(var j=0; j < data.bmp_type.length; j++) {
+                                                data.bmp_type[j] = trim(data.bmp_type[j]);
+                                            }
+                                        }
+                                    }
+                                }
                                 var csa = result.properties.CSA;
                                 var nh = result.properties.neighborhood;
                                 result.properties = data;
@@ -112,13 +133,38 @@ MongoClient.connect(mongoUri, function(err1, db) {
                                     console.log('No site exists yet, adding one for ' + data.site_id);
                                     var newitem = {};
                                     newitem._id = data.site_id;
-                                    newitem.properties = data;
                                     if (parseFloat(data.POINT_X)) {
                                         newitem.geometry = {
                                             "type": "Point",
                                             "coordinates": [parseFloat(data.POINT_X), parseFloat(data.POINT_Y)]
                                         }
                                     }
+                                    if(data.site_use){
+                                        if(data.site_use.length > 1){
+                                            if(data.site_use.indexOf(',') > -1){
+                                                data.site_use = String(data.site_use).split(",");
+                                                for(var j=0; j < data.site_use.length; j++){
+                                                    data.site_use[j] = trim(data.site_use[j]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if(data.bmp_type){
+                                        if(data.bmp_type.length > 1){
+                                            if(data.bemp_type.indexOf(',') > -1){
+                                                data.bmp_type = String(data.bmp_type).split(",");
+                                                for(var j=0; j < data.bmp_type.length; j++) {
+                                                    data.bmp_type[j] = trim(data.bmp_type[j]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    var csa = result.properties.CSA;
+                                    var nh = result.properties.neighborhood;
+                                    newitem.properties = data;
+                                    newitem.properties.CSA = csa;
+                                    newitem.properties.neighborhood = nh;
+                                    newitem.properties.datatype = 'site';
                                     col.insert(newitem, {
                                         w: 1
                                     }, function(err, result2) {
