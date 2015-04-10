@@ -66,26 +66,50 @@ function addMap(){
     var cmos_icon =  L.AwesomeMarkers.icon({
         icon: 'grain',
         prefix: 'glyphicon',
-        markerColor: 'purple'
+        markerColor: 'orange'
     });
     var sw_icon = L.AwesomeMarkers.icon({
         icon: 'cloud',
         prefix: 'glyphicon',
-        markerColor: 'blue'
+        markerColor: 'cadetblue'
     });
     var cmos_markers = new L.MarkerClusterGroup({
         showCoverageOnHover:false,
         zoomToBoundsOnClick:false,
         animateAddingMarkers:true,
         maxClusterRadius:40,
-        disableClusteringAtZoom:16
+        disableClusteringAtZoom:16,
+        iconCreateFunction: function (t) {
+            var e = t.getChildCount(), i = " marker-cluster-";
+            console.log(e);
+            if(10 > e){i=" marker-cluster-small cmos-marker-cluster-small"}
+            else if(100 > e){i=" marker-cluster-medium cmos-marker-cluster-medium"}
+            else if(e > 100){i=" marker-cluster-large cmos-marker-cluster-large"}
+            return new L.DivIcon({
+                html: "<div><span>" + e + "</span></div>",
+                className: "marker-cluster" + i,
+                iconSize: new L.Point(40, 40)
+            });
+        }
     });
     var sw_markers = new L.markerClusterGroup({
         showCoverageOnHover:false,
         zoomToBoundsOnClick:false,
         animateAddingMarkers:true,
         maxClusterRadius:40,
-        disableClusteringAtZoom:16
+        disableClusteringAtZoom:16,
+        iconCreateFunction: function (t) {
+            var e = t.getChildCount(), i = " marker-cluster-";
+            console.log(e);
+            if(10 > e){i=" marker-cluster-small sw-marker-cluster-small"}
+            else if(100 > e){i=" marker-cluster-medium sw-marker-cluster-medium"}
+            else if(e > 100){i=" marker-cluster-large sw-marker-cluster-large"}
+            return new L.DivIcon({
+                html: "<div><span>" + e + "</span></div>",
+                className: "marker-cluster" + i,
+                iconSize: new L.Point(40, 40)
+            });
+        }
     });
     map.addLayer(cmos_markers);
     map.addLayer(sw_markers);

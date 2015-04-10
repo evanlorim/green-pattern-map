@@ -95,7 +95,7 @@ MongoClient.connect(mongoUri, function(err1, db) {
                                         "coordinates": [parseFloat(data.POINT_X), parseFloat(data.POINT_Y)]
                                     }
                                 }
-                                if(data.site_use){
+                                if(data.site_use != undefined){
                                     if(data.site_use.length > 1){
                                         if(data.site_use.indexOf(',') > -1){
                                             data.site_use = String(data.site_use).split(",");
@@ -105,7 +105,7 @@ MongoClient.connect(mongoUri, function(err1, db) {
                                         }
                                     }
                                 }
-                                if(data.bmp_type){
+                                if(data.bmp_type != undefined){
                                     if(data.bmp_type.length > 1){
                                         if(data.bmp_type.indexOf(',') > -1){
                                             data.bmp_type = String(data.bmp_type).split(",");
@@ -139,7 +139,7 @@ MongoClient.connect(mongoUri, function(err1, db) {
                                             "coordinates": [parseFloat(data.POINT_X), parseFloat(data.POINT_Y)]
                                         }
                                     }
-                                    if(data.site_use){
+                                    if(data.site_use != undefined){
                                         if(data.site_use.length > 1){
                                             if(data.site_use.indexOf(',') > -1){
                                                 data.site_use = String(data.site_use).split(",");
@@ -149,9 +149,9 @@ MongoClient.connect(mongoUri, function(err1, db) {
                                             }
                                         }
                                     }
-                                    if(data.bmp_type){
+                                    if(data.bmp_type != undefined){
                                         if(data.bmp_type.length > 1){
-                                            if(data.bemp_type.indexOf(',') > -1){
+                                            if(data.bmp_type.indexOf(',') > -1){
                                                 data.bmp_type = String(data.bmp_type).split(",");
                                                 for(var j=0; j < data.bmp_type.length; j++) {
                                                     data.bmp_type[j] = trim(data.bmp_type[j]);
@@ -159,8 +159,8 @@ MongoClient.connect(mongoUri, function(err1, db) {
                                             }
                                         }
                                     }
-                                    var csa = result.properties.CSA;
-                                    var nh = result.properties.neighborhood;
+                                    var csa = data.CSA;
+                                    var nh = data.neighborhood;
                                     newitem.properties = data;
                                     newitem.properties.CSA = csa;
                                     newitem.properties.neighborhood = nh;

@@ -72,8 +72,52 @@ html,body{
     transition: transform 0.3s ease-out, opacity 0.3s ease-in;
 }
 
-.awesome-marker-shadow {
+.cmos-marker-cluster-small{
+    background-color:#FFE07C;
+}
 
+.cmos-marker-cluster-small div{
+    background-color:#FFD36F;
+}
+
+.cmos-marker-cluster-medium{
+    background-color:#FFC662;
+}
+
+.cmos-marker-cluster-medium div{
+    background-color:#FFB955;
+}
+
+.cmos-marker-cluster-large{
+    background-color:#FFAD49;
+}
+
+.cmos-marker-cluster-large div{
+    background-color:#FDA03C;
+}
+
+.sw-marker-cluster-small{
+    background-color:#B6DBEA;
+}
+
+.sw-marker-cluster-small div{
+    background-color:#A9CEDD;
+}
+
+.sw-marker-cluster-medium{
+    background-color:#90B5C4;
+}
+
+.sw-marker-cluster-medium div{
+    background-color:#83A8B7;
+}
+
+.sw-marker-cluster-large{
+    background-color:#698E9D;
+}
+
+.sw-marker-cluster-large div{
+    background-color:#5D8291;
 }
 
 

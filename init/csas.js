@@ -10,6 +10,11 @@ var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/green-registry';
 
 MongoClient.connect(mongoUri, function(err1, db){
     if (err1) throw err1;
+    db.collection('csas').drop();
+    db.collection('csas-polygon').drop();
+    db.collection('watersheds').drop();
+    db.collection('neighborhoods').drop();
+    db.collection('sites').drop();
     var col = db.collection('csas');
     var queue = [], x = 0;
 
