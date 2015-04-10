@@ -1,8 +1,3 @@
-@font-face {
-    font-family: 'Glyphicons Halflings';
-    src: url('/public/lib/bootstrap/fonts/glyphicons-halflings-regular.eot');
-    src: url('/public/lib/bootstrap/fonts/glyphicons-halflings-regular.eot#iefix') format('embedded-opentype'), url('/public/lib/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/public/lib/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/public/lib/bootstrap/fonts/glyphicons-halflings-regular.svg') format('svg');
-}
 
 html,body{
     height:100%;

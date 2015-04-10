@@ -26,7 +26,7 @@ $layers.print = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.{ext}'
 $layers.esri = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
     maxZoom:20,
-    minZoom:12
+    minZoom:11
 });
 $layers.cb_dark = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
@@ -60,9 +60,10 @@ function addMap(){
         {
             'center': [39.2854197594374, -76.61796569824219],
             'zoom' : 12,
-            'layers':[$layers.osm_bw]
+            'layers':[$layers.esri]
         }
     );
+    var popup = L.popup();
     var watersheds, neighborhoods, csas;
     var search_circle, search_marker, search_exit;
     var cmos_icon =  L.AwesomeMarkers.icon({
@@ -152,7 +153,18 @@ function addMap(){
         for(var i = 0; i < sites.length; i++){
             if(sites[i].properties.POINT_X){
                 if(sites[i].properties.gpb_type == 'stormwater'){
+                    var props = sites[i].properties;
                     var marker = L.marker([sites[i].properties.POINT_Y,sites[i].properties.POINT_X],{icon: sw_icon});
+                    var html = "<h3>" + (props.site_name || "UNNAMED SITE") + "</h3></br>" +
+                        "Location: " + (parseFloat(props.POINT_X).toFixed(6) + ", " + parseFloat(props.POINT_Y).toFixed(6) || 'NO DATA') + "</br>" +
+                        "BMP Type: " + props.bmp_type + "</br>" +
+                        "Status: " + (props.status || 'NO DATA') +
+                        "Source: " + (props.source || 'NO DATA');
+                    marker.on('click', function(e){
+                        popup.setLatLng(e.latlng)
+                            .setContent(html)
+                            .openOn(map);
+                    });
                     sw_markers.addLayer(marker);
                 }
                 else if(sites[i].properties.gpb_type == 'cmos'){
@@ -180,12 +192,12 @@ function addMap(){
             $.get('api/watersheds').success(function(data,status){
                 watersheds = L.geoJson(data,{
                    style:{
-                       fillColor:"#FFFFFF",
+                       fillColor:"#b3de69",
                        weight:2,
                        opacity:1,
-                       color:'white',
+                       color:'#67921D',
                        dashArray:3,
-                       fillOpacity:0.20
+                       fillOpacity:0.30
                    }
                 });
                 cb();
@@ -195,12 +207,12 @@ function addMap(){
             $.get('api/neighborhoods').success(function(data,status){
                 neighborhoods = L.geoJson(data,{
                     style:{
-                        fillColor:"#AAAAAA",
+                        fillColor:"#d9d9d9",
                         weight:2,
                         opacity:1,
-                        color:'white',
+                        color:'#A6A6A6',
                         dashArray:3,
-                        fillOpacity:0.20
+                        fillOpacity:0.30
                     }
                 });
                 cb();
@@ -210,12 +222,12 @@ function addMap(){
             $.get('api/csas').success(function(data,status){
                 csas = L.geoJson(data,{
                     style:{
-                        fillColor:"#000000",
+                        fillColor:"#fb8072",
                         weight:2,
                         opacity:1,
-                        color:'white',
+                        color:'#AF3426',
                         dashArray:3,
-                        fillOpacity:0.20
+                        fillOpacity:0.30
                     }
                 });
                 cb();

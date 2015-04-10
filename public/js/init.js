@@ -55,7 +55,8 @@ function add_multiselect(cont_id,id,title,apicall){
         data.data.push('N/A');
         var cont = d3.select(cont_id)
             .append('div')
-            .attr('id',id);
+            .attr('id',id)
+            .style('margin','10px');
         var sel = cont.append('select')
             .attr('multiple','multiple')
             .attr('id',id + '_multi');
@@ -69,6 +70,7 @@ function add_multiselect(cont_id,id,title,apicall){
             maxHeight: 200,
             nonSelectedText: title,
             includeSelectAllOption: true,
+            buttonWidth: '100%',
             onChange: function(option, checked, select) {
                 update_sites();
             }
@@ -91,6 +93,33 @@ function add_multiselect(cont_id,id,title,apicall){
     return ret.promise();
 }
 
+function append_dropdown(container,button_label,opts,dd_id,label){
+    var dd_wrap = container.append('div')
+        .attr('class','dd_row');
+    var lab_wrap = dd_wrap.append('div')
+        .attr('class','label_wrap');
+    var lab = lab_wrap.append('label')
+        .text(label);
+    var btn_grp = dd_wrap.append('div')
+        .attr('class','btn-group');
+    var btn = btn_grp.append('button')
+        .attr('class','btn btn-sm btn-info dropdown-toggle')
+        .attr('type','button')
+        .attr('data-toggle','dropdown')
+        .text(button_label)
+        .attr('id',dd_id);
+    btn.append('span')
+        .attr('class','caret');
+    var opts = btn_grp.append('ul')
+        .attr('class','dropdown-menu scrollable-menu')
+        .selectAll('li')
+        .data(opts)
+        .enter()
+        .append('li')
+        .append('a')
+        .attr('href','#')
+        .text(function(d){return d;});
+}
 
 
 function init_selects(){
@@ -108,6 +137,9 @@ function init_selects(){
     });
 }
 
+function collapse_help_text(){
+
+}
 
 function update_sites(circle_filter){
     var new_sites = [];
@@ -116,14 +148,21 @@ function update_sites(circle_filter){
     var sw_status = $selects.sw_status.get_selected();
     var cmos_site_use = $selects.cmos_site_use.get_selected();
     var sw_bmp_type = $selects.sw_bmp_type.get_selected();
-    sw_status_q = get_selected_query_string(sw_status,'properties.status','stormwater');
-    cmos_site_use_q = get_selected_query_string(cmos_site_use,'properties.site_use','cmos');
-    sw_bmp_type_q = get_selected_query_string(sw_bmp_type,'properties.bmp_type','stormwater');
+    var nh = $selects.neighborhoods.get_selected();
+    var sw_status_q = get_selected_query_string(sw_status,'properties.status','stormwater');
+    var cmos_site_use_q = get_selected_query_string(cmos_site_use,'properties.site_use','cmos');
+    var sw_bmp_type_q = get_selected_query_string(sw_bmp_type,'properties.bmp_type','stormwater');
+    var nh_q = get_selected_query_string(nh,'properties.neighborhood',false);
     queries.push({'done':true});
     update();
     function get_selected_query_string(selected,prop,gpb_type){
         if(selected.length < 1){
             return false;
+        }
+        if(gpb_type == false){
+            var ret = {};
+            ret[prop] = {'$in':selected};
+            return ret;
         }
         var ret = {};
         ret['$and'] = [];
@@ -170,7 +209,8 @@ function update_sites(circle_filter){
         async.parallel([
             function(cb){get_filtered(sw_status_q,cb)},
             function(cb){get_filtered(cmos_site_use_q,cb)},
-            function(cb){get_filtered(sw_bmp_type_q,cb)}
+            function(cb){get_filtered(sw_bmp_type_q,cb)},
+            function(cb){get_filtered(nh_q,cb)}
             ],
             function(err,res){end();}
         );
