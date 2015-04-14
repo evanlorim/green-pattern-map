@@ -10,6 +10,7 @@ app.set('view engine', 'jade');
 
 app.use('/public', express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/public'));
+app.use(require('body-parser').json());
 
 app.get('/api/:type', function(req, res) {
     var api = new Api({
@@ -78,6 +79,17 @@ app.get('/api/:type', function(req, res) {
     }
 });
 
+app.post('/api/:type', function(req, res){
+    var api = new Api({
+        mongoUri: mongoUri
+    });
+    var cb = function(resp) {
+        res.json(resp);
+    };
+    if(req.params.type == 'multifilter'){
+        api.multifilter(req.body, res, cb);
+    }
+});
 app.get('/', function(request, response) {
     response.render('index');
 });

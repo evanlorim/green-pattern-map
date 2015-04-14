@@ -10,8 +10,11 @@ var Api = function(config){
 
 
 Api.prototype.filter = function(req,res,cb){
-    console.log(req.query);
     this.utils.query(res, 'sites', req.query, 'json', cb);
+};
+
+Api.prototype.multifilter = function(req,res,cb){
+    this.utils.filterz(res, "sites", req.query, 'json', cb,req.opts);
 };
 
 Api.prototype.unique_sw_bmp_type = function(req,res,cb){

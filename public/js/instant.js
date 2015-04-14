@@ -13,6 +13,25 @@ $('.collapse').click(function() {
     $(".reveal").slideDown(100);
 });
 
-$.get('api/filter',{}
-,function(data,status){console.log(data);});
+var tmp2 = [];
+tmp2.push({'$and':[
+    {'properties.gpb_type':'stormwater'},
+    {'properties.bmp_type':{'$in':["Bioretention Area", 'Dry Swale']}}
+]});
+tmp2.push({'$and':[
+    {'properties.gpb_type':'cmos'},
+    {'properties.site_use':{'$in':["ADOPT A LOT", 'Art Inc']}}
+]});
+
+var tmp = {};
+tmp.query = tmp2;
+
+
+$.ajax({
+    type: "POST",
+    url:'api/multifilter',
+    contentType:'application/json',
+    data: JSON.stringify(tmp),
+    success:function(d){console.log(d);}
+});
 

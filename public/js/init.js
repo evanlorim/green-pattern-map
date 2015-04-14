@@ -144,7 +144,6 @@ function collapse_help_text(){
 function update_sites(circle_filter){
     var new_sites = [];
     var new_site_ids = [];
-    var queries = [];
     var sw_status = $selects.sw_status.get_selected();
     var cmos_site_use = $selects.cmos_site_use.get_selected();
     var sw_bmp_type = $selects.sw_bmp_type.get_selected();
@@ -154,7 +153,6 @@ function update_sites(circle_filter){
     var sw_bmp_type_q = get_selected_query_string(sw_bmp_type,'properties.bmp_type','stormwater');
     var csa_q = get_selected_query_string(csas, 'properties.CSA', false);
     var nh_q = get_selected_query_string(nh,'properties.neighborhood',false);
-    queries.push({'done':true});
     update();
     function get_selected_query_string(selected,prop,gpb_type){
         if(selected.length < 1){
@@ -207,14 +205,29 @@ function update_sites(circle_filter){
         }
     }
     function update() {
-        async.parallel([
-            function(cb){get_filtered(sw_status_q,cb)},
-            function(cb){get_filtered(cmos_site_use_q,cb)},
-            function(cb){get_filtered(sw_bmp_type_q,cb)},
-            function(cb){get_filtered(nh_q,cb)},
-            ],
-            function(err,res){end();}
-        );
+        var possible_query = [sw_status_q,cmos_site_use_q,sw_bmp_type_q,nh_q];
+        var query = [];
+        for(var i =0 ; i < possible_query.length; i++){
+            if(possible_query[i] != false){
+                query.push(possible_query[i]);
+            }
+        }
+        var request = {};
+        request.query = query;
+        request.opts = {};
+        if(circle_filter){
+            request.opts.inradius = {'center':{'latitude':circle_filter.lat, 'longitude':circle_filter.lng},radius:circle_filter.km};
+        }
+        $.ajax({
+            type: "POST",
+            url:'api/multifilter',
+            contentType:'application/json',
+            data: JSON.stringify(request),
+            success:function(d){
+                console.log(d.data.length);
+                $map.updatePoints(d.data);
+            }
+        });
     }
     return;
 }

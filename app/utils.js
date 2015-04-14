@@ -99,6 +99,23 @@ Utils.prototype.in_circle = function(center,km,resCb){
     });
 };
 
+Utils.prototype.filterByRadius = function(center,km,sites){
+    var m = km*1000;
+    var res = [];
+    for (var key in sites){
+        if(sites[key].geometry === undefined){
+            continue;
+        }
+        else{
+            var latlng = {'latitude':sites[key].geometry.coordinates[1],'longitude':sites[key].geometry.coordinates[0]};
+            if(geolib.isPointInCircle(latlng,center,m)){
+                res.push(sites[key]);
+            }
+        }
+    }
+    return res;
+};
+
 Utils.prototype.query = function(res, collection, query, resultType, resCb) {
     var me = this;
     this.connect(function(db) {
@@ -167,6 +184,62 @@ Utils.prototype.unique = function(res, collection, query, subquery, resultType, 
     });
 };
 
+Utils.prototype.filterz = function(res, collection, query, resultType, resCb, opts){
+    var me = this;
+    this.connect(function(db){
+        var col = db.collection(collection);
+        var found = {};
+        var funcs = [];
+        for(var i = 0; i < query.length; i++){
+            var q = query[i];
+            funcs[i] = function(cb){append_found(q,cb);}
+        }
+        async.parallel(funcs,finish);
+
+        function append_found(q,cb){
+            console.log(q);
+            col.find(q).toArray(function(err,results){
+                if(err){console.log(err);}
+                else{
+                    console.log("LENGTH" + results.length);
+                    for(var i = 0 ; i < results.length ; i++ ){
+                        var id = results[i]._id;
+                        if(found[id]){
+                            continue;
+                        }
+                        found[id] = results[i];
+                    }
+                    cb();
+                }
+            });
+        }
+        function finish(err,results){
+            if(err){
+                console.log(err);
+            }
+            else{
+                var answer = [];
+                if(opts && opts['inradius']){
+                    console.log(opts.inradius);
+                    answer = me.filterByRadius(opts.inradius.center,opts.inradius.radius,found);
+                }
+                else{
+                    for(var key in found){
+                        answer.push(found[key]);
+                    }
+                }
+                if (resultType == 'geojson') {
+                    var resp = me.toGeoJson(answer, query, collection);
+                } else {
+                    var resp = me.toJson(answer, query, collection);
+                }
+                resCb(resp);
+
+            }
+        }
+    });
+};
+
 
 Utils.prototype.aggregate = function(res, collection, query, resultType, resCb) {
     var me = this;
@@ -194,52 +267,5 @@ Utils.prototype.aggregate = function(res, collection, query, resultType, resCb) 
         });
     });
 };
-
-Utils.prototype.filter = function(res, collection, query, resultType, resCb){
-    //var queries = query.queries;
-    console.log(query);
-    var me = this;
-    this.connect(function(db){
-        var col = db.collection(collection);
-
-        var queue = [];
-        var filtered = [];
-        var filtered_ids = [];
-        for(var i = 0; i < queries.length; i++){
-            queue.push(queries[i]);
-        }
-        queue.push({'done':true});
-        update(queue);
-        function update(data){
-            async.eachSeries(data,function(d,callback){
-                if(d.done){
-                    var resp = me.toJson(filtered, queries, collection);
-                    console.log('done');
-                    resCb(resp);
-                    process.exit(0);
-                    setImmediate(function(){
-                        callback();
-                    });
-                }
-                else{
-                    col.find(query).toArray(function(err,results){
-                        if(err) console.log(err);
-                        else{
-                            for(var i=0; i < results.length; i++){
-                                if(filtered_ids.indexOf(results[i]._id) == -1){
-                                    filtered.push(results[i]);
-                                    filtered_ids.push(results[i]._id);
-                                }
-                            }
-                        }
-                        setImmediate(function(){callback();});
-                    });
-                }
-            });
-        }
-    });
-
-};
-
 
 module.exports = Utils;
