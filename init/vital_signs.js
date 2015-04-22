@@ -12,7 +12,6 @@ var MongoClient = require('mongodb').MongoClient;
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/green-registry';
 MongoClient.connect(mongoUri, function(err1, db) {
     if (err1) throw err1;
-
     var col = db.collection('vs13');
     var cvsrs = csv({
         delimiter: ',',
@@ -50,8 +49,16 @@ MongoClient.connect(mongoUri, function(err1, db) {
                         } else {
                             if (result != null) {
                                 console.log('Updating existing vs data for ' + data.csa);
-                                result.properties = data;
-                                result.properties.datatype = 'vs';
+                                var props = {};
+                                for(key in data){
+                                    if(key == '' || key == 'num' || key == 'csa'){
+                                        continue;
+                                    }
+                                    else{
+                                        props[key] = data[key];
+                                    }
+                                }
+                                result.properties = props;
                                 col.update({
                                     _id: data.csa
                                 }, result, function() {
@@ -61,10 +68,20 @@ MongoClient.connect(mongoUri, function(err1, db) {
                                 });
                             } else {
                                 if (result == null) {
-                                    console.log('No site exists yet, adding one for ' + data.csa);
+                                    console.log('No vsdata exists yet, adding for ' + data.csa);
                                     var newitem = {};
                                     newitem._id = data.csa;
-                                    newitem.properties = data;
+                                    var props = {};
+                                    for(key in data){
+                                        if(key == '' || key == 'num' || key == 'csa'){
+                                            continue;
+                                        }
+                                        else{
+                                            props[key] = data[key];
+                                        }
+                                    }
+                                    newitem.properties = props;
+
                                     col.insert(newitem, {
                                         w: 1
                                     }, function(err, result2) {

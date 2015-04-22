@@ -1,0 +1,201 @@
+short_name,full_name,format,section,color1,color2,color3,color4,color5,source,city_val
+aastud13,Percent of Students that are African American,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,84.54871143
+abse13,Percent of 1st-5th Grade Students that are Chronically Absent (Missing at least 20 days),percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,13.14213106
+abshs13,Percent of 9th-12th Grade Students that are Chronically Absent (Missing at least 20 days),percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,35.61208267
+absmd13,Percent of 6th-8th Grade Students that are Chronically Absent (Missing at least 20 days),percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,13.33447743
+affordm13,Affordability Index - Mortgage,,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,American Community Survey,39.2841659
+affordr13,Affordability Index - Rent,,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,American Community Survey,52.83053646
+age18_13,Percent of Population 6-18 years old,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+age24_13,Percent of Population 19-24 years old,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+age5_13,Percent of Population 0-5 years old,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+age64_13,Percent of Population 25-64 years old,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+age65_13,Percent of Population 65 years and over,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+artbus13,"Number of Businesses that are Arts-Related per 1,000 residents",,Arts and Culture,FFEBCC,FDCB97,FAAB67,F6903B,EE7722,InfoUSA,0.502447014
+artemp13,Total Employment in Arts-Related Businesses,,Arts and Culture,FFEBCC,FDCB97,FAAB67,F6903B,EE7722,InfoUSA,3267
+baltvac13,Percentage of Vacant Properties Owned by Baltimore City,percent,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,Baltimore City Department of Housing,15.21899606
+banks13,"Number of Banks and Bank Branches per 1,000 Residents",,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,Federal Deposit Insurance Corporation,0.181976002
+birthwt13,Percent of Babies Born with a Satisfactory Birth Weight,percent,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Maryland Department of Vital Statistics,88.11847481
+biz1_13,Percent of Businesses that are 1 year old or less,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,InfoUSA,5.177314268
+biz2_13,Percent of Businesses that are 2 years old or less,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,InfoUSA,21.78932179
+biz4_13,Percent of Businesses that are 4 years old or less,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,InfoUSA,38.0952381
+bkln13,Number of Miles of Bike Lanes,miles,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,Department of Transportation,
+caracc13,"Number of Automobile Accident Calls for Service per 1,000 Residents",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,
+carpool13,Percent of Population that Carpool to Work,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,10.34598694
+cashsa13,Percentage of Residential Sales for Cash,percent,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,"RBIntel, Inc.",44.4216182
+caslt13,"Number of Common Assault Calls for Service per 1,000 Residents",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,
+clogged13,"Rate of Clogged Storm Drain Reports per 1,000 Residents",,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,Baltimore City CitiStat,6.224223421
+cmos13,Number of Community Managed Open Spaces,,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,Baltimore Neighborhood Indicators Alliance - Jacob France Institute,
+compl13,High School Completion Rate,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,79.2614696
+comprop13,Total Number of Commercial Properties,,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,Maryland Property View,15521
+constper13,"Number of New Construction Permits per 1,000 Residential Properties",,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,Baltimore City Department of Housing,0.751129165
+crehab13,"Percent of Commercial Properties with Rehab Permits Above $5,000",percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,Baltimore City Department of Housing,12.99529669
+crime13,"Part 1 Crime Rate per 1,000 Residents",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,63.30832371
+demper13,"Number of Demolition Permits per 1,000 Residential Properties",,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,Baltimore City Department of Housing,1.917356025
+dirtyst13,"Rate of Dirty Streets and Alleys Reports per 1,000 Residents",,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,Baltimore City CitiStat,52.55402513
+dom13,Median Number of Days on the Market,,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,"RBIntel, Inc.",33
+domvio13,"Domestic Violence Calls For Service per 1,000 Residents",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,
+drop13,High School Dropout/Withdrawal Rate,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,2.108610158
+drvalone13,Percent of Population that Drove Alone to Work,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,62.21275265
+eattend13,Number of Students Ever Attended 1st - 5th Grade,,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,33054
+ebll13,Percent of Children (aged 0-6) with Elevated Blood Lead Levels,percent,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,"Maryland Department of the Environment, Lead Poisoning Prevention Program",1.181548422
+eenrol13,Number of Students Officially Enrolled in 1st - 5th Grade,,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,31853
+elheat13,Percent of Residences Heated by Electricity,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,25.89799341
+empl13,Percent  Population 16-64 Employed,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,American Community Survey,60.0864426
+fam13,Percent of Households with Children Under 18,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+farms13,Percentage of Students Receiving Free or Reduced Meals,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,85.09418699
+fastfd13,"Fast Food Outlet Density (per 1,000 Residents)",,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,"Johns Hopkins University, Center for a Livable Future",1.539549183
+female13,Total Female Population,,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+femhhs13,Percent of Female-Headed Households with Children under 18,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+fore13,Percentage of Properties Under Mortgage Foreclosure,percent,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,Baltimore City Circuit Court,2.4772
+gini13,Inequality Index (NOT YET DECIDED),,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,American Community Survey,
+gunhom13,"Number of Gun-Related Homicides per 1,000 Residents",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,0.301146127
+heatgas13,Percent of Residences Heated by Utility Gas,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,64.63067652
+hfai13,Average Healthy Food Availability Index,,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,"Johns Hopkins University, Center for a Livable Future",
+hh25inc13,"Percent of Households Earning Less than $25,000",percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,American Community Survey,33.1855
+hh40inc13,"Percent of Households Earning $25,000 to $40,000",percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,American Community Survey,15.3528
+hh60inc13,"Percent of Households Earning $40,000 to $60,000",percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,American Community Survey,16.6333
+hh75inc13,"Percent of Households Earning $60,000 to $75,000",percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,American Community Survey,5.4259
+hhchpov13,Percent of Children Living Below the Poverty Line,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,American Community Survey,34.0808
+hhm7513,"Percent of Households Earning More than $75,000",percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,American Community Survey,25.4863
+hhpov13,Percent of Family Households Living Below the Poverty Line,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,American Community Survey,19.0828
+hhs13,Total Number of Households,,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+hhsize13,Average Household Size,,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+histax13,"Number of Historic Tax Credits per 1,000 Residential Units",,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,,6.43895593
+homtax13,"Number of Homestead Tax Credits per 1,000 Residential Units",,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,Baltimore City Department of Finance,380.1998399
+hsaalg13,Percentage of Students Passing H.S.A. Algebra,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,23.62567708
+hsabio13,Percentage of Students Passing H.S.A. Biology,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,36.73161534
+hsaeng13,Percentage of Students Passing H.S.A. English ,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,32.49741468
+hsagov13,Percentage of Students Passing H.S.A. Government,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,44.47287615
+hsattend13,Number of Students Ever Attended 9th - 12th Grade,,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,23902
+hsdipl13,Percent  Population (25 years and over) With a High School Diploma,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,American Community Survey,19.82774657
+hsenrol13,Number of Students Officially Enrolled in 9th - 12th Grade,,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,22950
+hstud13,Percent of Students that are Hispanic,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,5.572633769
+juvarr13,"Juvenile Arrest Rate per 1,000 Juveniles",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,
+juvdrug13,"Juvenile Arrest Rate for Drug-Related Offenses per 1,000 Juveniles",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,
+juvviol13,"Juvenile Arrest Rate for Violent Offenses per 1,000 Juveniles",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,
+leadtest13,Number of Children (aged 0-6) Tested for Elevated Blood Lead Levels,,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,"Maryland Department of the Environment, Lead Poisoning Prevention Program",18535
+leadv13,"Percent of Lead Violations per 1,000 Residential Units",percent,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Baltimore City Health Department,
+lesshs13,Percent  Population (25 years and over) With Less Than a High School Diploma or GED,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,American Community Survey,19.82774657
+libcard13,"Number of Persons with Library Cards per 1,000 Residents",,Arts and Culture,FFEBCC,FDCB97,FAAB67,F6903B,EE7722,Enoch Pratt Free Library,210.2531399
+lifexp13,Life Expectancy,years,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Baltimore City Health Department,73.5
+liquor13,"Liquor Outlet density (per 1,000 Residents)",,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Baltimore City Liquoor Board,1.149830666
+male13,Total Male Population,,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+math313,Percentage of 3rd Grade Students Passing MSA Math,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,68.1
+math513,Percentage of 5th Grade Students Passing MSA Math,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,65
+math813,Percentage of 8th Grade Students Passing MSA Math,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,37.9
+mattend13,Number of Students Ever Attended 6th - 8th Grade,,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,17481
+menrol13,Number of Students Officially Enrolled in 6th - 8th Grade,,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,16817
+mhhi13,Median Household Income,dollar,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,American Community Survey,41385
+mort1_13,Infant Mortality,,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Baltimore City Health Department,10.7
+mort14_13,Mortality by Age (1-14 years old),,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Baltimore City Health Department,1.9
+mort24_13,Mortality by Age (15-24 years old),,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Baltimore City Health Department,9.1
+mort44_13,Mortality by Age (25-44 years old),,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Baltimore City Health Department,18.9
+mort64_13,Mortality by Age (45-64 years old),,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Baltimore City Health Department,92.8
+mort84_13,Mortality by Age (65-84 years old),,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Baltimore City Health Department,303.4
+mort85_13,Mortality by Age (85 and over),,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Baltimore City Health Department,1036.5
+narc13,"Number of Narcotics Calls for Service per 1,000 Residents",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,
+neibus13,"Neighborhood Businesses per 1,000 residents (NAICS Sectors)",,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,InfoUSA,25.44282169
+neiemp13,Total number of Employees by Selected Neighborhood Industry (NAICS Sectors),,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,InfoUSA,183725
+neiind13,Number  of Businesses by Selected Neighborhood Industry (NAICS Sectors),,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,InfoUSA,15833
+nilf13,Percent  Population 16-64 Not in Labor Force,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,American Community Survey,30.00451045
+nomail13,Percent Residential Properties that do Not Receive Mail,percent,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,"U.S. Postal Service, U.S. Department of Housing and Urban Development",7.60657
+novhcl13,Percent of Households with No Vehicles Available,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,30.28307552
+numbus13,Total Number of Businesses,,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,InfoUSA,22869
+othrcom13,"Percent of Population Using Other Means to Commute to Work (Taxi, Motorcycle, Bicycle, Other)",percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,2.299151648
+ownroc13,Percentage of Housing Units that are Owner-Occupied,percent,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,Maryland Property View,57.1797
+owntax13,"Number of Homeowner's Tax Credits per 1,000 Residential Units",,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,Baltimore City Department of Finance,49.3274429
+p2more13,Percent of Residents - Two or More Races,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+paa13,Percent of Residents - Black/African-American,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+pasi13,Percent of Residents - Asian,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+phisp13,Percent of Residents - Hispanic,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+ppac13,"Percent of Residents - All Other Races (Hawaiian/ Pacific Islander, Alaskan/ Native American Other Race)",percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+prbprl13,Percent of Adult Population on Parole/Probation,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,,5.252348682
+prenatal13,Percent of Births Where the Mother Received Early Prenatal Care (First Trimester),percent,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Maryland Department of Vital Statistics,49.4666364
+prop13,"Property Crime Rate per 1,000 Residents",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,47.64711471
+pubtran13,Percent of Population that Uses Public Transportation to Get to Work,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,18.34864537
+pwhite13,Percent of Residents - White/Caucasian,percent,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+racdiv13,Racial Diversity Index,,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+read313,Percentage of 3rd Grade Students Passing MSA Reading,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,64.9
+read513,Percentage of 5th Grade Students Passing MSA Reading,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,73.6
+read813,Percentage of 8th Grade Students Passing MSA Reading,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,62
+ready13,Kindergarten School Readiness,,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,77.6
+regvote13,Percent  of Population (Over the age of 18) Who are Registered to Vote,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,Baltimore City Board of Elections,
+reosa13,Percentage of Residential Sales in Foreclosure (REO),percent,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,"RBIntel, Inc.",3.397597977
+resrehab13,"Percentage of Properties with Rehabilitation Permits Exceeding $5,000",percent,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,Baltimore City Department of Housing,3.0856
+salepr13,Median Price of Homes Sold,dollar,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,First American Real Estate Solutions,147000
+sclemp13,Percentage of Population aged 16-19 in School and/or Employed,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,American Community Survey,87.72971122
+sclsw13,Percent of Students Switching Schools within School Year,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,7.935569676
+shomes13,Number of Homes Sold,,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,First American Real Estate Solutions,4935
+shoot13,"Number of Shootings per 1,000 Residents",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,
+smlbus13,Number of Businesses with Under 50 Employees,,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,InfoUSA,21572
+somecol13,Percent  Population (25 years and over) With Some College Education and Above,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,American Community Survey,53.39542188
+sped13,Percentage of Students Enrolled in Special Education Programs,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,16.21749682
+susp13,Percentage of Students Suspended or Expelled During School Year,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,7.661994719
+tanf13,Percent of Families Receiving TANF,percent,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Maryland Department of Human Resources,9.79796774
+teenbir13,"Teen Birth Rate per 1,000 Females (aged 15-19)",,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Maryland Department of Vital Statistics,36.14779245
+termbir13,Percent of Births Delivered at Term (37-42 Weeks),percent,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,Maryland Department of Vital Statistics,87.49432592
+totalres13,Total Number of Residential Properties,,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,Maryland Property View,202362
+totemp13,Total Number of Employees,,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,InfoUSA,340804
+tpop13,Total Population,,Socioeconomic/Demographics,E5D4E8,BFA3CD,9D78AD,7B4F8C,5E2C70,U.S. Bureau of the Census,
+trav14_13,Percent of Employed Population with Travel Time to Work of 0-14 Minutes,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,17.07650807
+trav29_13,Percent of Employed Population with Travel Time to Work of 15-29 Minutes,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,38.79354158
+trav44_13,Percent of Employed Population with Travel Time to Work of 30-44 Minutes,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,23.96888072
+trav45_13,Percent of Employed Population with Travel Time to Work of 45 Minutes and Over,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,20.16106963
+treeplnt13,Number of Trees of Planted,,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,TreeBaltimore,6194
+trees13,Percent of Area Covered by Trees,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,University of Vermont Spatial Analysis Lab,
+unempl13,Percent  Population 16-64 Unemployed and Looking for Work,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,American Community Survey,9.909046946
+unempr13,Unemployment Rate,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,American Community Survey,14.17816855
+vacant13,Percentage of Residential Properties that are Vacant and Abandoned,percent,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,Baltimore City Department of Housing,8.0331
+vio13,Percentage of Residential Properties with Housing Violations (Excluding Vacants),percent,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,Baltimore City Department of Housing,5.8959
+viol13,"Violent Crime Rate per 1,000 Residents",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,Baltimore City Police Department,14.82862853
+voted13,Percent  Population (Over the age of 18) Who Voted in the General Election,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,Baltimore City Board of Elections,
+walked13,Percent of Population that Walks to Work,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,American Community Survey,6.793463388
+waterc13,Median Daily Water Consumption,cubic meters,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,Baltimore City Department of Public Works,
+weather13,Percent of Residential Properties Weatherized,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,Maryland Department of Housing and Community Development,0.480821498
+wlksc13,Walk score,,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,Walk Score,
+wrkout13,Percent of Employed Residents who Work Outside the City,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,"U.S. Census Bureau, Longitudinal Employer-Household Dynamics",
+wstud13,Percent of Students that are White (non-Hispanic),percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,Baltimore City Public Schools,8.09776956
+,Percentage of Residential Tax Lien Sales,percent,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,,
+,Percentage of Part 1 Crimes that Occur During Daytime ,percent,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,,
+,"Rate of Fire and EMS Calls for Service per 1,000 Residents",,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,,
+,Average Fire and EMS Response Time,,Crime and Safety,D8EEEA,A0C3BE,6B9893,40736D,164F4A,,
+,Number of Children Enrolled in Head Start Programs,,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,,
+,Percent of Students Enrolled in CTE Programs,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,,
+,Percentage of Students Enrolled in After School Programs,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,,
+,Persons Receiving a GED,,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,,
+,Percentage of Students Attending Zoned School ,percent,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,,
+,Average Distance Travelled to School (6th-8th Grade),,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,,
+,Average Distance Travelled to School (9th-12th Grade),,Education,FAF184,FAD156,F2A72D,AC5525,690B0D,,
+,Percent of Persons receiving SNAP,percent,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,,
+,Fetal Mortality Rate,percent,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,,
+,Number of Persons calling UWCM 211 for Health-Related Services ,,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,,
+,"Rate of STDs per 1,000 Residents (Chlamydia, Gonorrhea, and Syphilis)",,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,,
+,"Rate of HIV/AIDS per 1,000 Residents",,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,,
+,Causes of Death (analysis of top causes),,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,,
+,Causes of Death (analysis of top causes),,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,,
+,Causes of Death (analysis of top causes),,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,,
+,Causes of Death (analysis of top causes),,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,,
+,Causes of Death (analysis of top causes),,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,,
+,Percent of persons with health insurance,percent,Health and Human Welfare,F9CBDF,F49EBF,E7719D,D94680,C61C65,,
+,"Number of Event Permits Requested per 1,000 Residents",,Arts and Culture,FFEBCC,FDCB97,FAAB67,F6903B,EE7722,,
+,"Public Art per 1,000 Residents",,Arts and Culture,FFEBCC,FDCB97,FAAB67,F6903B,EE7722,,
+,Percentage of Businesses that are Non-Profits,percent,Arts and Culture,FFEBCC,FDCB97,FAAB67,F6903B,EE7722,,
+,CRA data (residential and commercial),,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,,
+,CRA data (residential and commercial),,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,,
+,Percent of CSA that is Either Low or Moderate income (by Census tract),percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,,
+,"Percent  of persons in MOED training programs (per 1,000 residents)",percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,,
+,Percent of Population with Broadband Internet Access,percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,,
+,Air Quality Risk,,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,Percent of Area Covered by Impervious Surface,percent,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,"Number of Downspout Disconnections per 1,000 Residences",,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,Number of Public Trashcans,,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,"Rate of Sewer/Water Main Breaks per 1,000 Residents",,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,Natural gas utilization,,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,Energy Use,,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,Number of Photovoltaic/Solar Permits,,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,Aggregate Number of Community Assets,,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,Transit data ,,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,"Number of Bike Racks per 1,000 Residents",,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,Road Quality,,Sustainability,D7E7AF,B5C989,98A767,7A8748,606B2E,,
+,Percent  of persons by occupation classification (major classifications),percent,Economic and Workforce Development,EFEBA9,C9BC87,A59065,856B49,674931,,
+,Percent Subsidized Housing,percent,Housing,F8E8D3,EABA9F,D88F70,C26746,AB4224,"Picture of Subsidized Housing, HUD",

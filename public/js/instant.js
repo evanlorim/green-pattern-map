@@ -13,25 +13,46 @@ $('.collapse').click(function() {
     $(".reveal").slideDown(100);
 });
 
-var tmp2 = [];
-tmp2.push({'$and':[
-    {'properties.gpb_type':'stormwater'},
-    {'properties.bmp_type':{'$in':["Bioretention Area", 'Dry Swale']}}
-]});
-tmp2.push({'$and':[
-    {'properties.gpb_type':'cmos'},
-    {'properties.site_use':{'$in':["ADOPT A LOT", 'Art Inc']}}
-]});
 
-var tmp = {};
-tmp.query = tmp2;
+function ds(shortname){
+    $map.display_vs(true,shortname);
+}
 
+function ds1(){
+    ds('mort84_13');
+}
 
-$.ajax({
-    type: "POST",
-    url:'api/multifilter',
-    contentType:'application/json',
-    data: JSON.stringify(tmp),
-    success:function(d){console.log(d);}
-});
+function ds2(){
+    ds('abse13');
+}
+
+function ds3(){
+    ds('neibus13');
+}
+
+function ds4(){
+    ds('shomes13');
+
+}
+
+function ds5(){
+    ds('weather13');
+}
+
+function ds6(){
+    ds('leadtest13');
+}
+
+function ds7(){
+    ds('ebll13');
+}
+
+function nods(){
+    $map.display_vs(false);
+}
+
+setTimeout(nods,5000);
+
+//var wm = new Watermap();
+
 

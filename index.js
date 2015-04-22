@@ -63,11 +63,14 @@ app.get('/api/:type', function(req, res) {
         case "csas":
             api.csas(req,res,cb);
             break;
-        case "unique_neighborhoods":
-            api.unique_neighborhoods(req, res, cb);
+        case "unique_indicators":
+            api.unique_indicators(req,res,cb);
             break;
-        case "unique_csas":
-            api.unique_csas(req,res,cb);
+        case "unique_watersheds":
+            api.unique_watersheds(req,res,cb);
+            break;
+        case "indicator_info":
+            api.indicator_info(req,res,cb);
             break;
         default:
             cb({

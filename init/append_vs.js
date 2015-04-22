@@ -98,7 +98,11 @@ MongoClient.connect(mongoUri, function(err1, db) {
             }
             else{
                 var csa = d.csa;
-                var vsdata = d.vsdata;
+                var vsdata = {};
+                for(key in d.vsdata){
+                    vsdata[key] = {};
+                    vsdata[key]['value'] = parseFloat(d.vsdata[key]);
+                }
                 csas_col.findOne({'_id':csa},{},function(err,res){
                     if(err){console.log(err);}
                     else if(res!=null){
@@ -118,7 +122,7 @@ MongoClient.connect(mongoUri, function(err1, db) {
                         });
                     }
                     else{
-                        console.log('nothing here!');
+                        console.log('nothing here for ' + csa);
                         setImmediate(function(){
                             callback();
                         });

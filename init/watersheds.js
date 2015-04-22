@@ -12,6 +12,8 @@ MongoClient.connect(mongoUri, function(err1, db) {
     if (err1) throw err1;
 
     var col = db.collection('watersheds');
+    col.drop();
+    var col = db.collection('watersheds');
     var queue = [],
         x = 0;
 

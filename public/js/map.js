@@ -52,7 +52,21 @@ $overlays.roads = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-roads
     minZoom: 12,
     maxZoom:20
 });
-
+$layers.default = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+    minZoom: 0,
+    maxZoom: 18,
+    attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+$layers.normal = L.tileLayer('http://{s}.{base}.maps.cit.api.here.com/maptile/2.1/maptile/{mapID}/normal.day.grey/{z}/{x}/{y}/256/png8?app_id={app_id}&app_code={app_code}', {
+    attribution: 'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
+    subdomains: '1234',
+    mapID: 'newest',
+    app_id: 'Y8m9dK2brESDPGJPdrvs',
+    app_code: 'dq2MYIvjAotR8tHvY8Q_Dg',
+    base: 'base',
+    minZoom: 0,
+    maxZoom: 20
+});
 
 
 function addMap(){
@@ -60,9 +74,11 @@ function addMap(){
         {
             'center': [39.2854197594374, -76.61796569824219],
             'zoom' : 12,
-            'layers':[$layers.esri]
+            'layers':[$layers.default]
         }
     );
+    var external = {};
+    var svg;
     var watersheds, neighborhoods, csas;
     var search_circle, search_marker, search_exit;
     var cmos_icon =  L.AwesomeMarkers.icon({
@@ -237,6 +253,115 @@ function addMap(){
             }).addTo(map);
         }
     }
+    function initVS(){
+        getCSAS(after);
+        function after(d,status){
+            console.log(d);
+            var bounds = d3.geo.bounds(d);
+            var bl_bound = bounds[0];
+            var tr_bound = bounds[1];
+            var p1 = project(bounds[0]);
+            svg = d3.select(map.getPanes().overlayPane).append('svg')
+                .attr('id','map-svg')
+                .style("opacity",1)
+            var path_group = svg.append('g');
+
+            var paths = path_group.selectAll('path')
+                .data(d.features)
+                .enter()
+                .append('path');
+
+            var path_tt = paths.append('svg:title')
+                .text(function(d){
+                    return d.properties.name;
+                });
+
+            resize();
+            map.on('zoomend',resize);
+            function resize(){
+                var bl_proj = project(bl_bound);
+                var tr_proj = project(tr_bound);
+                console.log(bl_proj);
+                console.log(tr_proj);
+                var new_width = tr_proj[0] - bl_proj[0] + 'px';
+                var new_height = bl_proj[1] - tr_proj[1] + 'px';
+                var new_top = tr_proj[1] + 'px';
+                var new_left = bl_proj[0] + 'px';
+                svg.style('width', new_width);
+                svg.style('height', new_height);
+                svg.style('left',new_left);
+                svg.style('top',new_top);
+
+
+                paths.attr('d', d3.geo.path().projection(project));
+
+                path_group.attr('transform', function(){
+                   return "translate(" + -1*parseFloat(new_left) + "," + -1*parseFloat(new_top) + ")";
+                });
+            }
+            external['display_vs'] = function(to_display,indicator){
+                if(to_display == false){
+                    svg.style('opacity',0);
+                }
+                else{
+                    svg.style('opacity',1);
+                    paths.style('fill',function(d){
+                        var vsdata = d.properties.vsdata;
+                        var chosen = vsdata[indicator];
+                        if(chosen == null){
+                            return('rgba(0,255,0,0)');
+                        }
+                        else{
+                            console.log(chosen.break_color);
+                            console.log(tinycolor(chosen.break_color).setAlpha(.6).toRgbString());
+                            return(tinycolor(chosen.break_color).setAlpha(.6).toRgbString());
+                        }
+                    });
+                    paths.style('stroke','white');
+                    path_tt.text(function(d){
+                        var vsdata = d.properties.vsdata;
+                        var chosen = vsdata[indicator];
+                        if(chosen == null){
+                            return(d.properties.name);
+                        }
+                        else{
+                            return(d.properties.name + ": " + chosen.value);
+                        }
+
+                    });
+                    paths.on('mouseover',function(d){
+                        d3.select(this).style('fill',function(d){
+                            var vsdata = d.properties.vsdata;
+                            var chosen = vsdata[indicator];
+                            if(chosen == null){
+                                return('rgba(0,255,0,0)');
+                            }
+                            else{
+                                return(tinycolor(chosen.break_color).setAlpha(.6).spin(180).saturate(100).toRgbString());
+                            }
+                        });
+                    });
+                    paths.on('mouseout',function(d){
+                        d3.select(this).style('fill',function(d){
+                            var vsdata = d.properties.vsdata;
+                            var chosen = vsdata[indicator];
+                            if(chosen == null){
+                                return('rgba(0,255,0,0)');
+                            }
+                            else{
+                                return(tinycolor(chosen.break_color).setAlpha(.8).toRgbString());
+                            }
+                        });
+                    });
+                }
+            }
+        }
+        function project(x){
+            var point = map.latLngToLayerPoint(new L.LatLng(x[1],x[0]));
+
+            return [point.x,point.y];
+        }
+    }
     function googleGeocoding(text, callResponse) {
         $geocoder.geocode({address: text}, callResponse);
     }
@@ -255,8 +380,11 @@ function addMap(){
 
         return json;
     }
+    function getCSAS(callback){
+        $.get('api/csas').success(function(data,status){callback(data,status);});
+    }
     getLayers();
-    var ret = {};
-    ret.updatePoints = updatePoints;
-    return ret;
+    initVS();
+    external.updatePoints = updatePoints;
+    return external;
 }

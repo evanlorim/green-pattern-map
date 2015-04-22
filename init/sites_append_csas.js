@@ -55,7 +55,7 @@ MongoClient.connect(mongoUri, function(err1, db) {
         "Greenmount East",
         "Orangeville/East Highlandtown",
         "Unassigned -- Jail",
-        "Patterson Park North And East",
+        "Patterson Park North & East",
         "Pimlico/Arlington/Hilltop",
         "Penn North/Reservoir Hill",
         "Poppleton/The Terraces/Hollins Market",
@@ -63,8 +63,8 @@ MongoClient.connect(mongoUri, function(err1, db) {
         "Southern Park Heights",
         "Southwest Baltimore",
         "The Waverlies",
-        "Washington Village/Pigtown",
-        "Westport/Mount Winans/Lakeland",
+        "Washington Village",
+        "Westport/Mt. Winans/Lakeland",
         "Oldtown/Middle East",
         "Harbor East/Little Italy",
         "Upton/Druid Heights",
@@ -84,6 +84,7 @@ MongoClient.connect(mongoUri, function(err1, db) {
                 var p = {'id':results[i]._id,'point':results[i].geometry};
                 info.push(p);
             }
+            console.log('finished 1...')
             get_polys(info);
         });
         function get_polys(site_info){
@@ -93,6 +94,7 @@ MongoClient.connect(mongoUri, function(err1, db) {
             }
             csa_poly.find().toArray(function(err,results){
                 for(var i=0; i < results.length; i++){
+                    console.log(results[i].properties.name);
                     polys[results[i].properties.name].push(results[i].geometry);
                 }
                 search_polys(site_info,polys);

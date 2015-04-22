@@ -116,13 +116,17 @@ Utils.prototype.filterByRadius = function(center,km,sites){
     return res;
 };
 
-Utils.prototype.query = function(res, collection, query, resultType, resCb) {
+Utils.prototype.query = function(res, collection, query, resultType, resCb, projection) {
     var me = this;
+    if(projection === undefined){
+        console.log("undef");
+        projection = {};}
+    console.log(query);
     this.connect(function(db) {
         //console.log(arguments);
         var col = db.collection(collection);
 
-        col.find(query).toArray(function(err, results) {
+        col.find(query,projection).toArray(function(err, results) {
             console.log("query complete");
             if (err) {
                 console.log(err);

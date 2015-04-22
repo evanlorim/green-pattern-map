@@ -3,14 +3,6 @@ var $map;
 var $selects = {};
 
 
-function get_csas(){
-    return JSON.parse(
-        $.ajax({
-            type: "GET",
-            url:"api/csas?uniq=1"
-        }).responseText
-    ).data;
-}
 
 function get_csas_layer(){
     var res = null;
@@ -21,15 +13,6 @@ function get_csas_layer(){
         res = data;
     });
     return res;
-}
-
-function get_neighborhoods(){
-    return JSON.parse(
-        $.ajax({
-            type: "GET",
-            url:"api/neighborhoods?uniq=1"
-        }).responseText
-    ).data;
 }
 
 function get_neighborhoods_layer(){
@@ -121,7 +104,6 @@ function append_dropdown(container,button_label,opts,dd_id,label){
         .text(function(d){return d;});
 }
 
-
 function init_selects(){
     add_multiselect('#stormwater','sw_status','Status','api/unique_sw_status').done(function(data){
         $selects.sw_status = data;
@@ -155,6 +137,7 @@ function update_sites(circle_filter){
     var nh_q = get_selected_query_string(nh,'properties.neighborhood',false);
     update();
     function get_selected_query_string(selected,prop,gpb_type){
+        //fix to add modifiers: neighborhood, gpb_type, etc.
         if(selected.length < 1){
             return false;
         }
@@ -169,23 +152,6 @@ function update_sites(circle_filter){
         ret['$and'][1] = {};
         ret['$and'][1][prop] = {'$in':selected};
         return ret;
-    }
-    function get_filtered(query, callback){
-        if(query == false){
-            callback();
-        }
-        else{
-            $.get('/api/filter',query,function(results,status){
-                var res = results.data;
-                for(var i = 0; i < res.length; i++){
-                    if(new_site_ids.indexOf(res[i]._id) == -1){
-                        new_site_ids.push(res[i]._id);
-                        new_sites.push(res[i]);
-                    }
-                }
-                callback();
-            });
-        }
     }
     function end(){
         if(circle_filter){
