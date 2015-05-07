@@ -1,0 +1,110 @@
+extends home_layout
+block content
+    .jumbotron
+        .container-fluid
+            h1 Baltimore's&nbsp;
+                b#greenregistry Green Registry
+            p.lead Some stuff goes here...?
+            a#getstarted.btn.btn-default.btn-lg Get Started
+    div.row
+        .col-md-6
+            h3  Overview
+            .well
+                p
+                    b Problem:&nbsp;
+                    span The City of Baltimore has more than 18,000 vacant lots that could be converted into uses that enhance neighborhoods and promote resiliency and sustainability.
+                p
+                    b Solution:&nbsp;
+                    span In order to help neighborhood stakeholders identify greening strategies for these vacant lots, the City developed the Green Pattern Book that provides guidance on ways to achieve its vision of integrated green amenities.
+                p
+                    b Project:&nbsp;
+                    span There are 8 patterns within the Green Pattern Book. Mapping sites that show characteristics of the eight patterns is an essential tool for coordinating efforts and collectively achieving the vision defined by neighborhoods.  In 2013, the Baltimore Neighborhood Indicators Alliance (BNIA-JFI) piloted a publicly- accessible, interactive map for this purpose using the pattern community-managed open space. Now, in 2014, BNIA-JFI is enhancing the map features and adding a second element for stormwater management. Future iterations of the map will include components of the remaining six green patterns.
+                p
+                    b Context:&nbsp;
+                    span Understanding how these sites impact urban waters and the communities that surrounds them requires ongoing information about the social, economic, and environmental characteristics of the City and the region. BNIA-JFI is leveraging existing socioeconomic data from the Vital Signs report and integrating it with data related to sites with potential to reduce runoff and nutrient loads to the City’s watersheds.
+                p
+                    b Process:&nbsp;
+                    span For each element of the Green Pattern Book, BNIA-JFI compiles data from a variety of primary sources and adds it to a spatial database that connects to Vital Signs community-based indicators, real property records, vacants to values properties, and adopt-a-lots. It is made accessible via a web-based interactive map.
+
+            .well
+                h4 Phase 1 Pilot:
+                .media
+                    .media-left.media-middle
+                        a.gpb-img-container(href='#')
+                            img.gpb-img.media-object(src='public/img/cmos_white.png',width=64,height=64)
+                    .media-body
+                        h4.media-heading
+                        | Community Managed Open Space (CMOS)
+                        p Primary Question: Where are the locations of CMOS in the City?
+                    p.sources Data Sources: Baltimore Green Space, Parks & People Foundation, JHU Center for a Livable Future, Baltimore City Master Gardeners, Power in Dirt
+            .well
+                h4 Phase 2:
+                .media
+                    .media-left.media-middle
+                        a.gpb-img-container(href='#')
+                            img.gpb-img.media-object(src='public/img/stormwater_white.png',width=64,height=64)
+                    .media-body
+                        h4.media-heading
+                        | Stormwater Management
+                        p Primary Questions: Where are stormwater management sites with potential for BMP implementation? What BMPs are ideal for each site?
+                    p.sources Data Source: Baltimore City Department of Public Works
+            .well
+                h4 Future Iterations:
+                    ul
+                        li
+                            a Clean and Green
+                        li
+                            a Mixed Greens
+                        li
+                            a Neighborhood Park
+                        li
+                            a Green Parking
+                        li
+                            a Urban Agriculture
+                        li
+                            a Urban Forest and Buffer
+
+        .col-md-6
+            h3 Stuff
+            .well
+                img.img-thumbnail.media-object(src='public/img/screenshot.png',width='100%',height=auto)
+            .well
+                h4 Real Property Records
+                ul
+                    li Block and Lot
+                    li Address
+                p.sources Data Source: Baltimore City Department of Finance
+            .well
+                h4 Vacants to Values Properties
+                ul
+                    li Block and Lot
+                    li Address
+                p.sources Data Source: Baltimore City
+            .well
+                h4 Adopt-a-Lots
+                ul
+                    li Block and Lot
+                    li Address
+                p.sources Data Source: Baltimore City
+            .well
+                h4 Community Based Indicators
+
+
+
+    footer.footer
+        .row
+            .col-md-2
+                ul Contact us:
+                    li
+                        a Twitter: @bniajfi
+                    li
+                        a http://facebook.com/bniajfi
+            .col-md-2
+                ul Email:
+                    li
+                        a Nancy Jones: njones@ubalt.edu
+                    li
+                        a Seema Iyer: siyer@ubalt.edu
+            .col-md-7
+                h4 Acknowledgements:
+                p This work was funded by the Baltimore City Department of Public Works and through a cooperative grant agreement with the United States Department of Agriculture.

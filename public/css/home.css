@@ -1,0 +1,24 @@
+#content{
+}
+
+#greenregistry{
+    color:forestgreen;
+}
+
+.gpb-img{
+    background-color:#11CC45;
+    border-radius: 5px;
+}
+
+.gpb-img-container{
+    margin:0;
+    padding:0;
+    border-radius:5px;
+}
+
+.sources{
+    font-size:x-small;
+    font-style: italic;
+}
+
+
