@@ -1,26 +1,27 @@
 {
-  "name": "green-registry",
+  "name": "cleanmongo",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "node index.js",
-    "postinstall": "bower install && node init/csas.js && node init/csas-poly.js && node init/neighborhoods.js && node init/watersheds.js && node init/sites.js && node init/sites_append_csas.js && node init/sites_append_neighborhoods.js && node init/vital_signs.js && node init/append_vs.js &&  node init/vs_info.js"
+    "postinstall": ""
   },
   "dependencies": {
-    "array-unique": "^0.2.1",
-    "async": "^0.9.0",
-    "bower": "^1.4.1",
-    "cloudinary": "^1.2.0",
-    "csv-parse": "^0.1.0",
-    "express": "^4.12.3",
-    "geojson-utils": "^1.1.0",
-    "geolib": "^2.0.14",
-    "jade": "^1.9.2",
-    "mongodb": "^2.0.27",
-    "socket.io": "^1.3.5",
-    "trim": "0.0.1",
-    "body-parser": "~1.12.2",
-    "turf": "~2.0.2"
+    "body-parser": "~1.12.3",
+    "express": "~4.12.2",
+    "jade": "~1.9.2",
+    "bower": "~1.4.1",
+    "q": "~1.2.0",
+    "debug": "~2.1.3",
+    "mongodb": "~2.0.27",
+    "mongo-fast-join": "0.0.11",
+    "csv-parse": "~0.1.1",
+    "lodash": "~3.7.0",
+    "traverse": "~0.6.6",
+    "geolib": "~2.0.14",
+    "simple-statistics": "~0.9.1",
+    "geojson-utils": "~1.1.0",
+    "async-q": "~0.2.2"
   },
   "engines": {
     "node": "0.10.x"

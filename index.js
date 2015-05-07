@@ -1,79 +1,63 @@
 var express = require('express');
 var Api = require('./app/api.js');
 var app = express();
-var fs = require('fs');
 var http = require('http').Server(app);
-
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/green-registry';
 
 app.set('view engine', 'jade');
-
 app.use('/public', express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/public'));
 app.use(require('body-parser').json());
 
-app.get('/api/:type', function(req, res) {
+app.get('/api/:type', function(request, response){
     var api = new Api({
         mongoUri: mongoUri
     });
-    var cb = function(resp) {
-        res.json(resp);
+    var callback = function(data){
+        response.json(data);
     };
-    switch (req.params.type) {
-        case "filter":
-            api.filter(req,res,cb);
+    switch(request.params.type){
+        case "access_watersheds":
+            api.getAccessLayer('watersheds')
+                .then(function(data){
+                    return callback({data:data});
+                });
             break;
-        case "unique_sites":
-            api.unique_sites(req, res, cb);
+
+        case "access_neighborhoods":
+            api.getAccessLayer('neighborhoods')
+                .then(function(data){
+                    return callback({data:data});
+                });
             break;
-        case "unique_neighborhoods":
-            api.unique_neighborhoods(req,res,cb);
+        case "access_csas":
+            api.getAccessLayer('csas')
+                .then(function(data){
+                    return callback({data:data});
+                });
             break;
-        case "unique_csas":
-            api.unique_csas(req,res,cb);
+
+        case "access_cmos":
+            api.getAccessLayer('cmos')
+                .then(function(data){
+                    return callback({data:data});
+                });
             break;
-        case "geom_neighborhoods":
-            api.geom_neighborhoods(req,res,cb);
+
+        case "access_stormwater":
+            api.getAccessLayer('stormwater')
+                .then(function(data){
+                    return callback({data:data});
+                });
             break;
-        case "geom_csas":
-            api.geom_csas(req,res,cb);
-            break;
-        case "sites_in_circle":
-            console.log('sites in circ');
-            api.sites_in_circle(req,res,cb);
-            break;
-        case "unique_cmos_site_uses":
-            api.unique_cmos_site_uses(req,res,cb);
-            break;
-        case "unique_cmos_orgs":
-            api.unique_cmos_orgs(req,res,cb);
-            break;
-        case "unique_sw_status":
-            api.unique_sw_status(req,res,cb);
-            break;
-        case "unique_sw_bmp_type":
-            api.unique_sw_bmp_type(req,res,cb);
-            break;
-        case "watersheds":
-            api.watersheds(req, res, cb);
-            break;
-        case "neighborhoods":
-            api.neighborhoods(req, res, cb);
-            break;
-        case "csas":
-            api.csas(req,res,cb);
-            break;
-        case "unique_indicators":
-            api.unique_indicators(req,res,cb);
-            break;
-        case "unique_watersheds":
-            api.unique_watersheds(req,res,cb);
-            break;
-        case "indicator_info":
-            api.indicator_info(req,res,cb);
+        case "access_vitalsigns":
+            api.getAccessLayer('vitalsigns')
+                .then(function(data){
+                    return callback({data:data});
+                });
             break;
         default:
-            cb({
+            callback({
                 data: [],
                 results: 0,
                 success: false,
@@ -82,21 +66,50 @@ app.get('/api/:type', function(req, res) {
     }
 });
 
-app.post('/api/:type', function(req, res){
+app.post('/api/:type', function(request, response){
     var api = new Api({
         mongoUri: mongoUri
     });
-    var cb = function(resp) {
-        res.json(resp);
+    var callback = function(data){
+        response.json(data);
     };
-    if(req.params.type == 'multifilter'){
-        api.multifilter(req.body, res, cb);
+    console.log(request.params.type);
+    if(request.params.type == 'findsites'){
+        console.log(request.body.site_ids);
+        api.findSites(request.body.site_ids)
+            .then(function(results){
+                return callback({data:results});
+            });
+    }
+    else if(request.params.type == 'findgeo'){
+        //console.log(request.body.site_ids);
+        console.log(request.body.obj_ids);
+        api.findGeo(request.body.collection,request.body.obj_ids)
+            .then(function(results){
+                return callback({data:results});
+            });
+    }
+    else{
+        return callback({
+            data: [],
+            results: 0,
+            success: false,
+            error: ['API method unknown']
+        });
     }
 });
-app.get('/', function(request, response) {
-    response.render('index');
+
+app.get('/', function(request, response){
+    response.render('home');
+});
+
+app.get('/map',function(request, response){
+    console.log("Rendering map...");
+    response.render('map');
+    console.log('Done');
 });
 
 http.listen(process.env.PORT || 5000, function() {
     console.log("App listening on " + (process.env.PORT || 5000));
 });
+

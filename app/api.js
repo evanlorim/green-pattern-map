@@ -1,93 +1,65 @@
-var mongo = require('mongodb');
+var q = require('q');
+var _ = require('lodash');
 var utils = require('./utils.js');
 
 var Api = function(config){
+    //instantiation -- copying things like the mongoUri
     for(var prop in config){
         this[prop] = config[prop];
     }
-    this.utils = new utils(this);
+    this.utils = new utils(config);
 };
 
-
-Api.prototype.filter = function(req,res,cb){
-    this.utils.query(res, 'sites', req.query, 'json', cb);
+Api.prototype.test = function(request,response,callback){
+    this.utils.test(response,callback);
 };
 
-Api.prototype.multifilter = function(req,res,cb){
-    this.utils.filterz(res, "sites", req.query, 'json', cb,req.opts);
+Api.prototype.getAccessLayer = function(id){
+    var deferred = q.defer();
+    switch(id){
+        case 'watersheds':
+            this.utils.query({'id':'watersheds'},{},'access')
+                .then(function(response){deferred.resolve(response[0])});
+            break;
+        case 'neighborhoods':
+            this.utils.query({'id':'neighborhoods'},{},'access')
+                .then(function(response){deferred.resolve(response[0])});
+            break;
+        case 'csas':
+            this.utils.query({'id':'csas'},{},'access')
+                .then(function(response){deferred.resolve(response[0])});
+            break;
+        case 'cmos':
+            this.utils.query({'id':'cmos'},{},'access')
+                .then(function(response){deferred.resolve(response[0])});
+            break;
+        case 'stormwater':
+            this.utils.query({'id':'stormwater'},{},'access')
+                .then(function(response){deferred.resolve(response[0])});
+            break;
+        case 'vitalsigns':
+            this.utils.query({'id':'vitalsigns'},{},'access')
+                .then(function(response){deferred.resolve(response[0])});
+            break;
+        default:
+            deferred.resolve("Not a valid access layer!");
+            break;
+    }
+    return deferred.promise;
 };
 
-Api.prototype.unique_sw_bmp_type = function(req,res,cb){
-    this.utils.unique(res, 'sites', 'properties.bmp_type', {'properties.gpb_type':'stormwater'}, 'json', cb, true);
+Api.prototype.findSites = function(site_ids){
+    var deferred = q.defer();
+    this.utils.findSites(site_ids)
+        .then(function(response){deferred.resolve(response)});
+    return deferred.promise;
 };
 
-Api.prototype.unique_sites = function(req,res,cb){
-    this.utils.query(res, 'sites', {}, 'geojson', cb);
-};
-
-Api.prototype.unique_neighborhoods = function(req, res, cb) {
-    this.utils.query(res, 'neighborhoods', {}, 'geojson', cb);
-};
-
-Api.prototype.geom_neighborhoods = function(req,res,cb){
-    this.utils.unique(res, 'neighborhoods', 'properties.Name', {}, 'json', cb, false);
-};
-
-Api.prototype.unique_csas = function(req, res, cb) {
-    this.utils.unique(res, 'csas', 'properties.name', {}, 'json', cb, false);
-};
-
-Api.prototype.geom_csas = function(req,res,cb){
-    this.utils.query(res, 'csas', {}, 'geojson', cb);
-};
-
-Api.prototype.sites_in_circle = function(req,res,cb){
-    this.utils.in_circle(req.query.center,req.query.km,cb);
-};
-
-Api.prototype.unique_cmos_site_uses = function(req,res,cb){
-    this.utils.unique(res, 'sites', 'properties.site_use', {'properties.gpb_type':'cmos'},'json', cb, true);
-};
-
-Api.prototype.unique_cmos_orgs = function(req,res,cb){
-    this.utils.unique(res, 'sites', 'properties.organizations', {'properties.gpb_type':'cmos'}, 'json', cb, true);
-};
-
-Api.prototype.unique_sw_status = function(req,res,cb){
-    this.utils.unique(res, 'sites', 'properties.status', {'properties.gpb_type':'stormwater'}, 'json', cb, true);
-};
-
-Api.prototype.neighborhoods = function(req,res,cb){
-    this.utils.query(res, 'neighborhoods', {}, 'geojson', cb);
-};
-
-Api.prototype.unique_neighborhoods = function(req,res,cb){
-    this.utils.unique(res, 'neighborhoods', 'properties.Name',{}, 'json', cb, true);
-};
-
-Api.prototype.csas = function(req,res,cb){
-    this.utils.query(res, 'csas', {}, 'geojson', cb);
-};
-
-Api.prototype.unique_csas = function(req,res,cb){
-    this.utils.unique(res, 'csas', 'properties.name', {}, 'json', cb, true);
-};
-
-Api.prototype.unique_indicators = function(req,res,cb){
-    this.utils.query(res, 'vs13_indicators', {},'json',cb,{'_id':0,'properties.full_name':1,'properties.short_name':1});
-};
-
-Api.prototype.watersheds = function(req, res, cb) {
-    this.utils.query(res, 'watersheds', {}, 'geojson', cb);
-};
-
-Api.prototype.unique_watersheds = function(req,res,cb){
-    this.utils.unique(res, 'watersheds', 'properties.MDE8NAME', {}, 'json', cb, true);
-};
-
-Api.prototype.indicator_info = function(req,res,cb){
-    console.log("performing this query");
-    this.utils.query(res,'vs13_indicators', {}, 'json', cb);
+Api.prototype.findGeo = function(collection,obj_ids){
+    var deferred = q.defer();
+    this.utils.findGeo(collection,obj_ids)
+        .then(function(response){deferred.resolve(response)});
+    return deferred.promise;
 }
 
 module.exports = Api;
