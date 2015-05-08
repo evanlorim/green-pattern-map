@@ -32,7 +32,8 @@
     "bootstrap": "3.3.4",
     "jquery": "2.1.3",
     "typeahead.js": "integration-0.11.2",
-    "leaflet.markercluster": "~0.4.0"
+    "leaflet.markercluster": "~0.4.0",
+    "stable": "~0.1.5"
   },
   "resolutions": {
     "typeahead.js": "~0.11.1"

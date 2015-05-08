@@ -255,7 +255,7 @@ DomManipulator.prototype.substringMatcher = function(strs) {
 };
 
 DomManipulator.prototype.appendConfigOptions = function(panel_id,options_id,selector_class,title,data){
-    data = Array.sort(data);
+    data = stable(data);
     var panel = d3.select(panel_id);
     var div = panel.select('.panel-collapse .panel-body')
         .append('div')
