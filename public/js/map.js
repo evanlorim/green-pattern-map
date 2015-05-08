@@ -32,10 +32,10 @@ var Map = function(){
 
 Map.prototype.updateSites = function(sites){
     var self = this;
+    self.markers.clearLayers();
     if(sites.length == 0){
         return;
     }
-    self.markers.clearLayers();
     var arr = [];
     _.forIn(sites,function(site){
         var marker = new L.marker([site.coordinates[1],site.coordinates[0]])

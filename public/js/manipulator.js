@@ -405,18 +405,3 @@ DomManipulator.prototype.updateLayers = function(){
     return deferred.promise;
 };
 
-/*function filterJSONCall(rawjson) {
-    var json = {},
-        key, loc, disp = [];
-
-    for(var i in rawjson)
-    {
-        key = rawjson[i].formatted_address;
-
-        loc = L.latLng( rawjson[i].geometry.location.lat(), rawjson[i].geometry.location.lng() );
-
-        json[ key ]= loc;	//key,value format
-    }
-
-    return json;
-}*/
