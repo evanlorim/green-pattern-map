@@ -208,6 +208,28 @@ html,body{
     display:inline-block;
 }
 
+.marker-cluster {
+    background-clip: padding-box;
+    border-radius: 20px;
+}
+.marker-cluster div {
+    width: 20px;
+    height: 20px;
+    margin-left: 0;
+    margin-top: 0;
+    text-align: center;
+    border-radius: 15px;
+    font: 10px "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+.marker-cluster span {
+    line-height: 20px;
+}
+
+.leaflet-marker-icon{
+    width:20px;
+    height:20px;
+}
+
 
 
 

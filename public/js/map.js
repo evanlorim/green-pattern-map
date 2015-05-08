@@ -1,6 +1,11 @@
 var Map = function(){
     var self = this;
     //initialize map
+
+};
+
+Map.prototype.initialize = function(){
+    var self = this;
     self.map = L.map('map',{
         'center': [39.2854197594374, -76.61796569824219],
         'zoom' : 12,
@@ -9,7 +14,7 @@ var Map = function(){
 
     self.tile = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
         minZoom: 0,
-        maxZoom: 18,
+        maxZoom: 20,
         attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
     self.zoom = new L.Control.Zoom({ position: 'topright' });
@@ -18,12 +23,13 @@ var Map = function(){
     self.zoom.addTo(self.map);
 
     self.markers = new L.MarkerClusterGroup({
-        showCoverageOnHover:false,
-        zoomToBoundsOnClick:false,
-        animateAddingMarkers:true,
-        maxClusterRadius:40,
-        disableClusteringAtZoom:16,
-        singleMarkerMode:true
+            showCoverageOnHover:false,
+            zoomToBoundsOnClick:false,
+            animateAddingMarkers:true,
+            maxClusterRadius:30,
+            disableClusteringAtZoom:18,
+            singleMarkerMode:true,
+            iconCreateFunction: self.createClusterIcon
     });
 
     self.map._initPathRoot();
@@ -90,6 +96,8 @@ Map.prototype.updateGeo = function(geo){
         return [point.x,point.y];
     }
 
+
+
 /*    paths.on('mouseout',function(d){
         d3.select(this).style('fill',function(d){
             return('rgba(244, 172, 183,.6)')
@@ -101,5 +109,20 @@ Map.prototype.updateGeo = function(geo){
 
         });
     });*/
+};
+
+Map.prototype.createClusterIcon = function (cluster) {
+    var childCount = cluster.getChildCount();
+
+    var c = ' marker-cluster-';
+    if (childCount < 10) {
+        c += 'small';
+    } else if (childCount < 100) {
+        c += 'medium';
+    } else {
+        c += 'large';
+    }
+
+    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(20, 20) });
 };
 
