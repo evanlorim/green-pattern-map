@@ -84,16 +84,14 @@ var Access = function(data){
 Access.prototype.FilterQuery = function(){
     this.query = {};
 
-    this.addGpb = function(type){
+    this.addGpbFilter = function(gpb_type,type,values){
         var self = this;
         if(!self.query.gpb){
             self.query.gpb = {};
         }
-        self.query.gpb[type] = {};
-    };
-
-    this.addGpbFilter = function(gpb_type,type,values){
-        var self = this;
+        if(!self.query.gpb[gpb_type]){
+            self.query.gpb[gpb_type] = {};
+        }
         if(!self.query.gpb[gpb_type].filters){
             self.query.gpb[gpb_type].filters = [];
         }
@@ -101,20 +99,58 @@ Access.prototype.FilterQuery = function(){
             {'type':type, 'values':values});
     };
 
-    this.addGeo = function(type){
+    this.addGeoFilter = function(gpb_type,type,values){
         var self = this;
         self.query.geo = {};
-        self.query.geo.type = type;
-    };
-
-    this.addGeoFilter = function(type,values){
-        var self = this;
+        self.query.geo.type = gpb_type;
         if(!self.query.geo.filters){
             self.query.geo.filters = [];
         }
         self.query.geo.filters.push(
             {'type':type, 'values':values});
     };
+
+    this.getGpbFilterCount = function(){
+        var self = this;
+        var result = [];
+        if(self.query.gpb){
+            _.forIn(_.keys(self.query.gpb),function(key){
+                if(self.query.gpb[key].filters){
+                    var count = {};
+                    count[key] = {};
+                    _.forIn(self.query.gpb[key].filters, function(filter){
+                        count[key][filter.type] = filter.values.length;
+                    });
+                    result.push(count);
+                }
+                else{
+                    result.push({key:0});
+                }
+            })
+        }
+        return result;
+    };
+
+    this.getActiveGpbTypeFilters = function(type){
+        var self = this;
+        var result = [];
+        if(self.query.gpb){
+            if(self.query.gpb[type].filters){
+                _.forIn(self.query.gpb[type].filters, function(filter){
+                    if(filter.values.length > 0){
+                        result.push(filter);
+                    }
+                });
+            }
+        }
+        return result;
+    };
+
+    this.getActiveGpbFilterCount = function(){
+        var self = this;
+        var result = 0;
+
+    }
 };
 
 Access.prototype.findSites = function(site_ids){

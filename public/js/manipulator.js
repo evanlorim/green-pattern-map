@@ -101,12 +101,86 @@ DomManipulator.prototype.initialize = function(){
     self.activatePanelClosing();
 
     $(document).on('mapUpdateEvent',function(){
-        self.updateSites().then(function(d){
+        self.updateSites().then(function(){
                 self.updateLayers();
         });
     });
 
+    $(document).on('filterEvent',function(event,data){
+        self.switchLegend(data);
+    });
 
+};
+
+DomManipulator.prototype.switchLegend = function(filter){
+    var self = this;
+    var query = filter.query;
+    var legend = d3.select('#legend-panel');
+    legend.selectAll('*').remove();
+    if(query.gpb || query.geo){
+        legend.style('display','block');
+    }
+    if(query.gpb){
+        var div = legend.append('div');
+        var divs = div.selectAll('div')
+            .data(_.pairs(query.gpb))
+            .enter()
+            .append('div')
+            .attr('class','legend-containers');
+        var headers = divs.append('h4')
+            .text(function(d){return d[0];});
+        var items = divs.append('div').attr('class','selector well well-sm');
+        items.each(function(d){
+            var item = d3.select(this);
+            if(d[1].filters){
+                var active = filter.getActiveGpbTypeFilters(d[0]);
+                if(active.length > 0){
+                    var list_items = item.selectAll('p')
+                        .data(active)
+                        .enter()
+                        .append('p')
+                        .text(function(d){return d.type});
+                    if(active.length == 1){
+                        var check = item.insert('div',':first-child')
+                            .attr('class','checkbox')
+                            .append('label')
+                            .attr('class','legend-entry options-entry differentiator');
+                        var sub_check = check.append('input')
+                            .attr('type','checkbox');
+                        sub_check.on('click',function(){
+                            var checked = d3.select(this).property('checked');
+                            if(checked){
+                                list_items.each(function(d){
+                                    var li = d3.select(this);
+                                    var ul = li.append('ul');
+                                    ul.selectAll('li')
+                                        .data(d.values)
+                                        .enter()
+                                        .append('li')
+                                        .text(function(d){console.log(d);return d;});
+                                })
+                            }
+                            else{
+                                list_items.selectAll('ul')
+                                    .remove();
+                            }
+                        });
+                        check.append('p').append('i')
+                            .text('Differentiate');
+                    }
+                }
+            }
+        })
+    }
+    else{
+        legend.style('display','none');
+    }
+    $('.differentiator').on('change',function(){
+        var checked = $(this).find('input').prop('checked');
+        if(checked){
+
+        }
+    })
 };
 
 DomManipulator.prototype.switchSearch = function(selection){
@@ -165,41 +239,33 @@ DomManipulator.prototype.switchLayer = function(selection){
 DomManipulator.prototype.switchSite = function(selection,checked){
     var self = this;
 
-    var select_swap = {
-        'Community Managed Open Spaces' : '#cmos-config',
-        'Stormwater Management': '#stormwater-config'
+    var swap = {
+        'Community Managed Open Spaces' : 'cmos-config',
+        'Stormwater Management': 'stormwater-config'
     };
 
-    var check_swap = {
-        true: 'block',
-        false: 'none'
-    };
+    var select_id = swap[selection];
 
-    var id = select_swap[selection];
-    var select_id = _.trim(id,'#');
-    var display = check_swap[checked];
-
-    if(checked == false){
-        self.clearConfigPanelOptions(id);
-    }
-
-
-    d3.select(id)
-        .style('display',display);
-
-    if(checked == true){
-        $(id + ' panel.collapse').collapse('show');
-    }
+    d3.selectAll('.site-panel')
+        .style('display',function(){
+            var id = d3.select(this).attr('id');
+            if(id == select_id){
+                return 'block';
+            }
+            else{
+                self.clearConfigPanelOptions('#' + id);
+                return 'none';
+            }
+        });
 
     $(document).trigger('mapUpdateEvent',[]);
-
 };
 
 DomManipulator.prototype.activatePanelClosing = function(){
     var self = this;
     var options = {
-        'Community Managed Open Spaces': '#site-select .checkbox label:contains("Community Managed Open Spaces") input',
-        'Stormwater Management': '#site-select .checkbox label:contains("Stormwater Management") input',
+        'Community Managed Open Spaces': '#site-select .radio label:contains("Community Managed Open Spaces") input',
+        'Stormwater Management': '#site-select .radio label:contains("Stormwater Management") input',
         'Community Statistical Areas': '#layer-select .radio label:contains("Community Statistical Areas") input',
         'Neighborhoods': '#layer-select .radio label:contains("Neighborhoods") input',
         'Watersheds': '#layer-select .radio label:contains("Watersheds") input',
@@ -260,7 +326,7 @@ DomManipulator.prototype.appendConfigOptions = function(panel_id,options_id,sele
     var div = panel.select('.panel-collapse .panel-body')
         .append('div')
         .attr('id',options_id)
-        .attr('class','config-options');
+        .attr('class','config-options options');
     div.append('h4')
         .text(title);
 
@@ -269,7 +335,7 @@ DomManipulator.prototype.appendConfigOptions = function(panel_id,options_id,sele
         .append('div')
         .attr('class','checkbox')
         .append('label')
-        .attr('class','config-options-entry');
+        .attr('class','config-options-entry options-entry');
 
     var select_all_check = select_all.append('input')
         .attr('type','checkbox');
@@ -277,7 +343,7 @@ DomManipulator.prototype.appendConfigOptions = function(panel_id,options_id,sele
         .text('Select All/ None');
 
     var options = div.append('div')
-        .attr('class','config-selector' + ' ' + selector_class);
+        .attr('class','config-selector selector' + ' ' + selector_class);
 
     var labels = options.selectAll('div')
         .data(data)
@@ -285,7 +351,7 @@ DomManipulator.prototype.appendConfigOptions = function(panel_id,options_id,sele
         .append('div')
         .attr('class','checkbox')
         .append('label')
-        .attr('class','config-options-entry');
+        .attr('class','config-options-entry options-entry');
 
     labels.append('input')
         .attr('type','checkbox')
@@ -346,32 +412,28 @@ DomManipulator.prototype.constructFilter = function(){
     var site_config_options = [];
     var layer_config_options = [];
     if(_.includes(sitetypes, 'Community Managed Open Spaces')){
-        filter.addGpb('cmos');
         var vals = self.getSelectedConfigOptions('#cmos-config-uses');
         filter.addGpbFilter('cmos','uses',vals);
     }
     if(_.includes(sitetypes, 'Stormwater Management')){
-        filter.addGpb('stormwater');
         var vals = self.getSelectedConfigOptions('#stormwater-config-bmps');
         filter.addGpbFilter('stormwater','bmps',vals);
         var vals = self.getSelectedConfigOptions('#stormwater-config-statuses')
         filter.addGpbFilter('stormwater','statuses',vals);
     }
     if(_.includes(layers, 'Community Statistical Areas')){
-        filter.addGeo('csas');
         var vals = self.getSelectedConfigOptions('#csas-config-titles');
-        filter.addGeoFilter('titles',vals);
+        filter.addGeoFilter('csas','titles',vals);
     }
     if(_.includes(layers, 'Watersheds')){
-        filter.addGeo('watersheds');
         var vals = self.getSelectedConfigOptions('#watersheds-config-titles');
-        filter.addGeoFilter('titles',vals);
+        filter.addGeoFilter('watersheds','titles',vals);
     }
     if(_.includes(layers, 'Neighborhoods')){
-        filter.addGeo('neighborhoods');
         var vals = self.getSelectedConfigOptions('#neighborhoods-config-titles');
-        filter.addGeoFilter('titles',vals);
+        filter.addGeoFilter('neighborhoods','titles',vals);
     }
+    $(document).trigger('filterEvent',filter);
     return filter;
 };
 

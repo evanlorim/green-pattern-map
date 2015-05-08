@@ -75,6 +75,14 @@ html,body{
     min-height:20px;
     min-width:20px;
     height:auto;
+    display:none;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+#legend-panel > h4{
+    font-size: 14px;
+    line-height:20px;
 }
 
 #map-container{
@@ -140,20 +148,27 @@ html,body{
     display:none;
 }
 
-.config-options{
+.options{
     margin-top:-10px;
 }
 
-.config-options > h4{
+.options > h4{
     font-size: 14px;
     line-height:20px;
     margin-bottom:6px;
+}
+
+.legend-options > h4{
+    margin-bottom:12px;
 }
 
 .config-selector{
     max-height:160px;
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+.selector{
     margin-top:-5px;
     margin-left:10px;
     margin-bottom:10px;
@@ -164,7 +179,7 @@ html,body{
     margin-bottom:-14px;
 }
 
-.config-options-entry{
+.options-entry{
     display: block;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 11px;
@@ -176,7 +191,7 @@ html,body{
 
 }
 
-.config-options-entry > p{
+.options-entry > p{
     display: inline-block;
     font-size: 11px;
     font-weight: 400;
@@ -190,7 +205,7 @@ html,body{
     vertical-align: middle;
 }
 
-.config-options-entry > input{
+.options-entry > input{
     font-size:11px;
 }
 
@@ -212,7 +227,7 @@ html,body{
     background-clip: padding-box;
     border-radius: 20px;
 }
-.marker-cluster div {
+.marker-cluster > div {
     width: 20px;
     height: 20px;
     margin-left: 0;
@@ -225,9 +240,36 @@ html,body{
     line-height: 20px;
 }
 
-.leaflet-marker-icon{
-    width:20px;
-    height:20px;
+.marker-cluster .inner{
+    margin-top:3px;
+    margin-left:3px;
+    width:14px;
+    height:14px;
+    border-radius:15px;
+}
+
+.marker-cluster .inner1{
+    background-color:lightcoral;
+}
+
+.marker-cluster .inner2{
+    background-color:lightgreen;
+}
+
+.marker-cluster .inner3{
+    background-color:lightseagreen;
+}
+
+.marker-cluster .inner4{
+    background-color:gold;
+}
+
+.cmos-marker{
+    background-color:royalblue;
+}
+
+.stormwater-marker{
+    background-color:red;
 }
 
 

@@ -6,6 +6,9 @@ var Map = function(){
 
 Map.prototype.initialize = function(){
     var self = this;
+
+    self.options = {'differentiate_markers':false};
+
     self.map = L.map('map',{
         'center': [39.2854197594374, -76.61796569824219],
         'zoom' : 12,
@@ -34,6 +37,8 @@ Map.prototype.initialize = function(){
 
     self.map._initPathRoot();
     self.svg;
+    self.colors = new self.Colors();
+    self.marker_types = [];
 };
 
 Map.prototype.updateSites = function(sites){
@@ -44,7 +49,7 @@ Map.prototype.updateSites = function(sites){
     }
     var arr = [];
     _.forIn(sites,function(site){
-        var marker = new L.marker([site.coordinates[1],site.coordinates[0]])
+        var marker = new L.marker([site.coordinates[1],site.coordinates[0]],{data:site});
         arr.push(marker);
     });
     self.markers.addLayer(new L.layerGroup(arr));
@@ -111,11 +116,22 @@ Map.prototype.updateGeo = function(geo){
     });*/
 };
 
-Map.prototype.createClusterIcon = function (cluster) {
+Map.prototype.createClusterIcon = function (cluster,d) {
+    var children = cluster.getAllChildMarkers();
     var childCount = cluster.getChildCount();
-
     var c = ' marker-cluster-';
-    if (childCount < 10) {
+    var opts = ['inner inner1','inner inner2','inner inner3','inner inner4'];
+    if(childCount == 1){
+        var d = children[0].options.data;
+        console.log(d);
+        if(d.set == 'cmos'){
+            return new L.DivIcon({ html: '<div><div class=\'' + opts[getRandomInt(0,4)] + '\'>' + childCount + '</div></div>', className: 'marker-cluster cmos-marker', iconSize: new L.Point(20, 20) })
+        }
+        else if(d.set == 'stormwater'){
+            c = ' stormwater-marker'
+        }
+    }
+    else if (childCount < 10) {
         c += 'small';
     } else if (childCount < 100) {
         c += 'medium';
@@ -124,5 +140,21 @@ Map.prototype.createClusterIcon = function (cluster) {
     }
 
     return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(20, 20) });
+};
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+Map.prototype.Colors = function(){
+    this.light_colors = ['#a6cee3','#b2df8a','#fb9a99','#fdbf6f','#cab2d6','#ffff99'];
+    this.dark_colors = ['#1f78b4','#33a02c','#e31a1c','#ff7f00','#6a3d9a','#b15928'];
+    this.color_combos = [];
+    _.forIn(this.dark_colors,function(dc){
+        _.forIn(this.light_colors,function(lc){
+            color_combos.push([dc,lc]);
+        })
+    });
+    this.color_combos = _.shuffle(this.color_combos);
 };
 
