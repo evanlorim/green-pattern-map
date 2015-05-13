@@ -18,41 +18,14 @@ app.get('/api/:type', function(request, response){
         response.json(data);
     };
     switch(request.params.type){
-        case "access_watersheds":
-            api.getAccessLayer('watersheds')
+        case "access_data":
+            api.getAccessData()
                 .then(function(data){
                     return callback({data:data});
                 });
             break;
-
-        case "access_neighborhoods":
-            api.getAccessLayer('neighborhoods')
-                .then(function(data){
-                    return callback({data:data});
-                });
-            break;
-        case "access_csas":
-            api.getAccessLayer('csas')
-                .then(function(data){
-                    return callback({data:data});
-                });
-            break;
-
-        case "access_cmos":
-            api.getAccessLayer('cmos')
-                .then(function(data){
-                    return callback({data:data});
-                });
-            break;
-
-        case "access_stormwater":
-            api.getAccessLayer('stormwater')
-                .then(function(data){
-                    return callback({data:data});
-                });
-            break;
-        case "access_vitalsigns":
-            api.getAccessLayer('vitalsigns')
+        case "access_selectors":
+            api.getAccessSelectors()
                 .then(function(data){
                     return callback({data:data});
                 });
@@ -76,8 +49,8 @@ app.post('/api/:type', function(request, response){
     };
     console.log(request.params.type);
     if(request.params.type == 'findsites'){
-        console.log(request.body.site_ids);
-        api.findSites(request.body.site_ids)
+        console.log(request.body.site_doc_ids);
+        api.findSites(request.body.site_doc_ids)
             .then(function(results){
                 return callback({data:results});
             });
@@ -85,7 +58,7 @@ app.post('/api/:type', function(request, response){
     else if(request.params.type == 'findgeo'){
         //console.log(request.body.site_ids);
         console.log(request.body.obj_ids);
-        api.findGeo(request.body.collection,request.body.obj_ids)
+        api.findGeo(request.body.collection,request.body.geo_doc_ids)
             .then(function(results){
                 return callback({data:results});
             });

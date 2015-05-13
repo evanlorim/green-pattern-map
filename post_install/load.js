@@ -309,6 +309,9 @@ Load.prototype.loadVitalSigns = function(){
     console.log("Begin loading <vs> data");
     clearCollection(self.db,'vs')
         .then(function(){
+            return clearCollection(self.db,'vs_csas');
+        })
+        .then(function(){
             //return the results of reading the two csvs as an object...
             return q.all([readCsv(csas_reference), readCsv(indicators_reference)])
                 .spread(function(csas,indicators){

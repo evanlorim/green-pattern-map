@@ -1,256 +1,94 @@
 extends map_layout
 
 block content
-    nav#navi.navbar.navbar-default.navbar-inverse
-        .container-fluid
-            // Brand and toggle get grouped for better mobile display
-            .navbar-header
-                a.navbar-brand(href='#') Baltimore Green Registry
-            div#sites
+    div
+        div(ng-include="'public/templates/vs_modal.html'").vs-modal
+
+    div(ng-controller='dataController')
+        nav(role='navigation').navbar.navbar-default.navbar-inverse.navbar-fixed-top.navi
+            .container-fluid
+                .navbar-left
+                    .navbar-header
+                        a(href='#').navbar-brand
+                            img(src='/public/img/bmore-green-registry_white.png',height='36px',width:'auto')
                 ul.nav.navbar-nav
-                    li.dropdown.active.span8
-                        a.dropdown-toggle(href='#', data-toggle='dropdown', role='button')
-                            span#site-select-title Sites
-                            span.caret
-                        ul#site-select.dropdown-menu(role='menu')
-                            li
-                                .radio
-                                    label
-                                        input(type='radio', name='site_options')
-                                        | Community Managed Open Spaces
-                            li
-                                .radio
-                                    label
-                                        input(type='radio', name='site_options')
-                                        | Stormwater Management
-            div#layers
+                    button.btn.btn-success.apply-button(type='submit',ng-click='applyActiveSelectors()') Apply Filters
                 ul.nav.navbar-nav
-                    li.dropdown.active.span8
-                        a.dropdown-toggle(href='#', data-toggle='dropdown', role='button')
-                            span#layer-select-title Layers
+                    span.dropdown(dropdown='', on-toggle='toggled(open)')
+                        a.dropdown-toggle(href='', dropdown-toggle='')
+                            span Sites
                             span.caret
-                        ul#layer-select.dropdown-menu(role='menu')
-                            li
-                                .radio
-                                    label
-                                        input(type='radio', name='layer_options')
-                                        | Community Statistical Areas
-                            li
-                                .radio
-                                    label
-                                        input(type='radio', name='layer_options')
-                                        | Neighborhoods
-                            li
-                                .radio
-                                    label
-                                        input(type='radio', name='layer_options')
-                                        | Watersheds
-                            li
-                                .radio
-                                    label
-                                        input(type='radio', name='layer_options')
-                                        | Vital Signs
-
-            div#options
+                        ul.dropdown-menu
+                            li(ng-repeat='pattern in site_selectors')
+                              a(href='',ng-click='switchSelector(pattern,true)')
+                                span.img-holder 
+                                    img(ng-src="{{pattern.img_src}}",width='36px',height='auto')
+                                span {{ pattern.title }}
                 ul.nav.navbar-nav
-                    li.dropdown.active.span8
-                        a.dropdown-toggle(href='#', data-toggle='dropdown', role='button')
-                            span#site-select-title Options
+                    span.dropdown(dropdown='', on-toggle='toggled(open)')
+                        a.dropdown-toggle(href='', dropdown-toggle='')
+                            span Layers
                             span.caret
-                        ul#site-select.dropdown-menu(role='menu')
+                        ul.dropdown-menu
+                            li(ng-repeat='layer in standard_layer_selectors')
+                              a(href='',ng-click='switchSelector(layer,true)') {{ layer.title }}
+
+                ul.nav.navbar-nav
+                    span.dropdown(dropdown='', on-toggle='toggled(open)')
+                        a.dropdown-toggle(href='', dropdown-toggle='')
+                            span Indicators
+                            span.caret
+                        ul.dropdown-menu
+                            li(ng-repeat='section in vs_section_selectors')
+                              a(href='#', ng-click="openVsModal(section)") {{ section.title }}
+                ul.nav.navbar-nav.preferences
+                    span.dropdown(dropdown='', on-toggle='toggled(open)')
+                        a.dropdown-toggle(href='', dropdown-toggle='')
+                            span.glyphicon.glyphicon-wrench 
+                            span.caret
+                        ul.dropdown-menu
                             li
-                                .checkbox
-                                    label
-                                        input(type='checkbox', name='global_options')
-                                        | Display Sites Outside Layer Selection
+                              a(href='https://github.com/apathinwalking/baltimore-green-registry/tree/master/data') Data Downloads
                             li
-                                .checkbox
-                                    label
-                                        input(type='checkbox', name='global_options')
-                                        | More Stuff
-            ul.nav.navbar-nav.navbar-right
-                li
-                    a(href='#') Link
-
-    div#config
-        #accordion.panel-group(role='tablist', aria-multiselectable='true')
-            #cmos-config.panel.panel-default.map-panel.config-panel.site-panel
-                #headingOne.panel-heading(role='tab')
-                    h4.panel-title
-                        a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseOne', aria-expanded='false', aria-controls='collapseOne')
-                            | Community Managed Open Spaces
-                        a.close &times
-                #collapseOne.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingOne')
-                    .panel-body
-            #stormwater-config.panel.panel-default.map-panel.config-panel.site-panel
-                #headingTwo.panel-heading(role='tab')
-                    h4.panel-title
-                        a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='false', aria-controls='collapseTwo')
-                            | Stormwater Management
-                        a.close &times
-                #collapseTwo.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingTwo')
-                    .panel-body
-            #csas-config.panel.panel-default.map-panel.config-panel.layer-panel
-                #headingThree.panel-heading(role='tab')
-                    h4.panel-title
-                        a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseThree', aria-expanded='false', aria-controls='collapseThree')
-                            | Community Statistical Areas
-                        a.close &times
-                #collapseThree.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingThree')
-                    .panel-body
-            #neighborhoods-config.panel.panel-default.map-panel.config-panel.layer-panel
-                #headingFour.panel-heading(role='tab')
-                    h4.panel-title
-                        a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseFour', aria-expanded='false', aria-controls='collapseFour')
-                            | Neighborhoods
-                        a.close &times
-                #collapseFour.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingFour')
-                    .panel-body
-            #watersheds-config.panel.panel-default.map-panel.config-panel.layer-panel
-                #headingFive.panel-heading(role='tab')
-                    h4.panel-title
-                        a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseFive', aria-expanded='false', aria-controls='collapseFive')
-                            | Watersheds
-                        a.close &times
-                #collapseFive.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingFive')
-                    .panel-body
-            #vitalsigns-config.panel.panel-default.map-panel.config-panel.layer-panel
-                #headingSix.panel-heading(role='tab')
-                    h4.panel-title
-                        a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseSix', aria-expanded='false', aria-controls='collapseSix')
-                            | Vital Signs
-                        a.close &times
-                #collapseSix.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingSix')
-                    .panel-body
+                              a(href='#') Settings
+                 ul.nav.navbar-nav.navbar-right
+                    .navbar-header
+                        a(href='#').navbar-brand
+                            img(src='/public/img/bnia_white.png',height='36px',width:'auto')
+                            span BNIA
+                    
 
 
+        div.config
+            accordion
+                div(ng-repeat="sel in selectors",ng-show='sel.active == true').my-accordion-container.ng-hide
+                    accordion-group
+                        accordion-heading
+                            div
+                                button(type='button',ng-click='switchSelector(sel,false)').close 
+                                    span(aria-hidden='true') &times
+                                div.panel-title {{ sel.title }}
+                        ng-include(src="'public/templates/selector_options.html'")
 
+        div.search.panel.panel-default.map-overlay
+            ul.nav.navbar-nav
+                span.dropdown(dropdown='', on-toggle='toggled(open)')
+                        a.dropdown-toggle(href='', dropdown-toggle='')
+                            span Selection
+                            span.caret
+                        ul.dropdown-menu
+                            li(ng-repeat='search in searches')
+                              a(href='#') {{search.title}}
+                    form.navbar-form.navbar-left(role='search')
+                        div.float-right
+                            .form-group
+                                    input.form-control(type='text',ng-show='searches.placeholder.active == true')
+                                    input.form-control(type='text', ng-model='asyncSelected', placeholder='Locations loaded via $http', typeahead='address for address in getLocation($viewValue)', typeahead-loading='loadingLocations',ng-show='searches.address.active == true')
+                                    input.form-control(type='text', ng-model='selected', placeholder='Indicator Name...',typeahead='indicator.title for indicator in vs_layer_selectors',ng-show='searches.indicators.active == true')
+                            button.btn.btn-default(type='submit',ng-click='') Submit
 
+        div.map-container
+            #map
 
-    div#search-panel.panel.panel-default.map-panel
-        ul.nav.navbar-nav
-            li.dropdown.active.span8
-                a.dropdown-toggle(href='#', data-toggle='dropdown', role='button')
-                    span#search-select-title Selection
-                    span.caret
-                ul#search-select.dropdown-menu(role='menu')
-                    li
-                        .radio
-                            label
-                                input(type='radio', name='optradio',checked='true')
-                                | Addresses
-                    li
-                        .radio
-                            label
-                                input(type='radio', name='optradio')
-                                | Latitude and Longitude
-                    li.divider
-                    li
-                        .radio
-                            label
-                                input(type='radio', name='optradio')
-                                | Site Names
-                    li.divider
-                    li
-                        .radio
-                            label
-                                input(type='radio', name='optradio')
-                                | Community Statistical Areas
-                    li
-                        .radio
-                            label
-                                input(type='radio', name='optradio')
-                                | Neighborhoods
-                    li
-                        .radio
-                            label
-                                input(type='radio', name='optradio')
-                                | Watersheds
-        form.navbar-form.navbar-left(role='search')
-            .form-group
-                div#search
-                    input#search-address.search-switch.typeahead.form-control(type='text', placeholder='Search Addresses...')
-                    input#search-latlong.search-switch.typeahead.form-control(type='text', placeholder='Search Lat & Long...')
-                    input#search-sitename.search-switch.typeahead.form-control(type='text', placeholder='Search Site Names...')
-                    input#search-csa.search-switch.typeahead.form-control(type='text', placeholder='Search CSAs...')
-                    input#search-neighborhood.search-switch.typeahead.form-control(type='text', placeholder='Search Neighborhoods...')
-                    input#search-watershed.search-switch.typeahead.form-control(type='text', placeholder='Search Watersheds...')
-            button#search-submit.btn.btn-default(type='submit') Submit
-
-    div#legend-panel.panel.panel-default.map-panel
-
-    div#map-container
-        #map
-
-        //div#legend-body.panel-body
-            div#search
-                input.typeahead(type='text',placeholder='Search...')
-            span.caret
-        //div#search-settings
-            form(role="form")
-                .radio
-                    label
-                        input(type='radio', name='optradio')
-                        | Site Names
-                .radio
-                    label
-                        input(type='radio', name='optradio')
-                        | Addresses
-
-
-
-
-    //div#panel-container
-          div.container-fluid
-              div.row
-                  div#filters.col-sm-3.col-md-2.sidebar.panel-part
-                      ul.nav.nav-sidebar
-                          li
-                              a(href="#")
-                                  img(src="public/img/bnia.png")
-                          li
-                              a(href="#")
-                                  img(src="public/img/cmos_white.png")
-                          li
-                              a(href="#")
-                                  img(src="public/img/stormwater_white.png")
-                          li
-                              a(href="#")
-                                  img(src="public/img/bnia_white.png")
-                          li
-                              a(href="#")
-                                  img(src="public/img/layers_white.png")
-          div.container-fluid
-              div.row
-                  div#panel.col-sm-3.col-md-2.sidebar.panel-part
-                      div#navi.navbar-header
-                          a.navbar-brand Baltimore Green Registry
-                      ul#cmos.nav.nav-sidebar
-                          li
-                              a(href="#cmos_site_uses") Site Use
-                      ul#stormwater.nav.nav-sidebar
-                          li
-                              a(href="#stormwater_statuses") Status
-                          li
-                              a(href="#stormwater_bmps") Best Management Practices
-
-
-
-    //#sidebar.sidebar.collapsed
-        ul.sidebar-tabs(role='tablist')
-            li
-                a(href='#cmos', role='tab')
-                    img.sideicon(src="public/img/bnia.png",width="40px",height="auto")
-
-            li
-                a(href='#stormwater', role='tab')
-                    img.sideicon(src="public/img/stormwater.png",width="40px",height="auto")
-            li
-                a(href="#other", role='tab')
-                    img.sideicon(src="public/img/bnia.png",width="40px",height="auto")
-        .sidebar-content.active
-            #cmos.sidebar-pane
-                div
-                    p THIS IS WHERE SOME TEXT IS
-            #stormwater.sidebar-pane
-            #other.sidebar-pane
+        div.legend.panel.panel-default.map-overlay
+            

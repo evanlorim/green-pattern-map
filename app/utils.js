@@ -62,10 +62,25 @@ Utils.prototype.findGeo = function(collection,obj_ids){
             var col = db.collection(collection);
             col.find({_id: {$in:obj_ids}},{}).toArray(function(error,results){
                 if(error){deferred.reject(new Error(error));}
-                else{deferred.resolve(results);}
+                else{
+                    var geojson = parseGeoJson(results);
+                    deferred.resolve(geojson);
+                }
             })
         })
     return deferred.promise;
 };
+
+parseGeoJson = function(arr){
+    return _.reduce(arr,function(results,a){
+        var feat = a.geo;
+        feat.properties.id = a.id;
+        results.features.push(feat);
+        return results;
+    },{
+        'type':'FeatureCollection',
+        'features':[]
+    })
+}
 
 module.exports = Utils;

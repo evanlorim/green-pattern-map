@@ -5,6 +5,7 @@ var Aggregate = require("./aggregate.js");
 var Mask = require("./mask.js");
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/green-registry';
 
+
 loadResources()
     .then(function(res){
         return(aggregateData());
@@ -73,6 +74,9 @@ function aggregateData(){
         .then(function(nh_res){
             return(aggregate.assignCsasSites());
         })
+        .then(function(csa_res){
+            return(aggregate.assignVsCsas());
+        })
         .then(function(results){
             console.log("END AGGREGATE OPERATION");
             _disconnect();
@@ -100,8 +104,13 @@ function maskData(){
                 mask.craftCsaAccess(),
                 mask.craftCmosAccess(),
                 mask.craftStormwaterAccess(),
-                mask.craftVitalSignsAccess()
             ]));
+        })
+        .then(function(data){
+            return mask.craftVitalSignsAccess();
+        })
+        .then(function(data){
+            return mask.craftSelectors();
         })
         .then(function(data){
             console.log("END MASK OPERATION");
@@ -115,11 +124,28 @@ function maskData(){
     return deferred.promise;
 }
 
+
 function test(){
-    new Mask({'uri':mongoUri})
-        .then(function(mask){
-            mask.test();
+    var deferred = q.defer();
+    var _disconnect;
+    var aggregate;
+    new Aggregate({'uri':mongoUri})
+        .then(function(obj) {
+            aggregate = obj;
+            var deferred = q.defer();
+            _disconnect = aggregate.disconnect;
+            console.log("BEGIN AGGREGATE OPERATION");
+            return(aggregate.assignVsCsas());
         })
+        .then(function(results){
+            console.log("END AGGREGATE OPERATION");
+            _disconnect();
+            deferred.resolve(results);
+        })
+        .fail(function(error){
+            deferred.reject(new Error(error));
+        });
+    return deferred.promise;
 }
 
 

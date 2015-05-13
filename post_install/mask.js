@@ -5,6 +5,8 @@ var traverse = require('traverse');
 var geolib = require('geolib');
 var gju = require('geojson-utils');
 var ss = require('simple-statistics');
+var uc = require('unique-colors');
+var numeral = require('numeral');
 var _ = require('lodash');
 
 var Mask = function(options){
@@ -26,8 +28,11 @@ var Mask = function(options){
                 return(clearCollection(self.db,'access'));
             })
             .then(function(results){
+                return(clearCollection(self.db,'access_selectors'));
+            })
+            .then(function(results){
                 deferred.resolve(self);
-            }).fail(function(error){deferred.reject(new Error(error));})
+            }).fail(function(error){deferred.reject(new Error(error));});
     }
     return deferred.promise;
 
@@ -61,24 +66,69 @@ Mask.prototype.connect = function(mongouri){
     return deferred.promise;
 };
 
-
+Mask.prototype.craftSelectors = function(){
+    var self = this;
+    var deferrd = q.defer();
+    console.log("--Begin craftin <selectors> mask")
+    query(self.db,{},{},'access')
+        .then(function(data){
+            var selectors = _.map(data,function(d){
+                var obj = {}
+                obj.id = d.id;
+                obj.pretty_name = d.pretty_name;
+                obj.type = d.type;
+                if(d.meta && d.meta.set){
+                    obj.set = d.meta.set
+                }
+                else{d.meta.set = null;}
+                var mutable = {};
+                _.forIn(d.filterable,function(filter){
+                    mutable[filter.name] = {options:[],select_all:false};
+                    _.forIn(d.info[filter.name],function(opt){
+                        mutable[filter.name].options.push({title:opt.title,active:false});
+                    });
+                });
+                obj.mutable = mutable;
+                console.log(obj.mutable);
+                return obj;
+            });
+            console.log(selectors);
+            return writeCollection(self.db,selectors,'access_selectors');
+        }).then(function(results){
+            console.log("--End crafting <selectors> mask");
+            deferred.resolve(results);
+        });
+    return deferred.promise;
+}
 
 Mask.prototype.craftWatershedAccess = function(){
     var self = this;
     var deferred = q.defer();
-    console.log("--Begin crafting <watersheds> mask")
+    console.log("--Begin crafting <watersheds> mask");
     query(self.db,{},{_id:1,id:1,geo:1,'sites':1},'watersheds')
         .then(function(data){
             var geojson = assembleGeoJson(data);
-            var info = _.transform(data,function(result,val){
-                var obj = {title:val.id,obj_key:val._id,site_key:val.sites};
+            var geo_doc_ids = _.map(geojson.features,function(f){
+                return f.properties.geo_doc_id;
+            })
+            var titles = _.transform(data,function(result,val){
+                var obj = {title:val.id,geo_doc_id:val._id,site_doc_ids:val.sites};
                 result.push(obj);
             });
-            var doc = {'id':'watersheds', info: info, geojson: geojson};
+
+            
+            var site_doc_ids = _.map(titles,function(t){
+                return t.site_doc_ids;
+            });
+            site_doc_ids = _.unique(_.flatten(site_doc_ids));
+            var info = {titles:titles};
+            var filterable = [{name:'titles',pretty_name:'Watershed Names',exchange_with:['site_doc_ids','geo_doc_id']}];
+            var searchable = [{name:'titles',pretty_name:'Watershed Names',exchange_with:['site_doc_ids','geo_doc_id']}];
+            var doc = {'id':'watersheds',pretty_name:'Watersheds',type:'geo', info: info, filterable:filterable, searchable:searchable, geo_doc_ids: geo_doc_ids,site_doc_ids:site_doc_ids,meta:{set:'standard_geo'}};
             return(writeCollection(self.db,[doc],'access'));
         })
         .then(function(results){
-            console.log("--End crafting <watersheds> mask")
+            console.log("--End crafting <watersheds> mask");
             deferred.resolve(results);
         });
     return deferred.promise;
@@ -87,19 +137,32 @@ Mask.prototype.craftWatershedAccess = function(){
 Mask.prototype.craftNeighborhoodAccess = function(){
     var self = this;
     var deferred = q.defer();
-    console.log("--Begin crafting <neighborhoods> mask")
+    console.log("--Begin crafting <neighborhoods> mask");
     query(self.db,{},{_id:1,id:1,geo:1,'sites':1},'neighborhoods')
         .then(function(data){
             var geojson = assembleGeoJson(data);
-            var info = _.transform(data,function(result,val){
-                var obj = {title:val.id,obj_key:val._id,site_key:val.sites};
+            var geo_doc_ids = _.map(geojson.features,function(f){
+                return f.properties.geo_doc_id;
+            })
+            var titles = _.transform(data,function(result,val){
+                var obj = {title:val.id,geo_doc_id:val._id,site_doc_ids:val.sites};
                 result.push(obj);
             });
-            var doc = {'id':'neighborhoods', info: info, geojson: geojson};
+
+
+            var site_doc_ids = _.map(titles,function(t){
+                return t.site_doc_ids;
+            });
+            site_doc_ids = _.unique(_.flatten(site_doc_ids));
+
+            var info = {titles:titles};
+            var filterable = [{name:'titles',pretty_name:'Neighborhood Names',exchange_with:['site_doc_ids','geo_doc_id']}];
+            var searchable = [{name:'titles',pretty_name:'Neighborhood Names',exchange_with:['site_doc_ids','geo_doc_id']}];
+            var doc = {'id':'neighborhoods',pretty_name: "Neighborhoods",type:'geo', info: info,filterable:filterable,searchable:searchable,geo_doc_ids:geo_doc_ids,site_doc_ids:site_doc_ids,meta:{set:'standard_geo'}};
             return(writeCollection(self.db,[doc],'access'));
         })
         .then(function(results){
-            console.log("--End crafting <neighborhoods> mask")
+            console.log("--End crafting <neighborhoods> mask");
             deferred.resolve(results);
         });
     return deferred.promise;
@@ -108,15 +171,26 @@ Mask.prototype.craftNeighborhoodAccess = function(){
 Mask.prototype.craftCsaAccess = function(){
     var self = this;
     var deferred = q.defer();
-    console.log("--Begin crafting <csas> mask")
+    console.log("--Begin crafting <csas> mask");
     query(self.db,{},{_id:1,id:1,geo:1,'sites':1},'csas')
         .then(function(data){
             var geojson = assembleGeoJson(data);
-            var info = _.transform(data,function(result,val){
-                var obj = {title:val.id,obj_key:val._id,site_key:val.sites};
-                result.push(obj);
+            var geo_doc_ids = _.map(geojson.features,function(f){
+                return f.properties.geo_doc_id;
             })
-            var doc = {'id':'csas', info: info, geojson: geojson};
+            var titles = _.transform(data,function(result,val){
+                var obj = {title:val.id,geo_doc_id:val._id,site_doc_ids:val.sites};
+                result.push(obj);
+            });
+
+            var site_doc_ids = _.map(titles,function(t){
+                return t.site_doc_ids;
+            });
+            site_doc_ids = _.unique(_.flatten(site_doc_ids));
+            var info = {titles:titles};
+            var filterable = [{name:'titles',pretty_name:'Community Statistical Area Names',exchange_with:['site_doc_ids','geo_doc_id']}];
+            var searchable = [{name:'titles',pretty_name:'Community Statistical Area Names',exchange_with:['site_doc_ids','geo_doc_id']}];
+            var doc = {'id':'csas',pretty_name:"Community Statistical Areas",type:'geo',info: info, filterable:filterable,searchable:searchable,geo_doc_ids:geo_doc_ids,site_doc_ids:site_doc_ids,meta:{set:'standard_geo'}};
             return(writeCollection(self.db,[doc],'access'));
         })
         .then(function(results){
@@ -135,7 +209,7 @@ Mask.prototype.craftCmosAccess = function(){
         .then(function(data){
             var titles = _.transform(data,function(result,val){
                 if(val.name){
-                    var obj = {'title':val.name,'site_key':val._id}
+                    var obj = {'title':val.name,'site_doc_id':val._id};
                     result.push(obj);
                 }
             });
@@ -148,24 +222,30 @@ Mask.prototype.craftCmosAccess = function(){
                 if(val.uses){
                     _.forIn(val.uses,function(use){
                         result[use].push(val._id);
-                    })
+                    });
                 }
-                else if(val.uses == null){
+                else if(val.uses === null){
                     result[null].push(val._id);
                 }
                 return result;
             },uses);
             uses = _.reduce(uses,function(result,val,key){
-                var item = {'title':key,'site_key':val};
+                var item = {'title':key,'site_doc_ids':val};
                 result.push(item);
                 return(result);
             },[]);
 
+            console.log('assigning uses');
+            uses = assignColors(uses);
+
             var keys = _.pluck(data,'_id');
-            var doc = {id:'cmos',titles:titles,uses:uses,site_key:keys};
+            var info = {titles:titles,uses:uses};
+            var filterable = [{name:'uses',pretty_name:'Site Uses',exchange_with:['site_doc_ids'],attributes:['color']}];
+            var searchable = [{name:'titles',pretty_name:'Site Names',exchange_with:['site_doc_id'],attributes:[]}];
+            var doc = {id:'cmos', pretty_name: 'Community Managed Open Spaces',type:'sites',info:info,filterable:filterable,searchable:searchable,site_doc_ids:keys,meta:{}};
             return(writeCollection(self.db,[doc],'access'));
         }).then(function(results){
-            console.log("--End crafting <cmos> mask")
+            console.log("--End crafting <cmos> mask");
             deferred.resolve(results);
         });
     return deferred.promise;
@@ -174,7 +254,7 @@ Mask.prototype.craftCmosAccess = function(){
 Mask.prototype.craftStormwaterAccess = function(){
     var self = this;
     var deferred = q.defer();
-    console.log("--Begin crafting <stormwater> mask")
+    console.log("--Begin crafting <stormwater> mask");
     query(self.db,{'set':'stormwater'},{'_id':1,'status':1,'bmps':1},'sites')
         .then(function(data){
             var uniq_bmps = _.uniq(_.flatten(_.pluck(data,'bmps')));
@@ -187,15 +267,15 @@ Mask.prototype.craftStormwaterAccess = function(){
                 if(val.bmps){
                     _.forIn(val.bmps,function(use){
                         result[use].push(val._id);
-                    })
+                    });
                 }
-                else if(val.bmps == null){
+                else if(val.bmps === null){
                     result[null].push(val._id);
                 }
                 return result;
             },bmps);
             bmps = _.reduce(bmps,function(result,val,key){
-                var item = {'title':key,'site_key':val};
+                var item = {'title':key,'site_doc_ids':val};
                 result.push(item);
                 return(result);
             },[]);
@@ -218,14 +298,23 @@ Mask.prototype.craftStormwaterAccess = function(){
             },statuses);
 
             statuses = _.reduce(statuses,function(result, val, key){
-                var item = {'title':key,'site_key':val};
+                var item = {'title':key,'site_doc_ids':val};
                 result.push(item);
                 return result;
             },[]);
+            console.log('assign status');
+            statuses = assignColors(statuses);
+            console.log('assign bmps');
+            bmps = assignColors(bmps);
 
             var keys = _.pluck(data,'_id');
-
-            var doc = {'id':'stormwater', statuses:statuses,bmps:bmps,site_key:keys};
+            var info = {statuses:statuses,bmps:bmps};
+            var filterable = [
+                {name:'bmps',pretty_name:'Best Management Practices',exchange_with:['site_doc_ids'],attributes:['color']},
+                {name:'statuses',pretty_name:'Site Status',exchange_with:['site_doc_ids'],attributes:['color']}
+            ];
+            var searchable = [];
+            var doc = {'id':'stormwater',pretty_name:'Stormwater Management Sites',type:'sites',info:info,filterable:filterable,searchable:searchable,site_doc_ids:keys, meta:{}};
             return(writeCollection(self.db,[doc],'access'))
         })
         .then(function(results){
@@ -239,48 +328,83 @@ Mask.prototype.craftStormwaterAccess = function(){
 Mask.prototype.craftVitalSignsAccess = function(){
     var self = this;
     var deferred = q.defer();
-    query(self.db,{},{'_id':1,'name':1,'section':1},'vs')
-        .then(function(data){
-            var titles = _.transform(data,function(result,val){
-                if(val.name){
-                    var obj = {'title':val.name,'site_key':val._id}
-                    result.push(obj);
+    console.log("--Begin crafting <vital signs> mask")
+    query(self.db,{},{'_id':1,'id':1,'name':1,'section':1,'stats':1,'intervals':1},'vs')
+        .then(function(indicators){
+            self.indicators = indicators;
+            return(query(self.db,{},{},'vs_csas'))
+        })
+        .then(function(vs_csas){
+            var counter = 0;
+            var docs = _.reduce(self.indicators,function(results,ind){
+                counter+=1;
+                console.log("--" + counter);
+                var doc = {};
+                doc.id = ind.id;
+                doc.pretty_name = ind.name;
+                doc.type = 'geo';
+                doc.meta = {};
+                doc.meta.set = 'vs_geo';
+                doc.meta.section = ind.section;
+                doc.meta.intervals = ind.intervals;
+                doc.meta.stats = ind.stats;
+                var vs = _.filter(vs_csas,_.matchesProperty('geo.properties.indicator_id',ind.name));
+                doc.info = {}
+                doc.info.titles = _.map(vs,function(v){
+                    var inf = {};
+                    inf.title = v.id;
+                    inf.geo_doc_id = v._id;
+                    inf.site_doc_ids = v.sites;
+                    //inf.interval = v.geo.properties.interval;
+                    return inf;
+                });
+                doc.geo_doc_ids = _.map(doc.info.titles,function(t){
+                    return t.geo_doc_id;
+                });
+                var site_doc_ids = _.map(doc.info.titles,function(t){
+                    return t.site_doc_ids;
+                });
+                doc.site_doc_ids = _.unique(_.flatten(site_doc_ids));
+                doc.info.intervals = [];
+                for(var i = 0; i < 5; i++){
+                    var interval = ind.intervals[i];
+                    var inf = {};
+                    inf.interval = i;
+                    inf.title = numeral(interval[0]).format('0,0.[00]') + " - " + numeral(interval[1]).format('0,0.[00]');
+                    var in_interval = _.filter(vs, _.matchesProperty('geo.properties.interval',i));
+                    inf.geo_doc_ids = _.pluck(in_interval,'_id');
+                    inf.site_doc_ids = _.unique(_.flatten(_.pluck(in_interval,'sites')));
+                    doc.info.intervals.push(inf);
                 }
-            });
-            var sections = _.uniq(_.pluck(data,'section'));
-
-
-
-            var sections = _.reduce(sections, function(result,val){
-                result[val] = [];
-                return(result);
-            },{});
-
-            sections = _.reduce(data,function(result,val){
-                if(val.section){
-                    result[val.section].push(val._id);
-                }
-                else if(val.section == null){
-                    result[null].push(val._id);
-                }
-                return result;
-            },sections);
-
-            sections = _.reduce(sections,function(result, val, key){
-                var item = {'title':key,'site_key':val};
-                result.push(item);
-                return result;
+                doc.filterable = [
+                    {'name':'titles','pretty_name':'Community Statistical Area Name','exchange_with':['site_doc_ids','geo_doc_id']},
+                    {'name':'intervals','pretty_name':'In Interval','exchange_with':['site_doc_ids','geo_doc_ids']}
+                ]
+                doc.searchable = [{name:'titles',pretty_name:'Community Statistical Area Names',exchange_with:['site_doc_ids','geo_doc_id']}];
+                results.push(doc);
+                return results;
             },[]);
-
-            var doc = {'id':'vitalsigns',titles:titles,sections:sections};
-            return(writeCollection(self.db,[doc],'access'));
+        return writeCollection(self.db,docs,'access');
         })
         .then(function(results){
-
+            console.log("--End crafting <vital signs> mask")
+            deferred.resolve(results);
         });
+    return deferred.promise;
 };
 
+function assignColors(obj_arr){
+    var result = _.clone(obj_arr);
+    var n = obj_arr.length;
+    var colors = uc.unique_colors(n);
+    _.forIn(_.range(n),function(i){
+        result[i].color = colors[i];
+    });
+    return result;
+}
+
 function writeCollection(db,documents,collection){
+    var self = this;
     var deferred = q.defer();
     var col = db.collection(collection);
     //chunking into 500s, to avoid write limit.
@@ -297,7 +421,7 @@ function writeCollection(db,documents,collection){
     function insertChunk(chunk){
         var deferred = q.defer();
         col.insertMany(chunk,{w:1},function(error,results){
-            if(error){deferred.reject(self.errorCheck(error));}
+            if(error){deferred.reject(error); console.log(error);}
             else{
                 deferred.resolve(results);
             }
@@ -332,7 +456,7 @@ function assembleGeoJson(data){
     fc.features = _.map(data,function(d){
         var feature = d.geo;
         feature.type = "Feature";
-        feature.properties = {title: d.id,key: d._id};
+        feature.properties = {title: d.id,geo_doc_id: d._id};
         return feature;
     });
     return fc;

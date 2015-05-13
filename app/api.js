@@ -14,37 +14,19 @@ Api.prototype.test = function(request,response,callback){
     this.utils.test(response,callback);
 };
 
-Api.prototype.getAccessLayer = function(id){
+Api.prototype.getAccessData = function(){
     var deferred = q.defer();
-    switch(id){
-        case 'watersheds':
-            this.utils.query({'id':'watersheds'},{},'access')
-                .then(function(response){deferred.resolve(response[0])});
-            break;
-        case 'neighborhoods':
-            this.utils.query({'id':'neighborhoods'},{},'access')
-                .then(function(response){deferred.resolve(response[0])});
-            break;
-        case 'csas':
-            this.utils.query({'id':'csas'},{},'access')
-                .then(function(response){deferred.resolve(response[0])});
-            break;
-        case 'cmos':
-            this.utils.query({'id':'cmos'},{},'access')
-                .then(function(response){deferred.resolve(response[0])});
-            break;
-        case 'stormwater':
-            this.utils.query({'id':'stormwater'},{},'access')
-                .then(function(response){deferred.resolve(response[0])});
-            break;
-        case 'vitalsigns':
-            this.utils.query({'id':'vitalsigns'},{},'access')
-                .then(function(response){deferred.resolve(response[0])});
-            break;
-        default:
-            deferred.resolve("Not a valid access layer!");
-            break;
-    }
+    this.utils.query({},{},'access').then(function(results){
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+};
+
+Api.prototype.getAccessSelectors = function(){
+    var deferred = q.defer();
+    this.utils.query({},{},'access_selectors').then(function(results){
+        deferred.resolve(results);
+    })
     return deferred.promise;
 };
 

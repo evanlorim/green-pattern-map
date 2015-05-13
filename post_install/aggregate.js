@@ -5,6 +5,7 @@ var traverse = require('traverse');
 var geolib = require('geolib');
 var gju = require('geojson-utils');
 var ss = require('simple-statistics');
+var deepcopy = require('deepcopy');
 var _ = require('lodash');
 
 var Aggregate = function(options){
@@ -123,6 +124,45 @@ Aggregate.prototype.assignCsasSites = function(){
     return deferred.promise;
 };
 
+Aggregate.prototype.assignVsCsas = function(){
+    var self = this;
+    var deferred = q.defer();
+    console.log("Begin assigning <csas> to <vital signs>")
+    q.all([findAll(self.db,'vs'),findAll(self.db,'csas')])
+        .spread(function(indicators,csas){
+            var docs = [];
+            for(var j = 0; j < indicators.length; j++){
+                var ind = deepcopy(indicators[j]); //i dont know
+                console.log(ind.name);
+                var subdocs = [];
+                for(var i = 0; i < ind.data.length; i++){
+                    var d = ind.data[i];
+                    var doc = new Object();
+                    var csa = _.find(csas, _.matchesProperty('id',d.id));
+                    doc.geo = deepcopy(csa.geo);
+                    doc.id = csa.id;
+                    doc.sites = csa.sites;
+                    doc.geo.properties = {};
+                    doc.geo.properties.indicator_id = ind.name;
+                    doc.geo.properties.id = ind.id;
+                    doc.geo.properties.value = d.value;
+                    doc.geo.properties.interval = d.interval;
+                    doc.geo.properties.color = ind.colors[d.interval];
+                    subdocs.push(doc);
+                }
+                docs.push(subdocs);
+            }
+            docs = _.flatten(docs);
+            return(writeCollection(self.db,docs,'vs_csas'))
+        }).then(function(results){
+            console.log("End assigning <csas> to <vital signs>");
+            deferred.resolve(results);
+        }).fail(function(error){
+            deferred.reject(new Error(error));
+        });
+    return deferred.promise;
+}
+
 
 function findAll(db,collection){
     var deferred = q.defer();
@@ -201,6 +241,42 @@ function inGeometry(latlng,geometry){
     else{
         throw(new Error("Unsupported geometry type"));
     }
+}
+
+function writeCollection(db,documents,collection){
+    var deferred = q.defer();
+    var col = db.collection(collection);
+    //chunking into 500s, to avoid write limit.
+    var chunks = _.chunk(documents, 500);
+    var chunk_funcs = _.map(chunks, function(chunk){
+        return new insertChunk(chunk);
+    });
+    q.all(chunk_funcs).then(function(results){
+        deferred.resolve(aggregate_results(results));
+    },function(error){
+        deferred.reject(error);
+    });
+
+    function insertChunk(chunk){
+        var deferred = q.defer();
+        col.insertMany(chunk,{w:1},function(error,results){
+            if(error){deferred.reject(self.errorCheck(error));}
+            else{
+                deferred.resolve(results);
+            }
+        });
+        return deferred.promise;
+    }
+
+    function aggregate_results(results){
+        var report = {};
+        report.count = _.sum(_.pluck(results,'insertedCount'));
+        report.ops = _.flatten(_.pluck(results,'ops'));
+        report.ids = _.flatten(_.pluck(results,'insertedIds'));
+        return report;
+    }
+
+    return deferred.promise;
 }
 
 

@@ -1,0 +1,20 @@
+<div class='checkbox checkbox-danger selector-show-all'> 
+<input type='checkbox' data-toggle='checkbox' class='selector-show-all-option' ng-click='sel.toggleShowAll()'>
+<label class='checkbox'>Show All</label>
+</div>
+<div ng-repeat='filter in sel.filters'>
+		<h4 class='option-header'>
+			{{filter.title}}
+		</h4>	
+		<form role='form'>
+				<div class='checkbox checkbox-primary filter-option'>
+					<<input class ='selectall' type='checkbox' data-toggle='checkbox' ng-click="filter.toggle()">
+					<label class='checkbox'>Select all/ None</label>
+				</div>
+				<div class='checkbox checkbox-primary filter-option' ng-repeat='opt in filter.options'>
+					<<input type='checkbox' data-toggle='checkbox' ng-model='opt.active' class='filter-option-chk',ng-click='applyActiveSelectors()'>
+					<label class='checkbox'>{{opt.title}}</label>
+				</div>
+
+			</form>
+</div>
