@@ -30,10 +30,20 @@ Api.prototype.getAccessSelectors = function(){
     return deferred.promise;
 };
 
-Api.prototype.findSites = function(site_ids){
+Api.prototype.findSites = function(site_ids,radiusfilter){
     var deferred = q.defer();
+    var self = this;
     this.utils.findSites(site_ids)
-        .then(function(response){deferred.resolve(response)});
+        .then(function(response){
+            if(radiusfilter){
+                return self.utils.pointsInRadius(response,radiusfilter);
+            }
+            else{
+                return response;
+            }
+        }).then(function(response2){
+            deferred.resolve(response2);
+        });
     return deferred.promise;
 };
 

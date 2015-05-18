@@ -50,7 +50,13 @@ app.post('/api/:type', function(request, response){
     console.log(request.params.type);
     if(request.params.type == 'findsites'){
         console.log(request.body.site_doc_ids);
-        api.findSites(request.body.site_doc_ids)
+        if(request.body.radiusfilter){
+            var rf = request.body.radiusfilter;
+        }
+        else{
+            var rf = null;
+        }
+        api.findSites(request.body.site_doc_ids,rf)
             .then(function(results){
                 return callback({data:results});
             });

@@ -12,11 +12,9 @@ block content
                         a(href='#').navbar-brand
                             img(src='/public/img/bmore-green-registry_white.png',height='36px',width:'auto')
                 ul.nav.navbar-nav
-                    button.btn.btn-success.apply-button(type='submit',ng-click='applyActiveSelectors()') Apply Filters
-                ul.nav.navbar-nav
                     span.dropdown(dropdown='', on-toggle='toggled(open)')
                         a.dropdown-toggle(href='', dropdown-toggle='')
-                            span Sites
+                            span Patterns
                             span.caret
                         ul.dropdown-menu
                             li(ng-repeat='pattern in site_selectors')
@@ -60,9 +58,9 @@ block content
 
 
         div.config
-            accordion
+            accordion(close-others='true')
                 div(ng-repeat="sel in selectors",ng-show='sel.active == true').my-accordion-container.ng-hide
-                    accordion-group
+                    accordion-group(is-open='sel.open')
                         accordion-heading
                             div
                                 button(type='button',ng-click='switchSelector(sel,false)').close 
@@ -78,17 +76,50 @@ block content
                             span.caret
                         ul.dropdown-menu
                             li(ng-repeat='search in searches')
-                              a(href='#') {{search.title}}
+                              a(href='#',ng-click='switchSearch(search)') {{search.title}}
                     form.navbar-form.navbar-left(role='search')
                         div.float-right
                             .form-group
-                                    input.form-control(type='text',ng-show='searches.placeholder.active == true')
-                                    input.form-control(type='text', ng-model='asyncSelected', placeholder='Locations loaded via $http', typeahead='address for address in getLocation($viewValue)', typeahead-loading='loadingLocations',ng-show='searches.address.active == true')
-                                    input.form-control(type='text', ng-model='selected', placeholder='Indicator Name...',typeahead='indicator.title for indicator in vs_layer_selectors',ng-show='searches.indicators.active == true')
-                            button.btn.btn-default(type='submit',ng-click='') Submit
+                                    input.form-control(type='text',ng-show='!searches.address.active && !searches.indicators.active',placeholder='Make a selection...') 
+                                    input.form-control(type='text', ng-model='asyncSelected', placeholder='Type an address...', typeahead='address.formatted_address for address in getLocation($viewValue)', typeahead-loading='loadingLocations',ng-show='searches.address.active == true',typeahead-on-select='searchSelect($item)')
+                                    input.form-control(type='text', ng-model='selected', placeholder='Indicator Name...',typeahead='indicator.title for indicator in vs_layer_selectors | limitTo:8', typeahead-editable="false", ng-show='searches.indicators.active == true',typeahead-on-select='searchSelect($item)')
+                            button.btn.btn-default(type='submit',ng-click='submitSearch()') Submit
 
         div.map-container
             #map
 
-        div.legend.panel.panel-default.map-overlay
+        div.legend.panel.panel-default.map-overlay(ng-show='active.pattern || active.layer')
+            div.pattern-legend(ng-show='active.pattern') 
+                h4 Pattern
+                div.cmos-legend(ng-show='active.pattern.id == \'cmos\'')
+                    div.legend-entry
+                        div.cmos-legend-marker
+                        span.legend-marker-label All Sites
+                div.stormwater-legend(ng-show='active.pattern.id == \'stormwater\'')
+                    div.legend-entry
+                        div.sw-active-legend-marker
+                        span.legend-marker-label Active
+                    div.legend-entry
+                        div.sw-identified-legend-marker
+                        span.legend-marker-label Identified
+            div.layer-legend(ng-show='active.layer')
+                h4 Layer
+                div(ng-repeat='vs_layer in vs_layer_selectors') 
+                    div.vs-layer-legend(ng-show='active.layer.id == vs_layer.id')
+                        div(ng-repeat ='opt in vs_layer.getFilterById(\'intervals\').options')
+                            div.legend-entry
+                                div.layer-legend-marker(style='{{\'background-color:\' + vs_layer.meta.colors[opt.interval]}}')
+                                span.legend-marker-label {{opt.title}}
+                div.default-layer-legend(ng-show='active.layer.id == \'neighborhoods\' || active.layer.id == \'watersheds\' || active.layer.id == \'csas\'')
+                    div.legend-entry
+                        div.default-layer-legend-marker
+                        span.legend-marker-label All Areas
+            div.address-legend(ng-show='active.radius_filter')
+                h4 Address
+                div.address-legend-container
+                    button(type='button',ng-click='clearRadiusFilter();applyActiveSelectors()').close
+                        span(aria-hidden='true') &times
+                    div.legend-marker-label{{active.radius_filter.title}}
+
+
             

@@ -1,6 +1,7 @@
 var q = require('q');
 var _ = require('lodash');
 var mongo = require('mongodb');
+var geolib = require('geolib');
 var ObjectID = require('mongodb').ObjectID;
 
 var Utils = function(config) {
@@ -69,6 +70,23 @@ Utils.prototype.findGeo = function(collection,obj_ids){
             })
         })
     return deferred.promise;
+};
+
+Utils.prototype.pointsInRadius = function(sites,radiusfilter){
+    var center = {latitude:radiusfilter.coordinates[0],longitude:radiusfilter.coordinates[1]};
+    var radius = radiusfilter.radius;
+    var results = _.reduce(sites,function(result,s){
+        if(s.coordinates){
+            var latlng = {latitude:s.coordinates[1],longitude:s.coordinates[0]};
+            if(geolib.isPointInCircle(latlng,center,radius)){
+                console.log("WOO!");
+                result.push(s);
+            }
+        }
+        return result;
+    },[]);
+    console.log("DONE RADIUS SEARCH");
+    return results;
 };
 
 parseGeoJson = function(arr){

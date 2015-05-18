@@ -329,7 +329,7 @@ Mask.prototype.craftVitalSignsAccess = function(){
     var self = this;
     var deferred = q.defer();
     console.log("--Begin crafting <vital signs> mask")
-    query(self.db,{},{'_id':1,'id':1,'name':1,'section':1,'stats':1,'intervals':1},'vs')
+    query(self.db,{},{'_id':1,'id':1,'name':1,'section':1,'stats':1,'intervals':1,'colors':1},'vs')
         .then(function(indicators){
             self.indicators = indicators;
             return(query(self.db,{},{},'vs_csas'))
@@ -347,6 +347,7 @@ Mask.prototype.craftVitalSignsAccess = function(){
                 doc.meta.set = 'vs_geo';
                 doc.meta.section = ind.section;
                 doc.meta.intervals = ind.intervals;
+                doc.meta.colors = ind.colors;
                 doc.meta.stats = ind.stats;
                 var vs = _.filter(vs_csas,_.matchesProperty('geo.properties.indicator_id',ind.name));
                 doc.info = {}
