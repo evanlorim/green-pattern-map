@@ -1,3 +1,4 @@
+//mask data
 var mongo = require('mongodb');
 var q = require('q');
 var async = require('async-q');
@@ -144,14 +145,14 @@ Mask.prototype.craftNeighborhoodAccess = function(){
             var geo_doc_ids = _.map(geojson.features,function(f){
                 return f.properties.geo_doc_id;
             })
+            return t.site_doc_ids;
+
+
             var titles = _.transform(data,function(result,val){
                 var obj = {title:val.id,geo_doc_id:val._id,site_doc_ids:val.sites};
                 result.push(obj);
             });
-
-
             var site_doc_ids = _.map(titles,function(t){
-                return t.site_doc_ids;
             });
             site_doc_ids = _.unique(_.flatten(site_doc_ids));
 
