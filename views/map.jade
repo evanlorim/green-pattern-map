@@ -81,7 +81,7 @@ block content
                         div.float-right
                             .form-group
                                     input.form-control(type='text',ng-show='!searches.address.active && !searches.indicators.active',placeholder='Make a selection...') 
-                                    input.form-control(type='text', ng-model='asyncSelected', placeholder='Type an address...', typeahead='address.formatted_address for address in getLocation($viewValue)', typeahead-loading='loadingLocations',ng-show='searches.address.active == true',typeahead-on-select='searchSelect($item)')
+                                    input.form-control(type='text', ng-model='asyncSelected', placeholder='Type an address...', typeahead='address.formatted_address for address in getLocation($viewValue) | limitTo:8', typeahead-loading='loadingLocations',ng-show='searches.address.active == true',typeahead-on-select='searchSelect($item)')
                                     input.form-control(type='text', ng-model='selected', placeholder='Indicator Name...',typeahead='indicator.title for indicator in vs_layer_selectors | limitTo:8', typeahead-editable="false", ng-show='searches.indicators.active == true',typeahead-on-select='searchSelect($item)')
                             button.btn.btn-default(type='submit',ng-click='submitSearch()') Submit
 

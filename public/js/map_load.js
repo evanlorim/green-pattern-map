@@ -273,10 +273,12 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 	    return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
 	      params: {
 	        address: val,
-	        sensor: false
+	        bounds: {'northeast':{'lat':39.383611, 'lng':-76.458333}, 'southwest':{'lat':39.244444, 'lng': -76.693889}},
+	        sensor: false,
 	      }
 	    }).then(function(response){
 	      return response.data.results.map(function(item){
+	      	console.log(item);
 	        return item;
 	      });
 	    });

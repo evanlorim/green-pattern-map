@@ -144,15 +144,13 @@ Mask.prototype.craftNeighborhoodAccess = function(){
             var geojson = assembleGeoJson(data);
             var geo_doc_ids = _.map(geojson.features,function(f){
                 return f.properties.geo_doc_id;
-            })
-            return t.site_doc_ids;
-
-
+            });
             var titles = _.transform(data,function(result,val){
                 var obj = {title:val.id,geo_doc_id:val._id,site_doc_ids:val.sites};
                 result.push(obj);
             });
             var site_doc_ids = _.map(titles,function(t){
+                return t.site_doc_ids;
             });
             site_doc_ids = _.unique(_.flatten(site_doc_ids));
 
@@ -178,7 +176,7 @@ Mask.prototype.craftCsaAccess = function(){
             var geojson = assembleGeoJson(data);
             var geo_doc_ids = _.map(geojson.features,function(f){
                 return f.properties.geo_doc_id;
-            })
+            });
             var titles = _.transform(data,function(result,val){
                 var obj = {title:val.id,geo_doc_id:val._id,site_doc_ids:val.sites};
                 result.push(obj);
@@ -321,7 +319,7 @@ Mask.prototype.craftStormwaterAccess = function(){
         .then(function(results){
             console.log("--End crafting <stormwater> mask")
             deferred.resolve(results);
-        })
+        });
 
     return deferred.promise;
 };
@@ -454,13 +452,16 @@ function query(db,query,projection,collection){
 
 //assemble feature collection with ids, features, and _ids;
 function assembleGeoJson(data){
-    var fc = {'type': 'FeatureCollection'}
+    var fc = {'type': 'FeatureCollection'};
+    console.log('--begin assembling geojson');
     fc.features = _.map(data,function(d){
+        console.log(d);
         var feature = d.geo;
         feature.type = "Feature";
         feature.properties = {title: d.id,geo_doc_id: d._id};
         return feature;
     });
+    console.log('--end assembling geojson');
     return fc;
 }
 

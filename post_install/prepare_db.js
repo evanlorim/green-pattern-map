@@ -5,7 +5,6 @@ var Aggregate = require("./aggregate.js");
 var Mask = require("./mask.js");
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/green-registry';
 
-
 loadResources()
     .then(function(res){
         return(aggregateData());
@@ -98,13 +97,19 @@ function maskData(){
             var deferred = q.defer();
             _disconnect = mask.disconnect;
             console.log("BEGIN MASK OPERATION");
-            return(q.all([
-                mask.craftWatershedAccess(),
-                mask.craftNeighborhoodAccess(),
-                mask.craftCsaAccess(),
-                mask.craftCmosAccess(),
-                mask.craftStormwaterAccess(),
-            ]));
+            return mask.craftCmosAccess();
+        })
+        .then(function(data){
+            return mask.craftStormwaterAccess();
+        })
+        .then(function(data){
+            return mask.craftNeighborhoodAccess();
+        })
+        .then(function(data){
+            return mask.craftCsaAccess();
+        })
+        .then(function(data){
+            return mask.craftWatershedAccess();
         })
         .then(function(data){
             return mask.craftVitalSignsAccess();
