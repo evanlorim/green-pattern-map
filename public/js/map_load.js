@@ -300,6 +300,8 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
   	};
 
 	function initialize(){
+		$scope.loaded = false;
+		$scope.load_percent = 20;
 		$scope.defaults = {
 			'fallback_layer_color':'#F7C59F',
 			'layer_opacity':.6,
@@ -316,6 +318,7 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 		$scope.selectors = {};
 		$scope.active = {layer:null,pattern:null,radius_filter:null};
 		retrieveData.getAccessData().then(function(data){
+			$scope.load_percent = 40;
 			var alldata = data.data.data;
 			$scope.selectors = _.map(alldata,function(obj){
 				var s = new Selector(obj);
@@ -361,7 +364,7 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 				});
 				return obj;
 			});
-
+			$scope.load_percent = 80;
 			$scope.searches = {
 				address:{active:false,title:'Addresses'},
 				indicators:{active:false,title:'Indicators'}
@@ -371,6 +374,7 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 			$scope.active.search_selection = null;
 
 			initializeMap();
+			$scope.loaded = true;
 		});
 	}
 

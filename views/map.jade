@@ -87,6 +87,9 @@ block content
 
         div.map-container
             #map
+                div.col-sm-4
+                    progressbar.progress-striped.active(value='load_percent')
+                        i loading...
 
         div.legend.panel.panel-default.map-overlay(ng-show='active.pattern || active.layer')
             div.pattern-legend(ng-show='active.pattern') 

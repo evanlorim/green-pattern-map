@@ -324,3 +324,9 @@ body, html{
 	border-style:solid;
 	border-width:2px;
 }
+
+#map .col-sm-4{
+	position:absolute;
+	top:40px;
+	left:20px;
+}
