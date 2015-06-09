@@ -122,85 +122,92 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 	$scope.updateMapMarkers = function(points){
 		$scope.markers.clearLayers();
 		if(!points || points.length == 0){
-			return;
+			//do nothing
 		}
-		var markers = _.map(points,function(p){
-			var color;
-			var fillColor;
-			var pop = '';
-			if(p.set == 'cmos'){
-				color = '#33a02c';
-				fillColor = '#b2df8a';
-				pop = '';
-				if(p.name){
-					pop = pop + '<h4>' + p.name  + '</h4><br>';
-					//console.log(pop);
+		else{
+			var markers = _.map(points,function(p){
+				var color;
+				var fillColor;
+				var pop = '';
+				if(p.set == 'cmos'){
+					color = '#33a02c';
+					fillColor = '#b2df8a';
+					pop = '';
+					if(p.name){
+						pop = pop + '<h4>' + p.name  + '</h4><br>';
+						//console.log(pop);
+					}
+					else{
+						pop = pop + '<h4> Unnamed </h4><br>';
+					}
+					pop = pop + "<img> src=\'/public/img/img_placeholder_white.png\' width=\'120px\' height=\'auto\'>";
+					pop = pop + '<p><b>Location: </b>';
+					if(p.address){
+						pop = pop + p.address;
+					}
+					else{
+						pop = pop + 'Unknown';
+					}
+					pop = pop + '</p>';
+					pop = pop + '<p><b>Site Uses: </b>';
+					if(p.uses){
+						pop = pop + p.uses.join(", ");
+					}
+					else{
+						pop = pop + 'None';
+					}
+					pop = pop + '</p>'
 				}
-				else{
-					pop = pop + '<h4> Unnamed </h4><br>';
-				}
-				pop = pop + "<img> src=\'/public/img/img_placeholder_white.png\' width=\'120px\' height=\'auto\'>";
-				pop = pop + '<p><b>Location: </b>';
-				if(p.address){
-					pop = pop + p.address;
-				}
-				else{
-					pop = pop + 'Unknown';
-				}
-				pop = pop + '</p>';
-				pop = pop + '<p><b>Site Uses: </b>';
-				if(p.uses){
-					pop = pop + p.uses.join(", ");
-				}
-				else{
-					pop = pop + 'None';
-				}
-				pop = pop + '</p>'
-			}
 
-			if(p.set == 'stormwater'){
-				if(p.status == 'Active'){
-					fillColor = '#a6cee3';
-					color = '#1f78b4';
+				if(p.set == 'stormwater'){
+					if(p.status == 'Active'){
+						fillColor = '#a6cee3';
+						color = '#1f78b4';
+					}
+					else if (p.status == 'Identified'){
+						fillColor = '#fb9a99';
+						color = '#e31a1c';
+					}
+					pop = pop + '<p><b>Location: </b>( ' +  p.coordinates[0].toFixed(2) + ", " + p.coordinates[1].toFixed(2) + " )</p>";
+					pop = pop + '<p><b>Status: </b>';
+					if(p.status){
+						pop = pop + p.status;
+					}
+					else{
+						pop = pop + "None";
+					}
+					pop = pop + "</p>";
+					pop = pop + "<p><b>Best Management Practices: </b>"
+					if(p.bmps){
+						pop = pop + p.bmps.join(", ");
+					}
+					else{
+						pop = pop + "None";
+					}
+					pop = pop + "</p>";
+					pop = pop + "<p><b>Source: </b>";
+					if(p.source){
+						pop = pop + p.source;
+					}
+					else{
+						pop = pop + "Not Provided";
+					}
+					pop = pop + "</p>";
 				}
-				else if (p.status == 'Identified'){
-					fillColor = '#fb9a99';
-					color = '#e31a1c';
-				}
-				pop = pop + '<p><b>Location: </b>( ' +  p.coordinates[0].toFixed(2) + ", " + p.coordinates[1].toFixed(2) + " )</p>";
-				pop = pop + '<p><b>Status: </b>';
-				if(p.status){
-					pop = pop + p.status;
-				}
-				else{
-					pop = pop + "None";
-				}
-				pop = pop + "</p>";
-				pop = pop + "<p><b>Best Management Practices: </b>"
-				if(p.bmps){
-					pop = pop + p.bmps.join(", ");
-				}
-				else{
-					pop = pop + "None";
-				}
-				pop = pop + "</p>";
-				pop = pop + "<p><b>Source: </b>";
-				if(p.source){
-					pop = pop + p.source;
-				}
-				else{
-					pop = pop + "Not Provided";
-				}
-				pop = pop + "</p>";
-			}
 
-			var m = new L.circleMarker([p.coordinates[1],p.coordinates[0]],{'fillOpacity':.6,'radius':6,'opacity':1,'fillColor':fillColor,'color':color});
-			m.bindPopup(pop);
-			return m;
-		});
+				var m = new L.circleMarker([p.coordinates[1],p.coordinates[0]],{'fillOpacity':.6,'radius':6,'opacity':1,'fillColor':fillColor,'color':color});
+				m.bindPopup(pop);
+				return m;
+			});
+		}
 		if($scope.active.radius_filter){
 			$scope.circ = new L.circle($scope.active.radius_filter.coordinates, $scope.active.radius_filter.radius);
+			$scope.circ_center = new L.circle($scope.active.radius_filter.coordinates,10);
 			$scope.markers.addLayer($scope.circ);
+			if(!markers){
+				markers = [];
+			}
+			markers.push($scope.circ_center);
 		}
 		$scope.markers.addLayer(new L.layerGroup(markers));
 		$scope.markers.addTo($scope.map);
@@ -395,7 +402,9 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 			if($scope.active.search_selection){
 				var sel = $scope.active.search_selection;
 				$scope.active.radius_filter = {title:sel.formatted_address,coordinates:[sel.geometry.location.lat,sel.geometry.location.lng],radius:$scope.user_settings.search_radius};
+				var circ = L.circle($scope.active.radius_filter.coordinates,$scope.active.radius_filter.radius);
 				$scope.applyActiveSelectors();
+				$scope.map.fitBounds(circ.getBounds(),{maxZoom:18,duration:1,animate:true,padding:[240,120]});
 			}
 		}
 	};
