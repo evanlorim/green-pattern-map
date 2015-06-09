@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node index.js",
-    "postinstall": "bower install && node post_install/prepare_db.js"
+    "postinstall": "bower install && node --max-old-space-size=8192 post_install/prepare_db.js"
   },
   "dependencies": {
     "body-parser": "~1.12.3",

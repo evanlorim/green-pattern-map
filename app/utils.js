@@ -89,6 +89,10 @@ Utils.prototype.pointsInRadius = function(sites,radiusfilter){
     return results;
 };
 
+Utils.prototype.sortAccessData = function(data){
+
+};
+
 parseGeoJson = function(arr){
     return _.reduce(arr,function(results,a){
         var feat = a.geo;

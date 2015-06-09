@@ -9,10 +9,10 @@ access.service('retrieveData', function($http){
 	};
 	this.findSites = function(site_doc_ids,radiusfilter){
 		return $http.post('/api/findsites',{'site_doc_ids':site_doc_ids,radiusfilter:radiusfilter});
-	}
+	};
 	this.findGeo = function(collection,geo_doc_ids){
 		return $http.post('/api/findgeo',{'collection':collection,'geo_doc_ids':geo_doc_ids});
-	}
+	};
 });
 
 access.controller('dataController', function ($scope,$http, $q,retrieveData, $modal){
@@ -68,18 +68,6 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 		$scope.applyActiveSelectors();
 	};
 
-	$scope.adaptLegend = function(){
-/*		if($scope.active.pattern == null && $scope.active.layer == null){
-			d3.selectAll('.legend')
-				.style('display','none');
-		}
-		else{
-			d3.selectAll('.legend')
-				.style('display','inline-block');
-			if($scope.active.legend)
-		}*/
-	}
-
 	$scope.applyActiveSelectors = function(){
 		var deferred = $q.defer();
 		$scope.applyLayerSelectors().then(function(result){
@@ -113,7 +101,7 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 			});
 		}
 		return deferred.promise;
-	}
+	};
 
 	$scope.applyPatternSelectors = function(){
 		var deferred = $q.defer();
@@ -130,7 +118,7 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 			})
 		}
 		return deferred.promise;
-	}
+	};
 
 	$scope.updateMapMarkers = function(points){
 		$scope.markers.clearLayers();

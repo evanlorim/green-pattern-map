@@ -26,7 +26,7 @@ Api.prototype.getAccessSelectors = function(){
     var deferred = q.defer();
     this.utils.query({},{},'access_selectors').then(function(results){
         deferred.resolve(results);
-    })
+    });
     return deferred.promise;
 };
 
@@ -52,6 +52,6 @@ Api.prototype.findGeo = function(collection,obj_ids){
     this.utils.findGeo(collection,obj_ids)
         .then(function(response){deferred.resolve(response)});
     return deferred.promise;
-}
+};
 
 module.exports = Api;

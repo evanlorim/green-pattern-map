@@ -100,7 +100,7 @@ Mask.prototype.craftSelectors = function(){
             deferred.resolve(results);
         });
     return deferred.promise;
-}
+};
 
 Mask.prototype.craftWatershedAccess = function(){
     var self = this;
@@ -111,7 +111,7 @@ Mask.prototype.craftWatershedAccess = function(){
             var geojson = assembleGeoJson(data);
             var geo_doc_ids = _.map(geojson.features,function(f){
                 return f.properties.geo_doc_id;
-            })
+            });
             var titles = _.transform(data,function(result,val){
                 var obj = {title:val.id,geo_doc_id:val._id,site_doc_ids:val.sites};
                 result.push(obj);
@@ -149,6 +149,9 @@ Mask.prototype.craftNeighborhoodAccess = function(){
                 var obj = {title:val.id,geo_doc_id:val._id,site_doc_ids:val.sites};
                 result.push(obj);
             });
+
+            titles = reSort(titles,'title');
+
             var site_doc_ids = _.map(titles,function(t){
                 return t.site_doc_ids;
             });
@@ -181,6 +184,8 @@ Mask.prototype.craftCsaAccess = function(){
                 var obj = {title:val.id,geo_doc_id:val._id,site_doc_ids:val.sites};
                 result.push(obj);
             });
+
+            titles = reSort(titles,'title');
 
             var site_doc_ids = _.map(titles,function(t){
                 return t.site_doc_ids;
@@ -234,7 +239,8 @@ Mask.prototype.craftCmosAccess = function(){
                 return(result);
             },[]);
 
-            console.log('assigning uses');
+            uses = reSort(uses,'title');
+
             uses = assignColors(uses);
 
             var keys = _.pluck(data,'_id');
@@ -301,9 +307,11 @@ Mask.prototype.craftStormwaterAccess = function(){
                 result.push(item);
                 return result;
             },[]);
-            console.log('assign status');
+
+            statuses = reSort(statuses,'title');
+            bmps = reSort(bmps,'title');
+
             statuses = assignColors(statuses);
-            console.log('assign bmps');
             bmps = assignColors(bmps);
 
             var keys = _.pluck(data,'_id');
@@ -379,7 +387,7 @@ Mask.prototype.craftVitalSignsAccess = function(){
                 doc.filterable = [
                     {'name':'titles','pretty_name':'Community Statistical Area Name','exchange_with':['site_doc_ids','geo_doc_id']},
                     {'name':'intervals','pretty_name':'In Interval','exchange_with':['site_doc_ids','geo_doc_ids']}
-                ]
+                ];
                 doc.searchable = [{name:'titles',pretty_name:'Community Statistical Area Names',exchange_with:['site_doc_ids','geo_doc_id']}];
                 results.push(doc);
                 return results;
@@ -455,7 +463,6 @@ function assembleGeoJson(data){
     var fc = {'type': 'FeatureCollection'};
     console.log('--begin assembling geojson');
     fc.features = _.map(data,function(d){
-        console.log(d);
         var feature = d.geo;
         feature.type = "Feature";
         feature.properties = {title: d.id,geo_doc_id: d._id};
@@ -464,6 +471,18 @@ function assembleGeoJson(data){
     console.log('--end assembling geojson');
     return fc;
 }
+
+function reSort(data,key){
+    console.log('--Begin resorting');
+    var nll = _.filter(data,key,null);
+    var notnll = _.reject(data,key,'null');
+    notnll = _.sortBy(data,key);
+    if(nll.length > 0){
+        notnll.push(nll[0]);
+    }
+    console.log('--End resorting');
+    return notnll;
+};
 
 
 
