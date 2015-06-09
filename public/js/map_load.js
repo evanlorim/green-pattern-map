@@ -64,7 +64,6 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 		else{
 			selector.deactivate();
 		}
-		$scope.adaptLegend();
 		$scope.applyActiveSelectors();
 	};
 
@@ -140,7 +139,7 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 				else{
 					pop = pop + '<h4> Unnamed </h4><br>';
 				}
-				pop = pop + "<img src=\'/public/img/img_placeholder_white.png\' width=\'120px\' height=\'auto\'></img>";
+				pop = pop + "<img> src=\'/public/img/img_placeholder_white.png\' width=\'120px\' height=\'auto\'>";
 				pop = pop + '<p><b>Location: </b>';
 				if(p.address){
 					pop = pop + p.address;
@@ -205,7 +204,7 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 		}
 		$scope.markers.addLayer(new L.layerGroup(markers));
 		$scope.markers.addTo($scope.map);
-	}
+	};
 
 	$scope.updateMapLayer = function(geo){
     		if($scope.svg){
@@ -227,16 +226,24 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 				.data(geo.features)
 				.enter()
 				.append('path')
-				.style('stroke','#FFFFFF')
+				.style('stroke','#93A3B1')
 				.style('stroke-width',3)
 		        .style('fill',function(d){
 		        	if(d.properties.color){
 		        		return chroma(d.properties.color).alpha($scope.user_settings.layer_opacity).css();
 		        	}
+					else if(d.properties.color === null){
+						return chroma($scope.defaults.fallback_layer_color).alpha(0).css();
+					}
 		        	else{
 		        		return chroma($scope.defaults.fallback_layer_color).alpha($scope.user_settings.layer_opacity).css();
 		        	}
-		        });
+		        }).on('dblclick',function(d){
+					var bounds = makeLatLngArray(d.geometry.coordinates);
+					$scope.map.fitBounds(bounds,{maxZoom:18,duration:1,animate:true,padding:[240,120]});
+					console.log(d);
+					//TODO: make max zoom a global property
+				});
 
 	        var path_tt = paths.append('svg:title')
 	        	.text(function(d){
@@ -255,7 +262,20 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
     			var point = $scope.map.latLngToLayerPoint(new L.LatLng(x[1],x[0]));
         		return [point.x,point.y];
     		}
-    	}
+			function makeLatLngArray(coords){
+				//TODO: FIX THIS MESS
+				if(Array.isArray(coords[0][0])){
+					coords = _.flatten(coords);
+					if(Array.isArray(coords[0][0])){
+						coords = _.flatten(coords);
+					}
+				}
+				var arr = _.map(coords, function(c){
+					return {lat:c[1],lng:c[0]};
+				});
+				return arr;
+			}
+    	};
 
     $scope.getLocation = function(val) {
 	    return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
@@ -274,7 +294,7 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 
 	function initialize(){
 		$scope.defaults = {
-			'fallback_layer_color':'#48C9B0',
+			'fallback_layer_color':'#F7C59F',
 			'layer_opacity':.6,
 			'search_radius':1000,
 			'filter_by_layer':false,
@@ -378,11 +398,11 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 				$scope.applyActiveSelectors();
 			}
 		}
-	}
+	};
 
 	$scope.clearRadiusFilter = function(){
 		$scope.active.radius_filter = null;
-	}
+	};
 
 	function initializeMap(){
 		$scope.map = L.map('map', {'center': [39.2854197594374, -76.61796569824219],
@@ -394,7 +414,7 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 
         L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
         minZoom: 0,
-        maxZoom: 20,
+        maxZoom: 18,
         attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     	}).addTo($scope.map);
 
@@ -406,7 +426,7 @@ access.controller('dataController', function ($scope,$http, $q,retrieveData, $mo
 
     	$scope.circ = new L.circle();
     	$scope.circ.addTo($scope.map);
-	}
+	};
 
 	createClusterIcon = function (cluster,d) {
 		var cmos_base = '#b2df8a';
