@@ -1,3 +1,8 @@
-# Baltimore Green Registry
-A web map for the Green Pattern Book. 
-Hosted by BNIA-JFI.
+# The Green Pattern Map
+
+An interactive webmap for the
+ green pattern book.
+
+Created and hosted by BNIA-JFI.
+
+See it in action [here](water.bniajfi.org)
