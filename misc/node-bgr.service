@@ -1,0 +1,12 @@
+[Service]
+ExecStart=/usr/bin/node /srv/webapps/baltimore-green-registry/index.js
+Restart=alwats
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=node-test1
+User=srv-node-bgr
+Group=srv-node-bgr
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

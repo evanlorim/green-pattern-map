@@ -5,7 +5,7 @@ var Aggregate = require("./aggregate.js");
 var Mask = require("./mask.js");
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/green-registry';
 
-/*loadResources()
+loadResources()
     .then(function(res){
         return(aggregateData());
     })
@@ -19,8 +19,7 @@ var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/green-registry';
     .fail(function(error){
         console.log(error);
         process.exit(0);
-    });*/
-maskData();
+    });
 
 function loadResources(){
     var deferred = q.defer();
@@ -120,30 +119,6 @@ function maskData(){
             _disconnect();
             deferred.resolve(results);
             //console.log(data);
-        })
-        .fail(function(error){
-            deferred.reject(new Error(error));
-        });
-    return deferred.promise;
-}
-
-
-function test(){
-    var deferred = q.defer();
-    var _disconnect;
-    var aggregate;
-    new Aggregate({'uri':mongoUri})
-        .then(function(obj) {
-            aggregate = obj;
-            var deferred = q.defer();
-            _disconnect = aggregate.disconnect;
-            console.log("BEGIN AGGREGATE OPERATION");
-            return(aggregate.assignVsCsas());
-        })
-        .then(function(results){
-            console.log("END AGGREGATE OPERATION");
-            _disconnect();
-            deferred.resolve(results);
         })
         .fail(function(error){
             deferred.reject(new Error(error));
