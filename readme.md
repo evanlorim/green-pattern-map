@@ -5,4 +5,4 @@ An interactive webmap for the
 
 Created and hosted by BNIA-JFI.
 
-See it in action [here](water.bniajfi.org)
+See it in action [here](http://www.water.bniajfi.org)
